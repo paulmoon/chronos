@@ -1,12 +1,16 @@
 <div class="banner" ng-controller="BannerController">
   Banner
-  <button ng-click="doHello()">Hello</button>
-  <button ng-click="doGoodbye()">Goodbye</button>
+  <button class="login-button" ng-click="doHello()">Log In</button>
+  <button class="signup-button" ng-click="doGoodbye()">Sign Up</button>
   <div>Value: {{value}}</div>
 </div>
 <div class="pane">
-  <div class="left-pane">
-    Left Pane
+  <div class="left-pane" ng-controller="LeftPanelController">
+    <div class="media" style="margin:10px">
+      <eventcard ng-repeat="event in events" 
+        event-title="event.eventTitle" 
+        event-test="event.test"/>
+    </div>
   </div>
   <div class="right-pane">
     Right Pane
