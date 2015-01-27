@@ -1,6 +1,7 @@
 'use strict';
 
 /**
+ * @author Justin Guze
  * @ngdoc function
  * @name chronosApp.controller:BannerController
  * @description

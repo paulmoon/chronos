@@ -27,6 +27,10 @@ angular
         templateUrl: 'views/about.html',
         // controller: 'AboutCtrl'
       })
+      .when('/event/:eventId', {
+        templateUrl: 'views/eventpage.html',
+        controller: 'EventPageController',
+      })
       .otherwise({
         redirectTo: '/'
       });

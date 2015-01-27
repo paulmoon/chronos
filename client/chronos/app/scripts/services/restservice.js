@@ -1,6 +1,7 @@
 'use strict';
 
 /**
+ * @author Justin Guze
  * @ngdoc service
  * @name chronosApp.RestService
  * @description

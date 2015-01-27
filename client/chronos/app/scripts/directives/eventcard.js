@@ -1,6 +1,7 @@
 'use strict';
 
 /**
+ * @author Justin Guze
  * @ngdoc directive
  * @name chronosApp.directive:eventCard
  * @description
@@ -14,9 +15,9 @@ angular.module('chronosApp')
       scope: {
       	eventTitle:'=',
       	eventTest:'=',
+      	eventId:'=',
       },
       controller: ['$scope', function($scope) {
-
       }],
     };
   });
