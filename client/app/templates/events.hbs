@@ -1,0 +1,14 @@
+<h1>Events</h1>
+
+<label class="left-align">{{count}} events</label>
+<ul>
+    {{#each event in model}}
+        {{event-card
+            title=event.title
+            location=event.location
+            description=event.shortDescription
+        }}
+    {{/each}}
+</ul>
+
+{{outlet}}
