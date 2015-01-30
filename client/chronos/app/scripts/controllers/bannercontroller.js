@@ -17,4 +17,9 @@ angular.module('chronosApp')
     	$scope.doGoodbye = function() {
     		$scope.value = StateService.goodbye();
     	}
+
+    	$scope.changeLocation = function() {
+    		// Save location to StateService. Change filters, etc
+    		console.log($scope.chosenPlace);
+    	}
   });
