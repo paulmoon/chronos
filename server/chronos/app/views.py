@@ -1,3 +1,6 @@
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseServerError
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from rest_framework.response import Response
 from django.http import HttpResponse, HttpResponseServerError, Http404
@@ -142,9 +145,3 @@ delete_user = DeleteUser.as_view()
 update_user = UpdateUser.as_view()
 list_users = ListUsers.as_view()
 event_view = EventView.as_view()
-
-
-
-
-
-

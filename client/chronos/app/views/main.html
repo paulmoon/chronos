@@ -1,0 +1,25 @@
+<banner></banner>
+<div class="pane">
+  <div class="left-pane" ng-controller="LeftPanelController">
+    <div class="media" style="margin:10px">
+      <eventcard ng-repeat="event in events" 
+        title="event.title" 
+        description="event.description"
+        event-id="event.eventId"
+        creator="event.creator"
+        creation-date="event.creationDate"
+        edit-date="event.editDate"
+        start-date="event.startDate"
+        end-date="event.endDate"
+        location="event.location"
+        vote="event.vote"
+        tags="event.tags"/>
+    </div>
+  </div>
+  <div class="right-pane">
+    Right Pane
+  </div>
+</div>
+<div class="footer">
+  Footer
+</div>

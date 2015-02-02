@@ -5,6 +5,8 @@ from rest_framework import routers
 admin.autodiscover()
 router = routers.DefaultRouter()
 
+router = routers.DefaultRouter()
+
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
