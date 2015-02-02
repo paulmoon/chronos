@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app',
     'rest_framework',
     'corsheaders',
     'debug_toolbar',
@@ -63,10 +64,10 @@ WSGI_APPLICATION = 'chronos.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'TOFILL',
-        'USER': 'TOFILL',
-        'PASSWORD': 'TOFILL',
-        'HOST': 'TOFILL',
+        'NAME': 'chronos',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
     }
 }
 
