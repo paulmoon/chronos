@@ -20,6 +20,9 @@ class ChronosUser(AbstractUser):
 
     userType = models.CharField(max_length=3, choices=USER_TYPES, default=REGULAR)
 
+##############################
+# --------- Events! -------- #
+##############################
 class Events(models.Model):
 	title = models.CharField(max_length=100)
 	description = models.TextField()

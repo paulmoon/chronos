@@ -71,9 +71,9 @@ WSGI_APPLICATION = 'chronos.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'chronos',
-        'USER': 'ChronosUser',
-        'PASSWORD': 'ChronoPass',
+        'NAME': 'TOFILL',
+        'USER': 'TOFILL',
+        'PASSWORD': 'TOFILL',
         'HOST': '127.0.0.1',
     }
 }

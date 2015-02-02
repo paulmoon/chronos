@@ -102,6 +102,9 @@ class ListUsers(RegularSecurityMixin, generics.ListAPIView):
     def get_queryset(self):
         return ChronosUser.objects.all()
 
+##############################
+# --------- Events! -------- #
+##############################
 class EventView(RegularSecurityMixin, generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)

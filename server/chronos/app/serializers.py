@@ -34,6 +34,9 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
         else:
             return attrs
 
+##############################
+# --------- Events! -------- #
+##############################
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Events
