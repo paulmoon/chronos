@@ -37,8 +37,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'debug_toolbar',
+    'app',
+    'rest_framework_swagger',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,6 +53,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 ROOT_URLCONF = 'chronos.urls'
 
@@ -65,12 +74,14 @@ DATABASES = {
         'NAME': 'TOFILL',
         'USER': 'TOFILL',
         'PASSWORD': 'TOFILL',
-        'HOST': 'TOFILL',
+        'HOST': '127.0.0.1',
     }
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
+
+AUTH_USER_MODEL = 'app.ChronosUser'
 
 LANGUAGE_CODE = 'en-us'
 
