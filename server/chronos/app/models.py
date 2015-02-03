@@ -41,3 +41,13 @@ class Events(models.Model):
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+##############################
+# --------- Tag System! ---- #
+##############################
+class Tags(models.Model):
+    name = models.CharField(max_length=100)
+
+class TagMap(models.Model):
+    event_id = models.ForeignKey('Events')
+    tag_id = models.ForeignKey('Tags')
