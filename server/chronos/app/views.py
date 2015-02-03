@@ -25,6 +25,7 @@ import datetime
 class CreateUser(RegularSecurityMixin, generics.CreateAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    serializer_class = app.serializers.ChronosUserRegisterSerializer
 
     def post(self, request):
 
@@ -49,6 +50,7 @@ class CreateUser(RegularSecurityMixin, generics.CreateAPIView):
 class DeleteUser(RegularSecurityMixin, generics.CreateAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    serializer_class = app.serializers.ChronosUserRegisterSerializer
 
     def post(self, request):
         if('deletionID' in request.DATA.keys()):
@@ -63,6 +65,7 @@ class DeleteUser(RegularSecurityMixin, generics.CreateAPIView):
 class UpdateUser(RegularSecurityMixin, generics.CreateAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    serializer_class = app.serializers.ChronosUserRegisterSerializer
 
     def post(self, request, *args, **kwargs):
 
