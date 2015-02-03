@@ -11,7 +11,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework import generics, status, viewsets, mixins
 from app.mixins import *
 from rest_framework.views import APIView
@@ -110,10 +110,13 @@ class ListUsers(RegularSecurityMixin, generics.ListAPIView):
 ##############################
 class EventView(RegularSecurityMixin, generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     
     serializer_class = app.serializers.EventSerializer
     def get(self, request, *args, **kwargs):
+
+        if "eventID" not in kwargs.keys():
+            return Response("Must provide an eventID in request", status.HTTP_400_BAD_REQUEST)
         eventID = int(kwargs["eventID"])
         try:
             event = Events.objects.get(pk=eventID)
