@@ -31,7 +31,6 @@ class CreateUser(RegularSecurityMixin, generics.CreateAPIView):
 
     def post(self, request):
         serializer = app.serializers.ChronosUserRegisterSerializer(data=request.DATA)
-
         if serializer.is_valid():
             if('username' not in request.DATA.keys() or 'password' not in request.DATA.keys() or 'email' not in request.DATA.keys() or 'first_name' not in request.DATA.keys() or 'last_name' not in request.DATA.keys()):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -75,9 +74,7 @@ class UpdateUser(RegularSecurityMixin, generics.CreateAPIView):
     serializer_class = app.serializers.ChronosUserRegisterSerializer
 
     def post(self, request, *args, **kwargs):
-
         serializer = app.serializers.ChronosUserRegisterSerializer(fields=request.DATA.keys(), data=request.DATA)
-
         if self.request.user.id != request.DATA['id']:
            return Response({"error":"Cannot modify another user."}, status=status.HTTP_403_FORBIDDEN)
 

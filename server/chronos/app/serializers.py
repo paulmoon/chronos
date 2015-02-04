@@ -26,13 +26,21 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
             for field_name in existing - allowed:
                 self.fields.pop(field_name)
 
-    def validate(self, attrs):
-        if 'username' in attrs and app.models.ChronosUser.objects.filter(username=attrs['username']).exists():
-            raise ValidationError("username")
-        elif 'email' in attrs and app.models.ChronosUser.objects.filter(email=attrs['email']).exists():
-            raise ValidationError("email");
-        else:
-            return attrs
+    def validate_username(self, value):
+        """
+        Ensure that the username doesn't already exist
+        """
+        if app.models.ChronosUser.objects.filter(username=attrs[value]).exists():
+            raise serializers.ValidationError("username")
+        return value
+
+    def validate_email(self, value):
+        """
+        Ensure that the email doesn't already exist
+        """
+        if app.models.ChronosUser.objects.filter(email=value).exists():
+            raise serializers.ValidationError("email");
+        return value
 
 ##############################
 # --------- Events! -------- #
