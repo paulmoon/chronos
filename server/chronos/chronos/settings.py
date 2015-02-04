@@ -56,7 +56,7 @@ MIDDLEWARE_CLASSES = (
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 
@@ -71,9 +71,9 @@ WSGI_APPLICATION = 'chronos.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'TOFILL',
-        'USER': 'TOFILL',
-        'PASSWORD': 'TOFILL',
+        'NAME': 'chronos',
+        'USER': 'root',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
     }
 }
@@ -98,3 +98,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SWAGGER_SETTINGS = {
+    'api_key': 'c640a14639157348348c9ea19d2b03567f545633',
+}

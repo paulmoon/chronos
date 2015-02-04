@@ -23,12 +23,13 @@ import datetime
 # --------- Users! --------- #
 ##############################
 class CreateUser(RegularSecurityMixin, generics.CreateAPIView):
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    """
+    Creates a new user in the system
+    """
+    permission_classes = (AllowAny,)
     serializer_class = app.serializers.ChronosUserRegisterSerializer
 
     def post(self, request):
-
         serializer = app.serializers.ChronosUserRegisterSerializer(data=request.DATA)
 
         if serializer.is_valid():
@@ -47,7 +48,10 @@ class CreateUser(RegularSecurityMixin, generics.CreateAPIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class DeleteUser(RegularSecurityMixin, generics.CreateAPIView):
+class DeleteUser(generics.CreateAPIView):
+    """
+    Deletes a user from the system. PLEASE REMOVE FOR PRODUCTION!!!
+    """
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = app.serializers.ChronosUserRegisterSerializer
@@ -63,6 +67,9 @@ class DeleteUser(RegularSecurityMixin, generics.CreateAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class UpdateUser(RegularSecurityMixin, generics.CreateAPIView):
+    """
+    Updates the specified user in the system
+    """
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = app.serializers.ChronosUserRegisterSerializer
@@ -71,9 +78,8 @@ class UpdateUser(RegularSecurityMixin, generics.CreateAPIView):
 
         serializer = app.serializers.ChronosUserRegisterSerializer(fields=request.DATA.keys(), data=request.DATA)
 
-#   Add later if needed
-#        if self.request.user.id != request.DATA['id']:
-#            return Response({"error":"Cannot modify another user."}, status=status.HTTP_403_FORBIDDEN)
+        if self.request.user.id != request.DATA['id']:
+           return Response({"error":"Cannot modify another user."}, status=status.HTTP_403_FORBIDDEN)
 
         if serializer.is_valid():
             user = ChronosUser.objects.get(pk=request.DATA['id'])
@@ -97,6 +103,9 @@ class UpdateUser(RegularSecurityMixin, generics.CreateAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class ListUsers(RegularSecurityMixin, generics.ListAPIView):
+    """
+    Lists all the users in the system
+    """
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
@@ -108,12 +117,11 @@ class ListUsers(RegularSecurityMixin, generics.ListAPIView):
 ##############################
 # --------- Events! -------- #
 ##############################
-class EventView(RegularSecurityMixin, generics.ListCreateAPIView):
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
-    
+class EventOnlyView(generics.ListAPIView):
     serializer_class = app.serializers.EventSerializer
+
     def get(self, request, *args, **kwargs):
+        print("what");
 
         if "eventID" not in kwargs.keys():
             return Response("Must provide an eventID in request", status.HTTP_400_BAD_REQUEST)
@@ -126,6 +134,17 @@ class EventView(RegularSecurityMixin, generics.ListCreateAPIView):
             return Response("Event with id {} does not exist.".format(
                 eventID), status.HTTP_404_NOT_FOUND)
 
+class EventView(generics.ListAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = app.serializers.EventSerializer
+
+    def get_queryset(self):
+        queryset = Events.objects.all()
+        commentid = self.request.QUERY_PARAMS.get('commentID', None)
+        if commentid is not None:
+            queryset = queryset.filter(comment_id=commentid)
+        return queryset
 
     def post(self, request, *args, **kwargs):
         serializer = app.serializers.EventSerializer(data=request.DATA)
@@ -153,4 +172,5 @@ create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()
 update_user = UpdateUser.as_view()
 list_users = ListUsers.as_view()
-event_view = EventView.as_view()
+list_specific_event = EventOnlyView.as_view()
+list_create_event = EventView.as_view()

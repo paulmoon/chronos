@@ -17,6 +17,6 @@ urlpatterns = patterns('',
 	url(r'^user/update/$', 'app.views.update_user'),
 	url(r'^users/$', 'app.views.list_users'),
 
-    url(r'^events/?$', 'app.views.event_view'),
-    url(r'^events/(?P<eventID>[0-9]+)/?$', 'app.views.event_view'),
+    url(r'^events/(?P<eventID>[0-9]+)/?$', 'app.views.list_specific_event'),
+    url(r'^events/$', 'app.views.list_create_event'),
 )
