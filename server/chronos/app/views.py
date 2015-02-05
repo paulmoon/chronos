@@ -144,8 +144,8 @@ class EventView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Events.objects.all()
-        fromDate = self.request.QUERY_PARAMS.get('fromDate', None)
-        toDate = self.request.QUERY_PARAMS.get('toDate', None)
+        fromDate = self.request.QUERY_PARAMS.get('fromDate')
+        toDate = self.request.QUERY_PARAMS.get('toDate')
 
         # if the from date is only specified, then we are looking for only that date
         if fromDate is not None:
