@@ -129,6 +129,12 @@ class EventOnlyView(generics.ListAPIView):
                 eventID), status.HTTP_404_NOT_FOUND)
 
 class EventView(generics.ListAPIView):
+    """
+    Gets a filtered set of events specified by a set of QUERY_PARAMS
+
+    Example:
+    /events/?fromDate=2006-01-01&toDate=2006-01-02
+    """
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = app.serializers.EventSerializer
