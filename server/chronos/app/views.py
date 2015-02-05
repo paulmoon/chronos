@@ -132,15 +132,27 @@ class EventOnlyView(generics.ListAPIView):
                 eventID), status.HTTP_404_NOT_FOUND)
 
 class EventView(generics.ListAPIView):
+    """
+    Gets a filtered set of events specified by a set of QUERY_PARAMS
+
+    Example:
+    /events/?fromDate=2006-01-01&toDate=2006-01-02
+    """
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = app.serializers.EventSerializer
 
     def get_queryset(self):
         queryset = Events.objects.all()
-        commentid = self.request.QUERY_PARAMS.get('commentID', None)
-        if commentid is not None:
-            queryset = queryset.filter(comment_id=commentid)
+        fromDate = self.request.QUERY_PARAMS.get('fromDate')
+        toDate = self.request.QUERY_PARAMS.get('toDate')
+
+        # if the from date is only specified, then we are looking for only that date
+        if fromDate is not None:
+            if toDate is not None:
+                queryset = queryset.filter(start_date__range=[fromDate, toDate])
+            else:
+                queryset = queryset.filter(start_date=fromDate)
         return queryset
 
     def post(self, request, *args, **kwargs):
