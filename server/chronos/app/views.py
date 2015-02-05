@@ -13,7 +13,6 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework import generics, status, viewsets, mixins
-from app.mixins import *
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
 from django.conf import settings
@@ -22,7 +21,7 @@ import datetime
 ##############################
 # --------- Users! --------- #
 ##############################
-class CreateUser(RegularSecurityMixin, generics.CreateAPIView):
+class CreateUser(generics.CreateAPIView):
     """
     Creates a new user in the system
     """
@@ -35,11 +34,11 @@ class CreateUser(RegularSecurityMixin, generics.CreateAPIView):
             if('username' not in request.DATA.keys() or 'password' not in request.DATA.keys() or 'email' not in request.DATA.keys() or 'first_name' not in request.DATA.keys() or 'last_name' not in request.DATA.keys()):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             user = ChronosUser.objects.create_user(
-                username=request.DATA["username"],
-                password=request.DATA["password"],
-                email=request.DATA["email"],
-                first_name=request.DATA["first_name"],
-                last_name=request.DATA["last_name"]
+                username=serializer.data["username"],
+                password=serializer.data["password"],
+                email=serializer.data["email"],
+                first_name=serializer.data["first_name"],
+                last_name=serializer.data["last_name"]
             )
             user.save()
             token, created = Token.objects.get_or_create(user=user)
@@ -65,7 +64,7 @@ class DeleteUser(generics.CreateAPIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class UpdateUser(RegularSecurityMixin, generics.CreateAPIView):
+class UpdateUser(generics.CreateAPIView):
     """
     Updates the specified user in the system
     """
@@ -75,7 +74,8 @@ class UpdateUser(RegularSecurityMixin, generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = app.serializers.ChronosUserRegisterSerializer(fields=request.DATA.keys(), data=request.DATA)
-        if self.request.user.id != request.DATA['id']:
+
+        if self.request.user.id != int(request.DATA['id']):
            return Response({"error":"Cannot modify another user."}, status=status.HTTP_403_FORBIDDEN)
 
         if serializer.is_valid():
@@ -99,12 +99,11 @@ class UpdateUser(RegularSecurityMixin, generics.CreateAPIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class ListUsers(RegularSecurityMixin, generics.ListAPIView):
+class ListUsers(generics.ListAPIView):
     """
     Lists all the users in the system
     """
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     serializer_class = ChronosUserSerializer
 
@@ -115,11 +114,10 @@ class ListUsers(RegularSecurityMixin, generics.ListAPIView):
 # --------- Events! -------- #
 ##############################
 class EventOnlyView(generics.ListAPIView):
+    permission_classes = (AllowAny,)
     serializer_class = app.serializers.EventSerializer
 
     def get(self, request, *args, **kwargs):
-        print("what");
-
         if "eventID" not in kwargs.keys():
             return Response("Must provide an eventID in request", status.HTTP_400_BAD_REQUEST)
         eventID = int(kwargs["eventID"])
@@ -144,15 +142,27 @@ class EventView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Events.objects.all()
+        commentid = self.request.QUERY_PARAMS.get('commentID')
+        placeid = self.request.QUERY_PARAMS.get('placeID')
+        creatorid = self.request.QUERY_PARAMS.get('creatorID')
         fromDate = self.request.QUERY_PARAMS.get('fromDate')
         toDate = self.request.QUERY_PARAMS.get('toDate')
 
-        # if the from date is only specified, then we are looking for only that date
+        filterargs = {}
+        if commentid is not None:
+            filterargs['comment_id'] = int(commentid)
+        if placeid is not None:
+            filterargs['place_id'] = int(placeid)
+        if creatorid is not None:
+            filterargs['creator'] = int(creatorid)
+        # If the from date is only specified, then we are looking for only that date
         if fromDate is not None:
             if toDate is not None:
-                queryset = queryset.filter(start_date__range=[fromDate, toDate])
+                filterargs['start_date__range'] = [fromDate, toDate]
             else:
-                queryset = queryset.filter(start_date=fromDate)
+                filterargs['start_date'] = fromDate
+
+        queryset = queryset.filter(**filterargs)
         return queryset
 
     def post(self, request, *args, **kwargs):
@@ -171,6 +181,7 @@ class EventView(generics.ListAPIView):
                 vote=serializer.data["vote"],
                 report=serializer.data["report"],
                 is_deleted=serializer.data["is_deleted"],
+                place_id=serializer.data["place_id"],
             )
             event.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -183,3 +194,4 @@ update_user = UpdateUser.as_view()
 list_users = ListUsers.as_view()
 list_specific_event = EventOnlyView.as_view()
 list_create_event = EventView.as_view()
+
