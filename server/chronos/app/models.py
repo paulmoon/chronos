@@ -11,7 +11,6 @@ from datetime import datetime
 ##############################
 # --------- Users! --------- #
 ##############################
-# In case we want to add admins or moderators later
 class ChronosUser(AbstractUser):
     REGULAR = 'REG'
     USER_TYPES = (
@@ -19,6 +18,11 @@ class ChronosUser(AbstractUser):
     )
 
     userType = models.CharField(max_length=3, choices=USER_TYPES, default=REGULAR)
+
+@receiver(post_save, sender=ChronosUser)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 ##############################
 # --------- Events! -------- #
@@ -36,11 +40,7 @@ class Events(models.Model):
 	report = models.IntegerField()
 	is_deleted = models.BooleanField(default=False)
 	picture = models.CharField(max_length=255)
-
-@receiver(post_save, sender=ChronosUser)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
+	place_id = models.IntegerField()
 
 ##############################
 # --------- Tag System! ---- #

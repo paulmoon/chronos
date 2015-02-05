@@ -48,7 +48,7 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Events
-        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "start_date", "end_date", "vote", "report", "is_deleted")
+        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "start_date", "end_date", "vote", "report", "is_deleted", "place_id")
 
         def __init__(self, *args, **kwargs):
             fields = kwargs.pop('fields', None)
