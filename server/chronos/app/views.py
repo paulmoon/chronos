@@ -74,7 +74,8 @@ class UpdateUser(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = app.serializers.ChronosUserRegisterSerializer(fields=request.DATA.keys(), data=request.DATA)
-        if self.request.user.id != request.DATA['id']:
+
+        if str(self.request.user.id) != request.DATA['id']:
            return Response({"error":"Cannot modify another user."}, status=status.HTTP_403_FORBIDDEN)
 
         if serializer.is_valid():
@@ -102,8 +103,7 @@ class ListUsers(generics.ListAPIView):
     """
     Lists all the users in the system
     """
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     serializer_class = ChronosUserSerializer
 
@@ -114,6 +114,7 @@ class ListUsers(generics.ListAPIView):
 # --------- Events! -------- #
 ##############################
 class EventOnlyView(generics.ListAPIView):
+    permission_classes = (AllowAny,)
     serializer_class = app.serializers.EventSerializer
 
     def get(self, request, *args, **kwargs):
@@ -149,11 +150,11 @@ class EventView(generics.ListAPIView):
 
         filterargs = {}
         if commentid is not None:
-            filterargs['comment_id'] = commentid
+            filterargs['comment_id'] = int(commentid)
         if placeid is not None:
-            filterargs['place_id'] = placeid
+            filterargs['place_id'] = int(placeid)
         if creatorid is not None:
-            filterargs['creator'] = creatorid
+            filterargs['creator'] = int(creatorid)
         # If the from date is only specified, then we are looking for only that date
         if fromDate is not None:
             if toDate is not None:
@@ -161,7 +162,7 @@ class EventView(generics.ListAPIView):
             else:
                 filterargs['start_date'] = fromDate
 
-        queryset.filter(**filterargs)
+        queryset = queryset.filter(**filterargs)
         return queryset
 
     def post(self, request, *args, **kwargs):
@@ -180,7 +181,7 @@ class EventView(generics.ListAPIView):
                 vote=serializer.data["vote"],
                 report=serializer.data["report"],
                 is_deleted=serializer.data["is_deleted"],
-                place_id=serializers.data["place_id"],
+                place_id=serializer.data["place_id"],
             )
             event.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

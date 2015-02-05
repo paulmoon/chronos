@@ -30,7 +30,7 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
         """
         Ensure that the username doesn't already exist
         """
-        if app.models.ChronosUser.objects.filter(username=attrs[value]).exists():
+        if app.models.ChronosUser.objects.filter(username=value).exists():
             raise serializers.ValidationError("username")
         return value
 
