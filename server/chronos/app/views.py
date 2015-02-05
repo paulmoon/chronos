@@ -34,11 +34,11 @@ class CreateUser(generics.CreateAPIView):
             if('username' not in request.DATA.keys() or 'password' not in request.DATA.keys() or 'email' not in request.DATA.keys() or 'first_name' not in request.DATA.keys() or 'last_name' not in request.DATA.keys()):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             user = ChronosUser.objects.create_user(
-                username=request.DATA["username"],
-                password=request.DATA["password"],
-                email=request.DATA["email"],
-                first_name=request.DATA["first_name"],
-                last_name=request.DATA["last_name"]
+                username=serializer.data["username"],
+                password=serializer.data["password"],
+                email=serializer.data["email"],
+                first_name=serializer.data["first_name"],
+                last_name=serializer.data["last_name"]
             )
             user.save()
             token, created = Token.objects.get_or_create(user=user)
@@ -75,7 +75,7 @@ class UpdateUser(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = app.serializers.ChronosUserRegisterSerializer(fields=request.DATA.keys(), data=request.DATA)
 
-        if str(self.request.user.id) != request.DATA['id']:
+        if self.request.user.id != int(request.DATA['id']):
            return Response({"error":"Cannot modify another user."}, status=status.HTTP_403_FORBIDDEN)
 
         if serializer.is_valid():
