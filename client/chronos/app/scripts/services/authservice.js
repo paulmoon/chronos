@@ -15,42 +15,48 @@
   AuthService.$inject = ['$http', '$q', 'setting'];
 
   function AuthService($http, $q, setting) {
-    var isLoggedIn = false;
-    var username = '';
-    var password = '';
+    var self = this;
+    this.isLoggedIn = false;
+    this.username = '';
+    this.password = '';
 
     this.login = function (username, password) {
-      return $http.post(setting.baseUrl + '/user/verify_credentials', {
+      return $http.post(setting.serverUrl + '/users/verify_credentials', {
         username: username,
         password: password
       }).then(function (response) {
-        isLoggedIn = true;
-        return response.data;
+        self.isLoggedIn = true;
+        self.setHeaderToken(response.data);
+
+        return response;
       }, function (response) {
-        return $q.reject(response.data);
+        return $q.reject(response);
       });
     };
 
     this.signUp = function (username, firstName, lastName, password, email) {
-      return $http.post(setting.baseUrl + '/user/create', {
+      return $http.post(setting.serverUrl + '/users/create', {
         username: username,
-        firstName: firstName,
-        lastName: lastName,
+        first_name: firstName,
+        last_name: lastName,
         password: password,
         email: email
       }).then(function (response) {
-        console.log(response);
         return response;
       }, function (response) {
-        console.log('Error while creating a new account' + username + ' ' + password);
-        return response;
+        return $q.reject(response);
       });
     };
 
-    this.setCredentials = function(username, password) {
-      this.username = username;
-      this.password = password;
+    this.setCredentials = function (username, password) {
+      console.log("Logging credentials");
+      self.username = username;
+      self.password = password;
+    };
+
+    this.setHeaderToken = function (token) {
+      $http.defaults.headers.common.Authorization = token;
+      console.log($http.defaults.headers.common.Authorization);
     };
   }
-
 })();

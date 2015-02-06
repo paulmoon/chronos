@@ -25,34 +25,27 @@ function AuthModalController($modalInstance, AuthService, shouldShowSignUpModal)
   ////////////////
 
   function login() {
-    console.log('username: ' + vm.username);
-    console.log('password: ' + vm.password);
-    console.log('LOGGIN IN');
-
-    console.log($modalInstance);
-    console.log(AuthService);
     vm.shouldShowSignUpModal = false;
 
     AuthService.login(vm.username, vm.password)
       .then(function (data) {
         AuthService.setCredentials(vm.username, vm.password);
-        console.log('correctly signed in' + data);
+        $modalInstance.close();
       }, function (response) {
-        // Display an incorrect password message.
-        console.log('Incorrect password' + response);
+        // TODO: Show UI error on wrong password.
+        console.log("AuthService.login failed");
       });
   }
 
   function signUp() {
-    console.log('Signing up.');
-
     vm.shouldShowSignUpModal = true;
 
-    AuthService.signUp(vm.username, vm.password)
+    AuthService.signUp(vm.username, vm.firstName, vm.lastName, vm.password, vm.email)
       .then(function (data) {
-        console.log('signUp success');
+        $modalInstance.close();
       }, function (error) {
-        console.log('signUp failure');
+        // TODO: Show UI error on Sign Up.
+        console.log("AuthService.signUp failed");
       });
   }
 

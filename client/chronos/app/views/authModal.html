@@ -18,18 +18,24 @@
                ng-model="authModal.username">
       </div>
       <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input type="text" class="form-control" id="first-name" placeholder="First Name"
+               ng-model="authModal.firstName">
+      </div>
+      <div class="form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" class="form-control" id="last-name" placeholder="Last Name"
+               ng-model="authModal.lastName">
+      </div>
+      <div class="form-group">
         <label for="input-email">Email</label>
-        <input type="email" class="form-control" id="input-email" placeholder="email" ng-model="authModal.email">
+        <input type="email" class="form-control" id="input-email" placeholder="email"
+               ng-model="authModal.email">
       </div>
       <div class="form-group">
         <label for="input-password">Password</label>
         <input type="password" class="form-control" id="input-password" placeholder="password"
                ng-model="authModal.password">
-      </div>
-      <div class="form-group">
-        <label for="input-password-confirm">Confirm Password</label>
-        <input type="password" class="form-control" id="input-password-confirm" placeholder="verify password"
-               ng-model="authModal.confirmPassword">
       </div>
       <button type="submit" class="btn btn-primary" ng-click="authModal.signUp()">Sign Up</button>
       <button type="submit" class="right btn btn-default" ng-click="authModal.cancel()">Cancel</button>
