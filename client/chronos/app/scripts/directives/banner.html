@@ -1,9 +1,8 @@
-<div class="banner" ng-controller="BannerController">
+<div class="banner" ng-controller="BannerController as vm">
   Banner
 
-  <input ng-model="chosenPlace" details="chosenPlaceDetails" callback="changeLocation" placeholder="Enter a location" googleautocomplete/>
-  <button class="login-button" ng-click="doHello()">Log In</button>
-  <button class="signup-button" ng-click="doGoodbye()">Sign Up</button>
-  <div>{{ chosenPlace }}</div>
-  <div>Value: {{value}}</div>
+  <input ng-model="vm.chosenPlace" details="chosenPlaceDetails" callback="changeLocation" placeholder="Enter a location" googleautocomplete/>
+  <button class="login-button" ng-click="vm.openLoginModal()">Log In</button>
+  <button class="signup-button" ng-click="vm.openSignupModal()">Sign Up</button>
+  <div>{{ vm.chosenPlace }}</div>
 </div>

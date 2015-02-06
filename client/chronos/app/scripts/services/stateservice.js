@@ -8,13 +8,21 @@
  * # stateService
  * Service in the chronosApp.
  */
-angular.module('chronosApp')
-  .service('StateService', function StateService() {
-    this.hello = function() {
-    	return "Hello";
-    }
+angular
+  .module('chronosApp')
+  .service('StateService', StateService);
 
-    this.goodbye = function() {
-    	return "Goodbye";
-    }
-  });
+//StateService.$inject = [''];
+
+/* @ngInject */
+function StateService() {
+  ////////////////
+
+  this.hello = function () {
+    return "Hello";
+  };
+
+  this.goodbye = function () {
+    return "Goodbye";
+  };
+}
