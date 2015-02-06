@@ -13,9 +13,9 @@
     .module('chronosApp')
     .controller('BannerController', BannerController);
 
-  BannerController.$inject = ['StateService', '$modal'];
+  BannerController.$inject = ['AuthService', 'StateService', '$modal'];
 
-  function BannerController(StateService, $modal) {
+  function BannerController(AuthService, StateService, $modal) {
     var vm = this;
 
     vm.title = 'BannerController';
@@ -24,6 +24,8 @@
     vm.openSignupModal = openSignupModal;
     vm.openLoginModal = openLoginModal;
     vm.changeLocation = changeLocation;
+    vm.isLoggedIn = AuthService.isLoggedIn;
+    vm.logout = AuthService.logout;
 
     ////////////////////////////
 

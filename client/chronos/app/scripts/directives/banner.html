@@ -13,9 +13,17 @@
                  callback="changeLocation" placeholder="Enter a location" googleautocomplete/>
         </div>
       </form>
+      <div>{{ vm.isLoggedIn }}</div>
       <div class="nav navbar-nav navbar-right">
-        <button type="button" class="btn btn-default navbar-btn" ng-click="vm.openSignupModal()">Sign Up</button>
-        <button type="button" class="btn btn-primary navbar-btn" ng-click="vm.openLoginModal()">Login</button>
+        <button type="button" class="btn btn-default navbar-btn" ng-click="vm.openSignupModal()">
+          Sign Up
+        </button>
+        <button type="button" class="btn btn-primary navbar-btn" ng-hide="vm.isLoggedIn()" ng-click="vm.openLoginModal()">
+          Login
+        </button>
+        <button type="button" class="btn btn-primary navbar-btn" ng-show="vm.isLoggedIn()" ng-click="vm.logout()">
+          Logout
+        </button>
         </ul>
       </div>
       <!-- /.navbar-collapse -->

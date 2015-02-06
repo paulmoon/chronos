@@ -28,7 +28,6 @@ function AuthModalController($modalInstance, AuthService, shouldShowSignUpModal)
 
     AuthService.login(vm.username, vm.password)
       .then(function (data) {
-        AuthService.setCredentials(vm.username, vm.password);
         $modalInstance.close();
       }, function (response) {
         // TODO: Show UI error on wrong password.

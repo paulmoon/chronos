@@ -16,7 +16,7 @@
 
   function AuthService($http, $q, setting) {
     var self = this;
-    this.isLoggedIn = false;
+    this._isLoggedIn = false;
     this.username = '';
     this.password = '';
 
@@ -25,13 +25,22 @@
         username: username,
         password: password
       }).then(function (response) {
-        self.isLoggedIn = true;
+        self._isLoggedIn = true;
+        self.setCredentials(username, password);
         self.setHeaderToken(response.data);
+
+        console.log(self._isLoggedIn);
 
         return response;
       }, function (response) {
         return $q.reject(response);
       });
+    };
+
+    this.logout = function () {
+      self._isLoggedIn = false;
+      self.setCredentials('', '');
+      self.setHeaderToken(null);
     };
 
     this.signUp = function (username, firstName, lastName, password, email) {
@@ -48,8 +57,11 @@
       });
     };
 
+    this.isLoggedIn = function () {
+      return self._isLoggedIn;
+    }
+
     this.setCredentials = function (username, password) {
-      console.log("Logging credentials");
       self.username = username;
       self.password = password;
     };
