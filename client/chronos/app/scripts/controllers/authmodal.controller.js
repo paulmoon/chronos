@@ -12,7 +12,6 @@ function AuthModalController($modalInstance, AuthService, shouldShowSignUpModal)
   vm.title = 'AuthModalController';
   vm.username = '';
   vm.password = '';
-  vm.confirmPassword = '';
   vm.firstName = '';
   vm.lastName = '';
   vm.email = '';
