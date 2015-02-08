@@ -25,7 +25,7 @@
      * @returns {HttpPromise}
      */
     this.login = function (username, password) {
-      return $http.post(setting.serverUrl + '/users/verify_credentials', {
+      return $http.post(setting.serverUrl + '/users/verify_credentials/', {
         username: username,
         password: password
       });
@@ -42,7 +42,7 @@
      * @returns {HttpPromise}
      */
     this.createUser = function (username, firstName, lastName, password, email) {
-      return $http.post(setting.serverUrl + '/users/create', {
+      return $http.post(setting.serverUrl + '/users/create/', {
         username: username,
         first_name: firstName,
         last_name: lastName,
