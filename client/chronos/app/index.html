@@ -56,19 +56,25 @@
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
-        <script src="scripts/services/stateservice.js"></script>
-        <script src="scripts/controllers/bannercontroller.js"></script>
-        <script src="scripts/services/restservice.js"></script>
-        <script src="scripts/directives/eventcard.js"></script>
-        <script src="scripts/controllers/leftpanelcontroller.js"></script>
+
+        <script src="scripts/controllers/authModal.controller.js"></script>
+        <script src="scripts/controllers/banner.controller.js"></script>
         <script src="scripts/controllers/eventpagecontroller.js"></script>
+        <script src="scripts/controllers/leftpanelcontroller.js"></script>
+
         <script src="scripts/directives/banner.js"></script>
+        <script src="scripts/directives/eventcard.js"></script>
         <script src="scripts/directives/googleautocomplete.js"></script>
+
+        <script src="scripts/services/authService.service.js"></script>
+        <script src="scripts/services/restService.service.js"></script>
+        <script src="scripts/services/stateservice.js"></script>
 
         <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
         <!-- endbuild -->

@@ -15,23 +15,27 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ui.bootstrap'
   ])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
+        templateUrl: 'views/main.html'
         // controller: 'MainCtrl'
       })
       .when('/about', {
-        templateUrl: 'views/about.html',
+        templateUrl: 'views/about.html'
         // controller: 'AboutCtrl'
       })
       .when('/event/:eventId', {
         templateUrl: 'views/eventpage.html',
-        controller: 'EventPageController',
+        controller: 'EventPageController'
       })
       .otherwise({
         redirectTo: '/'
       });
+  })
+  .constant('setting', {
+    serverUrl: 'http://localhost:8000'
   });
