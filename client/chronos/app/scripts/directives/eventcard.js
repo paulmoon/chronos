@@ -7,7 +7,7 @@
  * @description
  * # eventCard
  */
- 
+
 angular.module('chronosApp')
   .directive('eventcard', function (StateService, RestService) {
     return {

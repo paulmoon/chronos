@@ -17,7 +17,7 @@ angular
 
 /* @ngInject */
 function StateService() {
-	var place_id_holder;
+	var _placeIDHolder;
 
 	this.hello = function () {
 	return "Hello";
@@ -27,11 +27,11 @@ function StateService() {
 	return "Goodbye";
 	};
 
-	this.setPlaceID = function(place_id) {
-		place_id_holder = place_id;
+	this.setPlaceID = function(_placeID) {
+		_placeIDHolder = _placeID;
 	};
 
 	this.getPlaceID = function() {
-		return place_id_holder;
+		return _placeIDHolder;
 	};
 }

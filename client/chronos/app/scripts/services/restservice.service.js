@@ -57,16 +57,16 @@
      * @returns {HttpPromise}
      */
     this.getFilteredEvents = function() {
-      var url = setting.serverUrl + '/events/?';
-      var placeID = StateService.getPlaceID();
+      var _url = setting.serverUrl + '/events/?';
+      var _placeID = StateService.getPlaceID();
 
       // Add more filter options as appropriate
-      if(placeID){
+      if(_placeID){
         // Can leave the & at beginning even if its the first param
-        url = url + '&placeID=' + placeID;
+        _url = _url + '&placeID=' + _placeID;
       }
 
-      return $http.get(url);
+      return $http.get(_url);
     };
   }
 })();
