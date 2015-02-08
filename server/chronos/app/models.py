@@ -25,6 +25,12 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 ##############################
+# --------- Tag System! ---- #
+##############################
+class Tag(models.Model):
+    name = models.CharField(max_length=100)
+
+##############################
 # --------- Events! -------- #
 ##############################
 class Events(models.Model):
@@ -41,13 +47,6 @@ class Events(models.Model):
 	is_deleted = models.BooleanField(default=False)
 	picture = models.CharField(max_length=255)
 	place_id = models.IntegerField()
+	tags = models.ManyToManyField(Tag, null=True)
 
-##############################
-# --------- Tag System! ---- #
-##############################
-class Tags(models.Model):
-    name = models.CharField(max_length=100)
 
-class TagMap(models.Model):
-    event_id = models.ForeignKey('Events')
-    tag_id = models.ForeignKey('Tags')
