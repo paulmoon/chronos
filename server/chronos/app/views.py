@@ -66,19 +66,17 @@ class UpdateUser(generics.CreateAPIView):
         serializer = app.serializers.ChronosUserRegisterSerializer(data=request.data)
         if self.request.user.id != int(request.DATA['id']):
            return Response({"error":"Cannot modify another user."}, status=status.HTTP_403_FORBIDDEN)
-
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ListUsers(generics.ListAPIView):
     """
     Lists all the users in the system
     """
     permission_classes = (AllowAny,)
-
     serializer_class = ChronosUserSerializer
 
     def get_queryset(self):
@@ -137,14 +135,14 @@ class EventView(generics.ListAPIView):
             else:
                 filterargs['start_date'] = fromDate
         if tags:
-            filterars['tags__in'] = tags
+            filterargs['tags__in'] = tags
         queryset = queryset.filter(**filterargs)
         return queryset
 
     def post(self, request, *args, **kwargs):
-        serializer = app.serializers.EventSerializer(data=request.DATA)
+        serializer = self.get_serializer_class()(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            event = serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)

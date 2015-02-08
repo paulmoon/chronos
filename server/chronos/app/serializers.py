@@ -72,9 +72,10 @@ class TagSerializer(serializers.ModelSerializer):
 # --------- Events! -------- #
 ##############################
 class EventSerializer(serializers.ModelSerializer):
-    class Meta:
+    tags = TagSerializer(many=True, read_only=True)
+    class Meta: 
         model = app.models.Events
-        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)          
@@ -86,14 +87,25 @@ class EventSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
     def create(self, validated_data):
-        return app.models.Events.objects.create(**validated_data)
+        # Tags is a many to may field in the Event model, and therefore cannot be created through the objects.create method
+        print(validated_data)
+        tags = validated_data["tags"]
+        validated_data.pop("tags", None)
+        event = app.models.Events.objects.create(**validated_data)
+        for tag in tags:
+            event.tags.add(tag)
+        return event
 
     def update(self, instance, validated_data):
+        """
+        Only update the fields that are necessary
+        """
         instance.title = validated_data.get('title', instance.title)
         instance.description = validated_data.get('description', instance.description)
         instance.picture = validated_data.get('picture', instance.picture)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.end_date = validated_data.get('end_date', instance.end_date)
+        instance.edit_date = validated_data.get('edit_date', instance.edit_date)
         instance.place_id = validated_data.get('place_id', instance.place_id)
         instance.save()
         return instance
