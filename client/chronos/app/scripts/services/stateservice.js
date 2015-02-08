@@ -10,11 +10,25 @@
  */
 angular.module('chronosApp')
   .service('StateService', function StateService() {
+  	var place_id_holder;
+
     this.hello = function() {
     	return "Hello";
     }
 
     this.goodbye = function() {
     	return "Goodbye";
+    }
+
+    this.setPlaceID = function(place_id) {
+    	place_id_holder = place_id;
+    }
+
+    this.getPlaceID = function() {
+    	return place_id_holder;
+    }
+
+    this.getServerAddress = function() {
+      return 'http://localhost:8000/';
     }
   });

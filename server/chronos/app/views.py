@@ -152,7 +152,7 @@ class EventView(generics.ListAPIView):
         if commentid is not None:
             filterargs['comment_id'] = int(commentid)
         if placeid is not None:
-            filterargs['place_id'] = int(placeid)
+            filterargs['place_id'] = placeid
         if creatorid is not None:
             filterargs['creator'] = int(creatorid)
         # If the from date is only specified, then we are looking for only that date

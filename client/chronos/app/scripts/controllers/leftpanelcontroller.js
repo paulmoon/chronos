@@ -9,31 +9,18 @@
  * Controller of the chronosApp
  */
 angular.module('chronosApp')
-  .controller('LeftPanelController', function ($scope, StateService, RestService) {
-   	$scope.events = [{
-   		eventId: "1",
-   		title: "Title Test",
-   		description: "A very basic description of an event",
-   		creator: "Carljr.",
-   		creationDate: "01/24/1992",
-   		editDate: "None",
-   		location: "Victoria, BC",
-   		startDate: "01/24/1992",
-   		endDate: "01/24/2020",
-   		vote: "10",
-   		tags: "???",
-   	},
-   	{
-   		eventId: "2",
-   		title: "Some Place",
-   		description: "Another description of an event",
-   		creator: "Carlossenior",
-   		creationDate: "01/24/1992",
-   		editDate: "None",
-   		location: "Victoria, BC",
-   		startDate: "01/24/1992",
-   		endDate: "01/24/2020",
-   		vote: "12",
-   		tags: "Music",
-   	},];
+  .controller('LeftPanelController', function ($scope, RestService) {
+      $scope.RestService = RestService;
+      $scope.events = [];         
+
+      $scope.searchEvents = function() {
+         RestService.getFilteredEvents().
+            success(function(data, status, headers, config) {
+               $scope.events = data;
+               console.log("Retreived events succesfully.");                
+            }).
+            error(function(data, status, headers, config) {
+               console.log("Failed to retreive events.");
+            });
+      }
   });

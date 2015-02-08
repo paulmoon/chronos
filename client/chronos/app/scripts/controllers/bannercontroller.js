@@ -18,8 +18,8 @@ angular.module('chronosApp')
     		$scope.value = StateService.goodbye();
     	}
 
-    	$scope.changeLocation = function() {
+    	$scope.changeLocation = function(chosenPlaceDetails) {
     		// Save location to StateService. Change filters, etc
-    		console.log($scope.chosenPlace);
+    		StateService.setPlaceID(chosenPlaceDetails.place_id);
     	}
   });
