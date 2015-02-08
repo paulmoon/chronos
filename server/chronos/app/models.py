@@ -46,7 +46,5 @@ class Events(models.Model):
 	report = models.IntegerField()
 	is_deleted = models.BooleanField(default=False)
 	picture = models.CharField(max_length=255)
-	place_id = models.IntegerField()
+	place_id = models.CharField(max_length=100)
 	tags = models.ManyToManyField(Tag, null=True)
-
-

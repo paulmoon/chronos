@@ -14,9 +14,9 @@
     .module('chronosApp')
     .service('RestService', RestService);
 
-  RestService.$inject = ['$http', 'setting'];
+  RestService.$inject = ['$http', 'setting', 'StateService'];
 
-  function RestService($http, setting) {
+  function RestService($http, setting, StateService) {
     /**
      * @description API call for verifying credentials.
      * @methodOf chronosApp:RestService
@@ -49,6 +49,24 @@
         password: password,
         email: email
       });
+    };
+
+    /**
+     * @description API call for getting a filtered list of events
+     * @methodOf chronosApp:RestService
+     * @returns {HttpPromise}
+     */
+    this.getFilteredEvents = function() {
+      var _url = setting.serverUrl + '/events/?';
+      var _placeID = StateService.getPlaceID();
+
+      // Add more filter options as appropriate
+      if(_placeID){
+        // Can leave the & at beginning even if its the first param
+        _url = _url + '&placeID=' + _placeID;
+      }
+
+      return $http.get(_url);
     };
   }
 })();

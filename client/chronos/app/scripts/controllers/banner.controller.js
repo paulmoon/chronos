@@ -53,9 +53,8 @@
       });
     }
 
-    function changeLocation() {
-      // Save location to StateService. Change filters, etc
-      console.log(vm.chosenPlace);
+    function changeLocation(chosenPlaceDetails) {
+      StateService.setPlaceID(chosenPlaceDetails.place_id);
     }
   }
 })();

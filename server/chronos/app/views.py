@@ -95,7 +95,7 @@ class EventOnlyView(generics.ListAPIView):
         eventID = int(kwargs["eventID"])
         try:
             event = Events.objects.get(pk=eventID)
-            serializer = EventSerializer(event)
+            serializer = self.get_serializer_class()(event)
             return Response(serializer.data, status.HTTP_200_OK)
         except ObjectDoesNotExist:
             return Response("Event with id {} does not exist.".format(
@@ -124,7 +124,7 @@ class EventView(generics.ListAPIView):
         if commentid is not None:
             filterargs['comment_id'] = int(commentid)
         if placeid is not None:
-            filterargs['place_id'] = int(placeid)
+            filterargs['place_id'] = placeid
         if creatorid is not None:
             filterargs['creator'] = int(creatorid)
         # If the from date is only specified, then we are looking for only that date
