@@ -8,6 +8,7 @@
  * # stateService
  * Service in the chronosApp.
  */
+
 angular
   .module('chronosApp')
   .service('StateService', StateService);
@@ -16,13 +17,21 @@ angular
 
 /* @ngInject */
 function StateService() {
-  ////////////////
+	var _placeIDHolder;
 
-  this.hello = function () {
-    return "Hello";
-  };
+	this.hello = function () {
+	return "Hello";
+	};
 
-  this.goodbye = function () {
-    return "Goodbye";
-  };
+	this.goodbye = function () {
+	return "Goodbye";
+	};
+
+	this.setPlaceID = function(_placeID) {
+		_placeIDHolder = _placeID;
+	};
+
+	this.getPlaceID = function() {
+		return _placeIDHolder;
+	};
 }

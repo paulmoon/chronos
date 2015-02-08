@@ -7,6 +7,7 @@
  * @description
  * # eventCard
  */
+
 angular.module('chronosApp')
   .directive('eventcard', function (StateService, RestService) {
     return {
@@ -18,12 +19,11 @@ angular.module('chronosApp')
       	eventId:'=',
       	creator:'=',
       	creationDate:'=',
-      	editDate:'=',
       	location:'=',
       	startDate:'=',
       	endDate:'=',
       	vote:'=',
-      	tags:'=',
+        report:'=',
       },
       controller: ['$scope', function($scope) {
       }],

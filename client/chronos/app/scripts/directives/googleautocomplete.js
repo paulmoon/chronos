@@ -6,6 +6,7 @@
  * @description
  * # googleautocomplete
  */
+ 
 angular.module('chronosApp')
   .directive('googleautocomplete', function () {
     return {
@@ -26,7 +27,7 @@ angular.module('chronosApp')
         	scope.$apply(function() {
         		scope.details = scope.gPlace.getPlace();
         		model.$setViewValue(element.val());
-        		scope.callback();
+        		scope.callback(scope.details);
         	});
         });
       }
