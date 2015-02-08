@@ -29,22 +29,12 @@ class CreateUser(generics.CreateAPIView):
     serializer_class = app.serializers.ChronosUserRegisterSerializer
 
     def post(self, request):
-        serializer = app.serializers.ChronosUserRegisterSerializer(data=request.DATA)
+        serializer = app.serializers.ChronosUserRegisterSerializer(data=request.data)
         if serializer.is_valid():
-            if('username' not in request.DATA.keys() or 'password' not in request.DATA.keys() or 'email' not in request.DATA.keys() or 'first_name' not in request.DATA.keys() or 'last_name' not in request.DATA.keys()):
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            user = ChronosUser.objects.create_user(
-                username=serializer.data["username"],
-                password=serializer.data["password"],
-                email=serializer.data["email"],
-                first_name=serializer.data["first_name"],
-                last_name=serializer.data["last_name"]
-            )
-            user.save()
-            token, created = Token.objects.get_or_create(user=user)
+            token, created, user = serializer.save()
             return Response(data={'token':token.key}, status=status.HTTP_201_CREATED)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DeleteUser(generics.CreateAPIView):
     """
@@ -73,38 +63,20 @@ class UpdateUser(generics.CreateAPIView):
     serializer_class = app.serializers.ChronosUserRegisterSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = app.serializers.ChronosUserRegisterSerializer(fields=request.DATA.keys(), data=request.DATA)
-
+        serializer = app.serializers.ChronosUserRegisterSerializer(data=request.data)
         if self.request.user.id != int(request.DATA['id']):
            return Response({"error":"Cannot modify another user."}, status=status.HTTP_403_FORBIDDEN)
-
         if serializer.is_valid():
-            user = ChronosUser.objects.get(pk=request.DATA['id'])
-            if('password' in request.DATA.keys()):
-                user.set_password(request.DATA['password'])
-            if('email' in request.DATA.keys()):
-                user.email = request.DATA['email']
-            if('first_name' in request.DATA.keys()):
-                user.first_name = request.DATA['first_name']
-            if('last_name' in request.DATA.keys()):
-                user.last_name = request.DATA['last_name']
-            if('username' in request.DATA.keys()):
-                user.username = request.DATA['username']
-            #if('userType' in request.DATA.keys()):
-            #    user.userType = request.DATA['userType']
-            user.save()
-
-            serializer = app.serializers.ChronosUserSerializer(user)
+            serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ListUsers(generics.ListAPIView):
     """
     Lists all the users in the system
     """
     permission_classes = (AllowAny,)
-
     serializer_class = ChronosUserSerializer
 
     def get_queryset(self):
@@ -115,7 +87,7 @@ class ListUsers(generics.ListAPIView):
 ##############################
 class EventOnlyView(generics.ListAPIView):
     permission_classes = (AllowAny,)
-    serializer_class = app.serializers.EventSerializer
+    serializer_class = app.serializers.EventReadSerializer
 
     def get(self, request, *args, **kwargs):
         if "eventID" not in kwargs.keys():
@@ -123,7 +95,7 @@ class EventOnlyView(generics.ListAPIView):
         eventID = int(kwargs["eventID"])
         try:
             event = Events.objects.get(pk=eventID)
-            serializer = EventSerializer(event)
+            serializer = self.get_serializer_class()(event)
             return Response(serializer.data, status.HTTP_200_OK)
         except ObjectDoesNotExist:
             return Response("Event with id {} does not exist.".format(
@@ -138,16 +110,16 @@ class EventView(generics.ListAPIView):
     """
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    serializer_class = app.serializers.EventSerializer
+    serializer_class = app.serializers.EventReadSerializer
 
     def get_queryset(self):
         queryset = Events.objects.all()
-        commentid = self.request.QUERY_PARAMS.get('commentID')
-        placeid = self.request.QUERY_PARAMS.get('placeID')
-        creatorid = self.request.QUERY_PARAMS.get('creatorID')
-        fromDate = self.request.QUERY_PARAMS.get('fromDate')
-        toDate = self.request.QUERY_PARAMS.get('toDate')
-
+        commentid = self.request.query_params.get('commentID')
+        placeid = self.request.query_params.get('placeID')
+        creatorid = self.request.query_params.get('creatorID')
+        fromDate = self.request.query_params.get('fromDate')
+        toDate = self.request.query_params.get('toDate')
+        tags = self.request.query_params.get('tags')
         filterargs = {}
         if commentid is not None:
             filterargs['comment_id'] = int(commentid)
@@ -161,32 +133,22 @@ class EventView(generics.ListAPIView):
                 filterargs['start_date__range'] = [fromDate, toDate]
             else:
                 filterargs['start_date'] = fromDate
-
+        if tags:
+            filterargs['tags__in'] = tags
         queryset = queryset.filter(**filterargs)
         return queryset
 
     def post(self, request, *args, **kwargs):
-        serializer = app.serializers.EventSerializer(data=request.DATA)
-        if(serializer.is_valid()):
-            event = Events.objects.create(
-                title=serializer.data["title"],
-                description=serializer.data["description"],
-                creator=serializer.data["creator"],
-                create_date=datetime.date.today(),
-                edit_date=datetime.date.today(),
-                comment_id=serializer.data["comment_id"],
-                picture=serializer.data["picture"],
-                start_date=serializer.data["start_date"],
-                end_date=serializer.data["end_date"],
-                vote=serializer.data["vote"],
-                report=serializer.data["report"],
-                is_deleted=serializer.data["is_deleted"],
-                place_id=serializer.data["place_id"],
-            )
-            event.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = app.serializers.EventWriteSerializer(data=request.data)
+        if serializer.is_valid():
+            event = serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TagView(generics.CreateAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = app.serializers.TagSerializer
 
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()
@@ -194,4 +156,4 @@ update_user = UpdateUser.as_view()
 list_users = ListUsers.as_view()
 list_specific_event = EventOnlyView.as_view()
 list_create_event = EventView.as_view()
-
+create_tag = TagView.as_view()
