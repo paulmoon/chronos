@@ -1,9 +1,9 @@
 <banner></banner>
 <div class="pane">
-  <div class="left-pane" ng-controller="LeftPanelController">
+  <div class="left-pane" ng-controller="LeftPanelController as vm">
     <div class="media" style="margin:10px">
-      <button type="button" ng-click="searchEvents()" class="btn btn-primary">Search Events</button>
-      <eventcard ng-repeat="event in events" 
+      <button type="button" ng-click="vm.searchEvents()" class="btn btn-primary">Search Events</button>
+      <eventcard ng-repeat="event in vm.events" 
         title="event.title"
         event-id="event.id" 
         description="event.description"

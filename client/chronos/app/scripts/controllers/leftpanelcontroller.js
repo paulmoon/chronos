@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @author Justin Guze
  * @ngdoc function
@@ -8,20 +6,32 @@
  * # LeftPanelController
  * Controller of the chronosApp
  */
- 
-angular.module('chronosApp')
-  .controller('LeftPanelController', function ($scope, RestService) {
-      $scope.RestService = RestService;
-      $scope.events = [];         
 
-      $scope.searchEvents = function() {
+(function () {
+  'use strict';
+
+  angular
+    .module('chronosApp')
+    .controller('LeftPanelController', LeftPanelController);
+
+  LeftPanelController.$inject = ['RestService'];
+
+  function LeftPanelController(RestService) {
+      var vm = this;
+
+      vm.title = 'LeftPanelController';
+      vm.events = [];         
+
+      vm.searchEvents = searchEvents;
+
+      function searchEvents() {
          RestService.getFilteredEvents().
             success(function(data, status, headers, config) {
-               $scope.events = data;
-               console.log("Retreived events succesfully.");         
+               vm.events = data;        
             }).
             error(function(data, status, headers, config) {
-               console.log("Failed to retreive events.");
+               // Fill in at later date
             });
       }
-  });
+   }
+})();
