@@ -1,7 +1,7 @@
 /**
  * @author Justin Guze
  * @ngdoc function
- * @name chronosApp.controller:BannerController
+ * @name chronosApp:BannerController
  * @description
  * BannerController
  */
@@ -20,12 +20,12 @@
 
     vm.title = 'BannerController';
     vm.chosenPlace = null;
+    vm.isLoggedIn = AuthService.isLoggedIn;
+    vm.logout = AuthService.logout;
 
     vm.openSignupModal = openSignupModal;
     vm.openLoginModal = openLoginModal;
     vm.changeLocation = changeLocation;
-    vm.isLoggedIn = AuthService.isLoggedIn;
-    vm.logout = AuthService.logout;
 
     ////////////////////////////
 

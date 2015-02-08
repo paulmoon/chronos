@@ -1,54 +1,74 @@
-angular
-  .module('chronosApp')
-  .controller('AuthModalController', AuthModalController);
+/**
+ * @author Paul Moon
+ * @ngdoc function
+ * @name chronosApp:AuthModalController
+ * @description ViewModel for the banner including logo, "Choose a Location", and user authentication (login/log out)
+ */
 
-AuthModalController.$inject = ['$modalInstance', 'AuthService', 'shouldShowSignUpModal'];
+(function () {
+  'use strict';
 
-/* @ngInject */
-function AuthModalController($modalInstance, AuthService, shouldShowSignUpModal) {
-  /* jshint validthis: true */
-  var vm = this;
+  angular
+    .module('chronosApp')
+    .controller('AuthModalController', AuthModalController);
 
-  vm.title = 'AuthModalController';
-  vm.username = '';
-  vm.password = '';
-  vm.firstName = '';
-  vm.lastName = '';
-  vm.email = '';
-  vm.shouldShowSignUpModal = shouldShowSignUpModal;
+  AuthModalController.$inject = ['$modalInstance', 'AuthService', 'shouldShowSignUpModal'];
 
-  vm.login = login;
-  vm.signUp = signUp;
-  vm.cancel = cancel;
+  function AuthModalController($modalInstance, AuthService, shouldShowSignUpModal) {
+    var vm = this;
 
-  ////////////////
+    vm.title = 'AuthModalController';
+    vm.username = '';
+    vm.password = '';
+    vm.firstName = '';
+    vm.lastName = '';
+    vm.email = '';
+    vm.shouldShowSignUpModal = shouldShowSignUpModal;
 
-  function login() {
-    vm.shouldShowSignUpModal = false;
+    vm.login = login;
+    vm.signUp = signUp;
+    vm.cancel = cancel;
 
-    AuthService.login(vm.username, vm.password)
-      .then(function (data) {
-        $modalInstance.close();
-      }, function (response) {
-        // TODO: Show UI error on wrong password.
-        console.log("AuthService.login failed");
-      });
+    ////////////////
+
+    /**
+     * @description Calls {@link chronosApp:AuthService#login}|AuthService.login} to login.
+     * @methodOf chronosApp:AuthModalController
+     */
+    function login() {
+      vm.shouldShowSignUpModal = false;
+
+      AuthService.login(vm.username, vm.password)
+        .then(function (data) {
+          $modalInstance.close();
+        }, function (response) {
+          // TODO: Show UI error on wrong password.
+          console.log("AuthService.login failed");
+        });
+    }
+
+    /**
+     * @description Calls {@link chronosApp:AuthService#signUp}|AuthService.signUp} to create a user account.
+     * @methodOf chronosApp:AuthModalController
+     */
+    function signUp() {
+      vm.shouldShowSignUpModal = true;
+
+      AuthService.signUp(vm.username, vm.firstName, vm.lastName, vm.password, vm.email)
+        .then(function (data) {
+          $modalInstance.close();
+        }, function (error) {
+          // TODO: Show UI error on Sign Up.
+          console.log("AuthService.signUp failed");
+        });
+    }
+
+    /**
+     * @description Closes the modal window.
+     * @methodOf chronosApp:AuthModalController
+     */
+    function cancel() {
+      $modalInstance.dismiss('cancel');
+    }
   }
-
-  function signUp() {
-    vm.shouldShowSignUpModal = true;
-
-    AuthService.signUp(vm.username, vm.firstName, vm.lastName, vm.password, vm.email)
-      .then(function (data) {
-        $modalInstance.close();
-      }, function (error) {
-        // TODO: Show UI error on Sign Up.
-        console.log("AuthService.signUp failed");
-      });
-  }
-
-  function cancel() {
-    $modalInstance.dismiss('cancel');
-  }
-}
-
+})();
