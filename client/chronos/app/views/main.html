@@ -1,10 +1,8 @@
 <banner></banner>
 <div class="pane">
   <div class="left-pane" ng-controller="LeftPanelController">
-    <div class="search-area">
-      <button type="button" ng-click="searchEvents()" class="btn btn-primary">Search Events</button>
-    </div>
     <div class="media" style="margin:10px">
+      <button type="button" ng-click="searchEvents()" class="btn btn-primary">Search Events</button>
       <eventcard ng-repeat="event in events" 
         title="event.title"
         event-id="event.id" 

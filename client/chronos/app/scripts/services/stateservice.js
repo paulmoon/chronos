@@ -27,7 +27,7 @@ function StateService() {
 	return "Goodbye";
 	};
 
-	  this.setPlaceID = function(place_id) {
+	this.setPlaceID = function(place_id) {
 		place_id_holder = place_id;
 	};
 

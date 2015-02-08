@@ -10,11 +10,11 @@
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group">
           <input type="text" class="form-control" ng-model="vm.chosenPlace" details="chosenPlaceDetails"
-                 callback="changeLocation" placeholder="Enter a location" googleautocomplete/>
+                 callback="vm.changeLocation" placeholder="Enter a location" googleautocomplete/>
         </div>
       </form>
       <div class="nav navbar-nav navbar-right">
-        <button type="button" class="btn btn-default navbar-btn" ng-click="vm.openSignupModal()">
+        <button type="button" class="btn btn-default navbar-btn" ng-hide="vm.isLoggedIn()" ng-click="vm.openSignupModal()">
           Sign Up
         </button>
         <button type="button" class="btn btn-primary navbar-btn" ng-hide="vm.isLoggedIn()" ng-click="vm.openLoginModal()">

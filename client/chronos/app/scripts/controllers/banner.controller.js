@@ -54,7 +54,6 @@
     }
 
     function changeLocation(chosenPlaceDetails) {
-      // Save location to StateService. Change filters, etc
       StateService.setPlaceID(chosenPlaceDetails.place_id);
     }
   }
