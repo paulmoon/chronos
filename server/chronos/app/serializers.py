@@ -58,7 +58,7 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Tag
-        fields = ('id', 'name')
+        fields = ('name',)
 
     def validate_name(self, value):
         """

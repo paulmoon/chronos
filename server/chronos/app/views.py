@@ -146,9 +146,10 @@ class EventView(generics.ListAPIView):
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class TagView(generics.CreateAPIView):
+class TagView(generics.ListCreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = app.serializers.TagSerializer
+    queryset = app.models.Tag.objects.all()
 
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()

@@ -28,7 +28,7 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 # --------- Tag System! ---- #
 ##############################
 class Tag(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, primary_key=True)
 
 ##############################
 # --------- Events! -------- #
