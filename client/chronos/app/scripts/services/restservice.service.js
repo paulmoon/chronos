@@ -63,7 +63,7 @@
       // Add more filter options as appropriate
       if(placeID){
         // Can leave the & at beginning even if its the first param
-        url = url + '&placeID=' + placeID
+        url = url + '&placeID=' + placeID;
       }
 
       return $http.get(url);
