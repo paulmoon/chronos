@@ -71,8 +71,7 @@ class TagSerializer(serializers.ModelSerializer):
 ##############################
 # --------- Events! -------- #
 ##############################
-class EventSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True, read_only=True)
+class EventWriteSerializer(serializers.ModelSerializer):
     class Meta: 
         model = app.models.Events
         fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
@@ -88,7 +87,6 @@ class EventSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Tags is a many to may field in the Event model, and therefore cannot be created through the objects.create method
-        print(validated_data)
         tags = validated_data["tags"]
         validated_data.pop("tags", None)
         event = app.models.Events.objects.create(**validated_data)
@@ -109,3 +107,14 @@ class EventSerializer(serializers.ModelSerializer):
         instance.place_id = validated_data.get('place_id', instance.place_id)
         instance.save()
         return instance
+
+class EventReadSerializer(serializers.ModelSerializer):
+    """
+    This is because it's almost impossible to pull all the information about a tag only when doing a read operation
+    using one central event serializer. It became necessary to split them up into a write serializer, and a read serializer to
+    allow the writing of events using only the foreign keys of tags.
+    """
+    tags = TagSerializer(many=True)
+    class Meta: 
+        model = app.models.Events
+        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")

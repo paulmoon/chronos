@@ -87,7 +87,7 @@ class ListUsers(generics.ListAPIView):
 ##############################
 class EventOnlyView(generics.ListAPIView):
     permission_classes = (AllowAny,)
-    serializer_class = app.serializers.EventSerializer
+    serializer_class = app.serializers.EventReadSerializer
 
     def get(self, request, *args, **kwargs):
         if "eventID" not in kwargs.keys():
@@ -110,17 +110,16 @@ class EventView(generics.ListAPIView):
     """
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    serializer_class = app.serializers.EventSerializer
+    serializer_class = app.serializers.EventReadSerializer
 
     def get_queryset(self):
         queryset = Events.objects.all()
-        commentid = self.request.QUERY_PARAMS.get('commentID')
-        placeid = self.request.QUERY_PARAMS.get('placeID')
-        creatorid = self.request.QUERY_PARAMS.get('creatorID')
-        fromDate = self.request.QUERY_PARAMS.get('fromDate')
-        toDate = self.request.QUERY_PARAMS.get('toDate')
-        tags = self.request.QUERY_PARAMS.get('tags')
-        print(tags);
+        commentid = self.request.query_params.get('commentID')
+        placeid = self.request.query_params.get('placeID')
+        creatorid = self.request.query_params.get('creatorID')
+        fromDate = self.request.query_params.get('fromDate')
+        toDate = self.request.query_params.get('toDate')
+        tags = self.request.query_params.get('tags')
         filterargs = {}
         if commentid is not None:
             filterargs['comment_id'] = int(commentid)
@@ -140,10 +139,10 @@ class EventView(generics.ListAPIView):
         return queryset
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer_class()(data=request.data)
+        serializer = app.serializers.EventWriteSerializer(data=request.data)
         if serializer.is_valid():
             event = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -158,4 +157,3 @@ list_users = ListUsers.as_view()
 list_specific_event = EventOnlyView.as_view()
 list_create_event = EventView.as_view()
 create_tag = TagView.as_view()
-
