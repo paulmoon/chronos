@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import AbstractUser
-from datetime import datetime
+from datetime import date
 
 ##############################
 # --------- Users! --------- #
@@ -37,14 +37,13 @@ class Events(models.Model):
 	title = models.CharField(max_length=100)
 	description = models.TextField()
 	creator = models.IntegerField()
-	create_date = models.DateField()
-	edit_date = models.DateField()
-	comment_id = models.IntegerField()
+	create_date = models.DateField(_("Date"), auto_now_add=True)
+	edit_date = models.DateField(_("Date"), default=date.today)
 	start_date = models.DateField()
 	end_date = models.DateField()
-	vote = models.IntegerField()
-	report = models.IntegerField()
+	vote = models.IntegerField(default=0)
+	report = models.IntegerField(default=0)
 	is_deleted = models.BooleanField(default=False)
-	picture = models.CharField(max_length=255)
-	place_id = models.CharField(max_length=100)
+	picture = models.CharField(max_length=255, null=True)
+	place_id = models.CharField(max_length=100, null=True)
 	tags = models.ManyToManyField(Tag, null=True)
