@@ -60,18 +60,14 @@ class TagSerializer(serializers.ModelSerializer):
         model = app.models.Tag
         fields = ('name',)
 
-    def validate_name(self, value):
-        """
-        Ensure that the name is unique as well
-        """
-        if app.models.Tag.objects.filter(name=value).exists():
-            raise serializers.ValidationError("name")
-        return value
+class TagEventSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
 
 ##############################
 # --------- Events! -------- #
 ##############################
 class EventWriteSerializer(serializers.ModelSerializer):
+    tags = TagEventSerializer(many=True)
     class Meta: 
         model = app.models.Events
         fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
@@ -90,8 +86,23 @@ class EventWriteSerializer(serializers.ModelSerializer):
         tags = validated_data["tags"]
         validated_data.pop("tags", None)
         event = app.models.Events.objects.create(**validated_data)
-        for tag in tags:
-            event.tags.add(tag)
+
+        # Create tags that don't yet exist
+        tag_names = [tag["name"] for tag in tags]
+        existing_tag_queryset = app.models.Tag.objects.filter(name__in=tag_names)        
+
+        # Get all the tags that don't exist in the DB yet, and create them in bulk
+        missing_tag_names = filter(lambda x: x not in [e.name for e in existing_tag_queryset], tag_names)
+
+        #TODO: Attempt to get the bulk create working. It is inefficient to create in a list like this. The problem is that 
+        # bulk_create will not call save, meaning all newly created Tags will not be in the database quite yet
+        #missing_tags = app.models.Tag.objects.bulk_create([app.models.Tag(name=missing_tag_name) for missing_tag_name in missing_tag_names])
+        missing_tags = [app.models.Tag.objects.create(name=missing_tag_name) for missing_tag_name in missing_tag_names]
+
+        # Add the tag object to our newly created event
+        tag_objs = [e for e in existing_tag_queryset] + missing_tags
+        for tag_obj in tag_objs:
+            event.tags.add(tag_obj)
         return event
 
     def update(self, instance, validated_data):
