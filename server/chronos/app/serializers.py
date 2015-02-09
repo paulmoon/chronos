@@ -100,7 +100,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
         missing_tags = [app.models.Tag.objects.create(name=missing_tag_name) for missing_tag_name in missing_tag_names]
 
         # Add the tag object to our newly created event
-        tag_objs = [e for e in existing_tag_queryset] + missing_tags
+        tag_objs = list(existing_tag_queryset) + missing_tags
         for tag_obj in tag_objs:
             event.tags.add(tag_obj)
         return event
