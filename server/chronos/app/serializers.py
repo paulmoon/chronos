@@ -87,7 +87,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
         validated_data.pop("tags", None)
         event = app.models.Events.objects.create(**validated_data)
 
-        # Create tags that don't yet exist
+        # Get all the tags that already exist
         tag_names = [tag["name"] for tag in tags]
         existing_tag_queryset = app.models.Tag.objects.filter(name__in=tag_names)        
 
