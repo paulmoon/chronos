@@ -34,7 +34,7 @@ class Tag(models.Model):
 # --------- Events! -------- #
 ##############################
 class Events(models.Model):
-	title = models.CharField(max_length=100)
+	name = models.CharField(max_length=100)
 	description = models.TextField()
 	creator = models.ForeignKey(ChronosUser)
 	create_date = models.DateField(auto_now_add=True, blank=True)
