@@ -114,15 +114,12 @@ class EventView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Events.objects.all()
-        commentid = self.request.query_params.get('commentID')
         placeid = self.request.query_params.get('placeID')
         creatorid = self.request.query_params.get('creatorID')
         fromDate = self.request.query_params.get('fromDate')
         toDate = self.request.query_params.get('toDate')
         tags = self.request.query_params.get('tags')
         filterargs = {}
-        if commentid is not None:
-            filterargs['comment_id'] = int(commentid)
         if placeid is not None:
             filterargs['place_id'] = placeid
         if creatorid is not None:
@@ -139,6 +136,11 @@ class EventView(generics.ListAPIView):
         return queryset
 
     def post(self, request, *args, **kwargs):
+        """
+        Create new Event, backend should handle a lot if not all of the authentication/validation with frontend having
+        another layer of security
+        """
+        request.data['creator'] = request.user.id
         serializer = app.serializers.EventWriteSerializer(data=request.data)
         if serializer.is_valid():
             event = serializer.save()

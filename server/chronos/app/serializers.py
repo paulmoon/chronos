@@ -70,7 +70,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
     tags = TagEventSerializer(many=True)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)          
@@ -109,7 +109,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
         """
         Only update the fields that are necessary
         """
-        instance.title = validated_data.get('title', instance.title)
+        instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)
         instance.picture = validated_data.get('picture', instance.picture)
         instance.start_date = validated_data.get('start_date', instance.start_date)
@@ -128,4 +128,4 @@ class EventReadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
