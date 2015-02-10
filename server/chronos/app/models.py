@@ -36,9 +36,9 @@ class Tag(models.Model):
 class Events(models.Model):
 	title = models.CharField(max_length=100)
 	description = models.TextField()
-	creator = models.IntegerField()
-	create_date = models.DateField(_("Date"), auto_now_add=True)
-	edit_date = models.DateField(_("Date"), default=date.today)
+	creator = models.ForeignKey(ChronosUser)
+	create_date = models.DateField(auto_now_add=True, blank=True)
+	edit_date = models.DateField(default=date.today, blank=True)
 	start_date = models.DateField()
 	end_date = models.DateField()
 	vote = models.IntegerField(default=0)
@@ -46,4 +46,4 @@ class Events(models.Model):
 	is_deleted = models.BooleanField(default=False)
 	picture = models.CharField(max_length=255, null=True)
 	place_id = models.CharField(max_length=100, null=True)
-	tags = models.ManyToManyField(Tag, null=True)
+	tags = models.ManyToManyField(Tag, blank=True)

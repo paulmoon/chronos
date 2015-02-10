@@ -70,7 +70,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
     tags = TagEventSerializer(many=True)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'title', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)          
