@@ -68,5 +68,49 @@
 
       return $http.get(_url);
     };
+
+    /**
+     * @description API call for creating a event
+     * @methodOf chronosApp:RestService
+     * @param eventName
+     * @param description
+     * @param picture
+     * @param startDate
+     * @param endDate
+     * @param tags
+     * @returns {HttpPromise}
+     */
+    this.createEvent = function(eventName, description, picture, startDate, endDate, tags) {
+      return $http.post(setting.serverUrl + '/events/', {
+        name: eventName,
+        description: description,
+        picture: picture,
+        start_date: startDate,
+        end_date: endDate,
+        tags: tags
+      });
+    }
+
+    /**
+     * @description API call for updating a event
+     * @methodOf chronosApp:RestService
+     * @param eventName
+     * @param description
+     * @param picture
+     * @param startDate
+     * @param endDate
+     * @param tags
+     * @returns {HttpPromise}
+     */
+    this.updateEvent = function (eventName, description, picture, startDate, endDate, tags) {
+      return $http.put(setting.serverUrl + '/events/', {
+        name: eventName,
+        description: description,
+        picture: picture,
+        start_date: startDate,
+        end_date: endDate,
+        tags: tags
+      });
+    }
   }
 })();

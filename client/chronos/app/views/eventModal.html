@@ -1,0 +1,45 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title">
+            <strong>Create Event</strong>
+        </h3>
+    </div>
+
+    <div class="modal-body">
+        <!--Create Event Modal-->
+        <form role="form">
+            <div class="form-group">
+                <label for="name">Title</label>
+                <input type="text" class="form-control" id="event-name" placeholder="Title"
+                       ng-model="eventModal.eventName">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" placeholder="Description"
+                       ng-model="eventModal.description">
+            </div>
+            <div class="form-group">
+                <label for="picture">Picture</label>
+                <input type="text" class="form-control" id="picture" placeholder="Picture"
+                       ng-model="eventModal.picture">
+            </div>
+            <div class="form-group">
+                <label for="start-date">State Date</label>
+                <input type="text" class="form-control" id="start-date" placeholder="Start Date"
+                       ng-model="eventModal.startDate">
+            </div>
+            <div class="form-group">
+                <label for="end-date">End Date</label>
+                <input type="text" class="form-control" id="end-date" placeholder="End Date"
+                       ng-model="eventModal.endDate">
+            </div>
+            <div class="form-group">
+                <label for="tags">Tags</label>
+                <input type="text" class="form-control" id="tags" placeholder="Tags"
+                       ng-model="eventModal.tags">
+            </div>
+            <button type="submit" class="btn btn-primary" ng-click="eventModal.createEvent()">Create</button>
+            <button type="submit" class="right btn btn-default" ng-click="eventModal.cancel()">Cancel</button>
+        </form>
+    </div>
+</div>
