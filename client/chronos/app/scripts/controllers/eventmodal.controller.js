@@ -40,8 +40,7 @@
       RestService.createEvent(vm.eventName, vm.description, vm.picture, vm.startDate, vm.endDate, vm.tags)
         .then(function (data) {
           $modalInstance.close();
-        }, function (response) {
-          console.log(response);
+        }, function () {
           console.log("RestService.createEvent failed");
         });
     }
