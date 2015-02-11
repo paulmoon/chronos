@@ -70,7 +70,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
     tags = TagEventSerializer(many=True)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "place_id", "tags")
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)          
@@ -128,4 +128,15 @@ class EventReadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "upvote", "downvote", "report", "is_deleted", "place_id", "tags")
+
+class VoteEventSerializer(serializers.ModelSerializer):
+    direction = serializers.IntegerField(min_value=-1, max_value=1)
+    class Meta:
+        model = app.models.Events
+        fields = ('id', 'direction',)
+
+    def update(self, instance, validated_data):
+        print (instance)
+        print (validated_data)
+        return instance

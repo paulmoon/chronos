@@ -146,6 +146,19 @@ class EventView(generics.ListAPIView):
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class VoteEvent(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_clases = (IsAuthenticated,)
+    serializer_class = app.serializers.VoteEventSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = get_serializer_class()(data=request.data)
+        if is_valid():
+            event = serializer.save()
+            return Response (data=serializer.data, status=stats.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class TagView(generics.ListCreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = app.serializers.TagSerializer
@@ -158,3 +171,4 @@ list_users = ListUsers.as_view()
 list_specific_event = EventOnlyView.as_view()
 list_create_event = EventView.as_view()
 create_tag = TagView.as_view()
+vote_event = VoteEvent.as_view()
