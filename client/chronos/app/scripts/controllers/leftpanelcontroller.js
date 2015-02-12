@@ -16,7 +16,7 @@
 
   LeftPanelController.$inject = ['RestService', '$modal'];
 
-  function LeftPanelController(RestService, $modal) {
+   function LeftPanelController(RestService, $modal) {
       var vm = this;
 
       vm.title = 'LeftPanelController';
@@ -35,7 +35,7 @@
             });
       }
 
-    function openCreateEventModal() {
+   function openCreateEventModal() {
       var modalInstance = $modal.open({
         templateUrl: 'views/eventModal.html',
         controller: 'EventModalController as eventModal',
