@@ -97,12 +97,11 @@
      * @param token
      */
     this.setHeaderToken = function (token) {
-      if (token)
-      {
+      if (token) {
         token = "Token " + token.token;
       }
-      $http.defaults.headers.common.Authorization = token;
 
+      $http.defaults.headers.common.Authorization = token;
     };
   }
 })();

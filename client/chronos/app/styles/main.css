@@ -3,14 +3,6 @@
   background-color: white;
 }
 
-.pane {
-  top: 60px;
-  bottom: 10px;
-  position: absolute;
-  background-color: blue;
-  width: 100%;
-}
-
 .left-pane {
   float: left;
   width: 50%;

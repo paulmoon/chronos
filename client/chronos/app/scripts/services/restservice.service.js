@@ -89,7 +89,7 @@
         end_date: endDate,
         tags: tags
       });
-    }
+    };
 
     /**
      * @description API call for updating a event

@@ -17,10 +17,7 @@
         report="event.report"/>
     </div>
   </div>
-  <div class="right-pane">
-    Right Pane
+  <div class="right-pane" ng-controller="RightPanelController as vm">
+    <div ui-calendar ng-model="eventSources"></div>
   </div>
-</div>
-<div class="footer">
-  Footer
 </div>
