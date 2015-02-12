@@ -27,6 +27,8 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = app.models.ChronosUser.objects.create(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
         token, created = Token.objects.get_or_create(user=user)
         return token, created, user
 
