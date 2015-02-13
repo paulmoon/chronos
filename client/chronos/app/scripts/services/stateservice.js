@@ -17,7 +17,10 @@ angular
 
 /* @ngInject */
 function StateService() {
-	var _placeIDHolder;
+	var _placeIDSearch;
+	var _dateRangeStartSearch;
+	var _dateRangeEndSearch;
+	var _tagsSearch;
 
 	this.hello = function () {
 	return "Hello";
@@ -27,11 +30,47 @@ function StateService() {
 	return "Goodbye";
 	};
 
+	/**
+     * Place ID Search set/get
+     */
 	this.setPlaceID = function(_placeID) {
-		_placeIDHolder = _placeID;
+		_placeIDSearch = _placeID;
 	};
 
 	this.getPlaceID = function() {
-		return _placeIDHolder;
+		return _placeIDSearch;
+	};
+
+	/**
+     * Date Range Start Search set/get
+     */
+	this.setDateRangeStart = function(_dateRangeStart) {
+		_dateRangeStartSearch = _dateRangeStart;
+	};
+
+	this.getDateRangeStart = function() {
+		return _dateRangeStartSearch;
+	};
+
+	/**
+     * Date Range End Search set/get
+     */
+	this.setDateRangeEnd = function(_dateRangeEnd) {
+		_dateRangeEndSearch = _dateRangeEnd;
+	};
+
+	this.getDateRangeEnd = function() {
+		return _dateRangeEndSearch;
+	};
+
+	/**
+     * Tags Search set/get
+     */
+	this.setTags = function(_tags) {
+		_tagsSearch = _tags;
+	};
+
+	this.getTags = function() {
+		return _tagsSearch;
 	};
 }

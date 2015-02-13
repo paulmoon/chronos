@@ -52,6 +52,18 @@
     };
 
     /**
+     * @description API call for updating a user location.
+     * @methodOf chronosApp:RestService
+     * @param {string} location ID
+     * @returns {HttpPromise}
+     */
+    this.updateUserLocation = function (placeID) {
+      return $http.post(setting.serverUrl + '/users/update/', {
+        place_id: placeID
+      });
+    };
+
+    /**
      * @description API call for getting a filtered list of events
      * @methodOf chronosApp:RestService
      * @returns {HttpPromise}
@@ -59,12 +71,26 @@
     this.getFilteredEvents = function() {
       var _url = setting.serverUrl + '/events/?';
       var _placeID = StateService.getPlaceID();
+      var _dateRangeStart = StateService.getDateRangeStart();
+      var _dateRangeEnd = StateService.getDateRangeEnd();
+      var _tags = StateService.getTags();
 
-      // Add more filter options as appropriate
       if(_placeID){
-        // Can leave the & at beginning even if its the first param
         _url = _url + '&placeID=' + _placeID;
       }
+
+      if(_dateRangeStart){
+        if(_dateRangeEnd){
+          _url = _url + '&fromDate=' + _dateRangeStart + '&toDate=' + _dateRangeEnd;
+        }else{
+          _url = _url + '&fromDate=' + _dateRangeStart;
+        }
+      }
+
+      //if(_tags){
+        // Can leave the & at beginning even if its the first param
+        //_url = _url + '&placeID=' + _placeID;
+      //}
 
       return $http.get(_url);
     };

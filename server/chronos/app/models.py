@@ -18,6 +18,7 @@ class ChronosUser(AbstractUser):
     )
 
     userType = models.CharField(max_length=3, choices=USER_TYPES, default=REGULAR)
+    place_id = models.CharField(max_length=100, null=True)
 
 @receiver(post_save, sender=ChronosUser)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

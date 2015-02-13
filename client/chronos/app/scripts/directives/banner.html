@@ -7,12 +7,17 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" ng-model="vm.chosenPlace" details="chosenPlaceDetails"
-                 callback="vm.changeLocation" placeholder="Enter a location" googleautocomplete/>
-        </div>
-      </form>
+      <div div class="navbar-form navbar-left">
+        <form role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" ng-model="vm.chosenPlace" details="chosenPlaceDetails"
+                 callback="vm.changeLocation" placeholder="Enter A Location" googleautocomplete/>
+          </div>
+          <button type="button" class="btn btn-link btn-xs" ng-show="vm.isLoggedIn()" ng-click="vm.saveUserLocation()">
+            Save User Location
+          </button>
+        </form>
+      </div>
       <div class="nav navbar-nav navbar-right">
         <button type="button" class="btn btn-default navbar-btn" ng-hide="vm.isLoggedIn()" ng-click="vm.openSignupModal()">
           Sign Up

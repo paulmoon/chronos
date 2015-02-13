@@ -24,3 +24,10 @@
   background-color: #ffffff;
   height: 100%;
 }
+
+.search-area {
+  float: top;
+  width: 100%;
+  background-color: #f8f8f8;
+  height: 100px;
+}
