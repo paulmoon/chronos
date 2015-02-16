@@ -118,9 +118,9 @@ class EventView(generics.ListAPIView):
         creatorid = self.request.query_params.get('creatorID')
         fromDate = self.request.query_params.get('fromDate')
         toDate = self.request.query_params.get('toDate')
-        tags = self.request.query_params.get('tags')
-
+        tags = self.request.query_params.getlist('tags')
         filterargs = {}
+        print(tags)
         if placeid is not None:
             filterargs['place_id'] = placeid
         if creatorid is not None:
@@ -131,8 +131,8 @@ class EventView(generics.ListAPIView):
                 filterargs['start_date__range'] = [fromDate, toDate]
             else:
                 filterargs['start_date'] = fromDate
-        if tags is not None:
-            filterargs['tags__in'] = tags
+        if tags:
+            filterargs['tags__name__in'] = tags
         queryset = queryset.filter(**filterargs)
         return queryset
 

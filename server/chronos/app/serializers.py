@@ -27,6 +27,8 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = app.models.ChronosUser.objects.create(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
         token, created = Token.objects.get_or_create(user=user)
         return token, created, user
 
@@ -131,7 +133,4 @@ class EventReadSerializer(serializers.ModelSerializer):
         model = app.models.Events
         fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
 
-
-
-
-
+        
