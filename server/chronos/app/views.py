@@ -76,8 +76,6 @@ class UpdateUser(generics.UpdateAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# class UpdateUserPassword(generics.)
-
 class ListUsers(generics.ListAPIView):
     """
     Lists all the users in the system
