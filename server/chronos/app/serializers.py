@@ -32,22 +32,12 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
         token, created = Token.objects.get_or_create(user=user)
         return token, created, user
 
-
-    def update(self, instance, validated_data):
-        instance.password = validated_data.get('password', instance.password)
-        instance.email = validated_data.get('email', instance.email)
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.place_id = validated_data.get('place_id', instance.place_id)
-        instance.save()
-        return instance
-
     def validate_username(self, value):
         """
         Ensure that the username doesn't already exist
         """
         if app.models.ChronosUser.objects.filter(username=value).exists():
-            raise serializers.ValidationError("username")
+            raise serializers.ValidationError("Username already exists")
         return value
 
     def validate_email(self, value):
@@ -55,8 +45,31 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
         Ensure that the email doesn't already exist
         """
         if app.models.ChronosUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError("email");
+            raise serializers.ValidationError("Email already exists");
         return value
+
+class ChronosUserUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(max_length=128, required=False)
+    class Meta:
+        model = app.models.ChronosUser
+        fields = ('id', 'password', 'email', 'first_name', 'last_name')
+
+    def validate_email(self, value):
+        """
+        Ensure that the email doesn't already exist
+        """
+        if app.models.ChronosUser.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already exists");
+        return value
+
+    def update(self, instance, validated_data):
+        if validated_data.get('password'):
+            instance.set_password('password')
+        instance.email = validated_data.get('email', instance.email)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.save()
+        return instance
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
