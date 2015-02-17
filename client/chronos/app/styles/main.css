@@ -27,7 +27,38 @@
 
 .search-area {
   float: top;
-  width: 100%;
-  background-color: #f8f8f8;
-  height: 100px;
+  width: 95%;
+  background-color: #ffffff;
+  margin-left: 10px;
+}
+
+.search-area-input-margin {
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.events-area {
+  width: 95%;
+  min-height: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  margin-left: 10px;
+}
+
+.add-opacity {
+  opacity: 0.6;
+}
+
+.apply-filters {
+   float:right;
+   margin-right:10px;
+}
+
+.full-height {
+  height: 100%;
+  min-height: 100%;
+}
+
+.panel-height {
+  height: 75%;
 }

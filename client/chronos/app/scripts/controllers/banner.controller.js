@@ -27,6 +27,7 @@
     vm.openLoginModal = openLoginModal;
     vm.changeLocation = changeLocation;
     vm.saveUserLocation = saveUserLocation;
+    vm.openCreateEventModal = openCreateEventModal;
 
     ////////////////////////////
 
@@ -54,8 +55,25 @@
       });
     }
 
+    function openCreateEventModal() {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/eventModal.html',
+        controller: 'EventModalController as eventModal',
+        size: 'lg',
+        resolve: {
+          shouldShowEventCreateModal: function () {
+            return true;
+          }
+        }
+      });
+    }
+
     function changeLocation(chosenPlaceDetails) {
       StateService.setPlaceID(chosenPlaceDetails.place_id);
+
+      if(vm.isLoggedIn()){
+        vm.saveUserLocation();
+      }
     }
 
     function saveUserLocation() {

@@ -13,9 +13,6 @@
             <input type="text" class="form-control" ng-model="vm.chosenPlace" details="chosenPlaceDetails"
                  callback="vm.changeLocation" placeholder="Enter A Location" googleautocomplete/>
           </div>
-          <button type="button" class="btn btn-link btn-xs" ng-show="vm.isLoggedIn()" ng-click="vm.saveUserLocation()">
-            Save User Location
-          </button>
         </form>
       </div>
       <div class="nav navbar-nav navbar-right">
@@ -28,6 +25,7 @@
         <button type="button" class="btn btn-primary navbar-btn" ng-show="vm.isLoggedIn()" ng-click="vm.logout()">
           Logout
         </button>
+        <button type="button" ng-click="vm.openCreateEventModal()" class="btn btn-success navbar-btn" ng-show="vm.isLoggedIn()">Create Event</button>
         </ul>
       </div>
     </div>

@@ -23,7 +23,6 @@
       vm.events = [];
 
       vm.searchEvents = searchEvents;
-      vm.openCreateEventModal = openCreateEventModal;
 
       function searchEvents() {
          RestService.getFilteredEvents().
@@ -34,18 +33,5 @@
                // Fill in at later date
             });
       }
-
-   function openCreateEventModal() {
-      var modalInstance = $modal.open({
-        templateUrl: 'views/eventModal.html',
-        controller: 'EventModalController as eventModal',
-        size: 'lg',
-        resolve: {
-          shouldShowEventCreateModal: function () {
-            return true;
-          }
-        }
-      });
-    }
    }
 })();

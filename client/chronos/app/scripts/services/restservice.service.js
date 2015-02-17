@@ -59,6 +59,7 @@
      */
     this.updateUserLocation = function (placeID) {
       return $http.post(setting.serverUrl + '/users/update/', {
+        id: request.user.id,
         place_id: placeID
       });
     };

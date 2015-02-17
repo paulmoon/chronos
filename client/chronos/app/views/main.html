@@ -1,22 +1,56 @@
 <banner></banner>
 <div class="pane">
   <div class="left-pane" ng-controller="LeftPanelController as vm">
-    <div class="media" style="margin:10px">
-      <div class="search-area">
-        <button type="button" ng-click="vm.openCreateEventModal()" class="btn btn-success btn-xs" style="float:right">Create Event</button>
-        <button type="button" ng-click="vm.searchEvents()" class="btn btn-info btn-xs">Search Events</button>
+    <div class="media full-height">
+      <div class="panel-group panel-height">
+        <div class="search-area panel panel-info" style="border:0;background:#FAFAFA">
+          <div class="panel-body">
+            <div class="input-group input-group-sm search-area-input-margin">
+              <span class="input-group-addon" id="wordsAddon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+              <input type="text" class="form-control" placeholder="Key Words" aria-describedby="wordsAddon">
+            </div>
+            <div class="input-group input-group-sm search-area-input-margin" style="width:49.25%;float:left">
+              <span class="input-group-addon" id="startAddon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
+              <input type="text" class="form-control" placeholder="Date (2016-01-01)" aria-describedby="startAddon" style:"margin-right:5px">
+            </div>
+            <div class="input-group input-group-sm search-area-input-margin" style="width:49.25%">
+              <span class="input-group-addon" id="endAddon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
+              <input type="text" class="form-control" placeholder="Date Range (2016-01-01)" aria-describedby="endAddon">
+            </div>
+            <div class="input-group input-group-sm search-area-input-margin">
+              <span class="input-group-addon" id="tagAddon"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span></span>
+              <input type="text" class="form-control" placeholder="Tags (tag1 tag2 tag3)" aria-describedby="tagAddon">
+            </div>
+            <span class="label label-info">
+              TAGNAME
+              <button type="button" ng-click="vm.searchEvents()" class="btn btn-link btn-xs">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </button>
+            </span>
+            <button type="button" ng-click="vm.searchEvents()" class="btn btn-primary btn-xs apply-filters">Apply Filters</button>
+          </div>
+        </div>
+        <div class="events-area panel panel-primary" style="border:0;background:#FAFAFA">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a>Events</a>
+            </h4>
+          </div>
+          <div class="panel-body" style="overflow-y: scroll;">
+            <eventcard ng-repeat="event in vm.events"
+              title="event.name"
+              event-id="event.id"
+              description="event.description"
+              creator="event.creator"
+              creation-date="event.create_date"
+              start-date="event.start_date"
+              end-date="event.end_date"
+              location="event.place_id"
+              vote="event.vote"
+              report="event.report"/>
+          </div>
+        </div>
       </div>
-      <eventcard ng-repeat="event in vm.events"
-        title="event.name"
-        event-id="event.id"
-        description="event.description"
-        creator="event.creator"
-        creation-date="event.create_date"
-        start-date="event.start_date"
-        end-date="event.end_date"
-        location="event.place_id"
-        vote="event.vote"
-        report="event.report"/>
     </div>
   </div>
   <div class="right-pane">
