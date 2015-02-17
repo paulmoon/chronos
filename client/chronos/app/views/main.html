@@ -31,12 +31,7 @@
           </div>
         </div>
         <div class="events-area panel panel-primary" style="border:0;background:#FAFAFA">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a>Events</a>
-            </h4>
-          </div>
-          <div class="panel-body" style="overflow-y: scroll;">
+          <div class="panel-body">
             <eventcard ng-repeat="event in vm.events"
               title="event.name"
               event-id="event.id"

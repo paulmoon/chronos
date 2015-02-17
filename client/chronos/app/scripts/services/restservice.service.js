@@ -58,8 +58,7 @@
      * @returns {HttpPromise}
      */
     this.updateUserLocation = function (placeID) {
-      return $http.post(setting.serverUrl + '/users/update/', {
-        id: request.user.id,
+      return $http.put(setting.serverUrl + '/users/update/', {
         place_id: placeID
       });
     };
