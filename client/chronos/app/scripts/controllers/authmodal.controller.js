@@ -24,12 +24,23 @@
     vm.lastName = '';
     vm.email = '';
     vm.shouldShowSignUpModal = shouldShowSignUpModal;
+    vm.formSubmitted = false;
 
     vm.login = login;
     vm.signUp = signUp;
     vm.cancel = cancel;
 
+    activate();
+
     ////////////////
+
+    /**
+     * @description Initialization code.
+     * @methodOf chronosApp:AuthModalController
+     */
+    function activate() {
+      vm.formSubmitted = false;
+    }
 
     /**
      * @description Calls {@link chronosApp:AuthService#login}|AuthService.login} to login.
@@ -56,6 +67,7 @@
 
       AuthService.signUp(vm.username, vm.firstName, vm.lastName, vm.password, vm.email)
         .then(function (data) {
+          vm.login(vm.username, vm.firstName);
           $modalInstance.close();
         }, function (error) {
           // TODO: Show UI error on Sign Up.
