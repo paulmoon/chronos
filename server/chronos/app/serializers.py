@@ -157,35 +157,30 @@ class VoteEventSerializer(serializers.Serializer):
         vote = app.models.Vote.objects.create(**validated_data)
         vote.save()
         event = validated_data['event']
-        dir = validated_data['direction']
-        if dir == 1:
+        direction = validated_data['direction']
+        if direction == 1:
             event.upvote += 1
-        elif dir == -1:
+        elif direction == -1:
             event.downvote += 1
         event.save()
         return vote
 
     def update(self, instance, validated_data):
-        dir = validated_data.get('direction')
+        direction = validated_data.get('direction')
         event = validated_data['event']
-        print(instance.direction)
-        if dir is not None and instance.direction != dir:
+        if direction is not None and instance.direction != direction:
             if instance.direction == 1:
                 event.upvote -= 1
-                print("Remove upvote")
             elif instance.direction == -1:
                 event.downvote -= 1
-                print("Remove downvote")
 
-            if dir == 1:
+            if direction == 1:
                 event.upvote += 1
-                print("Upvote")
-            elif dir == -1:
+            elif direction == -1:
                 event.downvote += 1
-                print("Downvote")
 
             event.save()
-            instance.direction = dir
+            instance.direction = direction
             instance.save()
 
         return instance

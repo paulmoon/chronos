@@ -71,7 +71,6 @@ class UpdateUser(generics.UpdateAPIView):
             # This has to be done because serializer.data is a strange django object, not a dictionary. There's no other way to remove the password field
             return_data = serializer.data
             return_data.pop('password')
-            print(return_data)
             return Response(data=return_data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -124,7 +123,6 @@ class EventView(generics.ListAPIView):
         toDate = self.request.query_params.get('toDate')
         tags = self.request.query_params.getlist('tags')
         filterargs = {}
-        print(tags)
         if placeid is not None:
             filterargs['place_id'] = placeid
         if creatorid is not None:
