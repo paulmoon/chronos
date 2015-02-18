@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * @author Justin Guze
@@ -8,24 +7,29 @@
  * # eventCard
  */
 
-angular.module('chronosApp')
-  .directive('eventcard', function (StateService, RestService) {
-    return {
+(function() {
+angular
+  .module('chronosApp')
+  .directive('eventcard', eventcard);
+
+  function eventcard() {
+    var directive = {
       templateUrl: 'scripts/directives/eventcard.html',
       restrict: 'E',
       scope: {
-      	title:'=',
-      	description:'=',
-      	eventId:'=',
-      	creator:'=',
-      	creationDate:'=',
-      	location:'=',
-      	startDate:'=',
-      	endDate:'=',
-      	vote:'=',
+        title:'=',
+        description:'=',
+        eventId:'=',
+        creator:'=',
+        creationDate:'=',
+        location:'=',
+        startDate:'=',
+        endDate:'=',
+        vote:'=',
         report:'=',
       },
-      controller: ['$scope', function($scope) {
-      }],
     };
-  });
+    return directive
+  }
+
+})();
