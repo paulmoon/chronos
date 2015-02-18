@@ -142,9 +142,14 @@ class EventReadSerializer(serializers.ModelSerializer):
     allow the writing of events using only the foreign keys of tags.
     """
     tags = TagSerializer(many=True)
+    vote = serializers.SerializerMethodField()
+    
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "upvote", "downvote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+
+    def get_vote(self, obj):
+        return obj.upvote - obj.downvote
 
 class VoteEventSerializer(serializers.Serializer):
     direction = serializers.IntegerField(min_value=-1, max_value=1)

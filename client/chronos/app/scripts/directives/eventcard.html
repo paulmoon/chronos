@@ -1,6 +1,11 @@
-<div class="media-left" style="margin:5px;">
+<div class="media-left event-card">
+	<div class="arrow-group">
+			<div class="glyphicon glyphicon-arrow-up" ng-style="vm.upArrowStyle" ng-click="vm.upvoteEvent()"/>
+			<div class="vote-value">{{vm.vote}}</div>
+			<div class="glyphicon glyphicon-arrow-down" ng-style="vm.downArrowStyle" ng-click="vm.downvoteEvent()"/>
+	</div>
 	<div class="media-body">
-		<h4 class="media-heading"><a href="#/event/{{eventId}}" style="text-decoration:none; color:black;">{{ title }}</a></h4>
-		{{ location }} and a whole lot more of that here
+		<h4 class="media-heading"><a href="#/event/{{vm.eventId}}" style="text-decoration:none; color:black;">{{ vm.title }}</a></h4>
+		{{ vm.location }} and a whole lot more of that here
 	</div>
 </li>
