@@ -71,7 +71,6 @@ class UpdateUser(generics.UpdateAPIView):
             # This has to be done because serializer.data is a strange django object, not a dictionary. There's no other way to remove the password field
             return_data = serializer.data
             return_data.pop('password')
-            print(return_data)
             return Response(data=return_data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -124,7 +123,6 @@ class EventView(generics.ListAPIView):
         toDate = self.request.query_params.get('toDate')
         tags = self.request.query_params.getlist('tags')
         filterargs = {}
-        print(tags)
         if placeid is not None:
             filterargs['place_id'] = placeid
         if creatorid is not None:
@@ -153,6 +151,32 @@ class EventView(generics.ListAPIView):
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class VoteEvent(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_clases = (IsAuthenticated,)
+    serializer_class = app.serializers.VoteEventSerializer
+
+    def post(self, request, *args, **kwargs):
+        if not request.data.get("event_id"):
+            return Response(data={"event_id": "This field is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            event = Events.objects.get(pk=int(request.data.get("event_id")))
+        except Events.DoesNotExist:
+            return Response(data={"event_id": "This event id does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            vote = app.models.Vote.objects.get(event=event, user=request.user)
+            serializer = self.get_serializer_class()(vote, data=request.data)
+        except app.models.Vote.DoesNotExist:
+            serializer = self.get_serializer_class()(data=request.data)
+
+        if serializer.is_valid():            
+            vote = serializer.save(event=event, user=request.user)
+            return Response (data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class TagView(generics.ListCreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = app.serializers.TagSerializer
@@ -165,3 +189,4 @@ list_users = ListUsers.as_view()
 list_specific_event = EventOnlyView.as_view()
 list_create_event = EventView.as_view()
 create_tag = TagView.as_view()
+vote_event = VoteEvent.as_view()
