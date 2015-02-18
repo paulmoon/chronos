@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * @ngdoc function
@@ -9,34 +8,50 @@
  */
 
 (function(){
+'use strict';
+
 angular
 	.module('chronosApp')
   	.controller('EventCardController', EventCardController);
 
-  	EventCardController.inject = ['$scope', 'RestService', 'AuthService'];
+  	EventCardController.$inject = ['$scope', 'RestService', 'AuthService'];
 
   	function EventCardController($scope, RestService, AuthService) {
   		var vm = this;
 
-  		function vote(direction) {
+  		vm.voteEvent = voteEvent;
+  		vm.upvoteEvent = upvoteEvent;
+  		vm.downvoteEvent = downvoteEvent;
+
+  		function voteEvent(direction, callback) {
+  			console.log(RestService)
   			RestService.voteEvent(vm.eventId, direction)
   			.then( function(data) {
-  				// Do vote stuff
-  				console.log(data);
+  				callback();
   			} , 
   			function(response) {
   				console.log("Failed");
-  				console.log(response);
   			})
   		}
 
   		function upvoteEvent() {
-  			vm.vote(1);
+  			vm.voteEvent(1, function() {
+  				vm.upArrowStyle = {
+  				color: 'orange'
+  				};
+  				vm.downArrowStyle = {};
+  			});
   		}
 
   		function downvoteEvent() {
-  			vm.vote(-1);
+  			vm.voteEvent(-1, function() {
+  				vm.downArrowStyle = {
+  				color: 'orange'
+  				};
+  				vm.upArrowStyle = {};
+  			});
   		}
+
   	};
 
 })();

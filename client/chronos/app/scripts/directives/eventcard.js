@@ -8,6 +8,8 @@
  */
 
 (function() {
+'use strict';
+
 angular
   .module('chronosApp')
   .directive('eventcard', eventcard);
@@ -28,8 +30,11 @@ angular
         vote:'=',
         report:'=',
       },
+      controller: 'EventCardController',
+        controllerAs: 'vm',
+        bindToController: true
     };
     return directive
-  }
+  };
 
 })();

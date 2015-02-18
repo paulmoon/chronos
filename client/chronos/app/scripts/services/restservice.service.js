@@ -112,5 +112,13 @@
         tags: tags
       });
     }
+
+    this.voteEvent = function(eventId, direction) {
+        return $http.post(setting.serverUrl + '/events/vote/', {
+            event_id: eventId,
+            direction: direction
+        });
+    }
+    
   }
 })();
