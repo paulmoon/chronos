@@ -159,10 +159,23 @@ class VoteEvent(generics.GenericAPIView):
     serializer_class = app.serializers.VoteEventSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = get_serializer_class()(data=request.data)
-        if is_valid():
-            event = serializer.save()
-            return Response (data=serializer.data, status=stats.HTTP_201_CREATED)
+        if not request.data.get("event_id"):
+            return Response(data={"event_id": "This field is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            event = Events.objects.get(pk=int(request.data.get("event_id")))
+        except Events.DoesNotExist:
+            return Response(data={"event_id": "This event id does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            vote = app.models.Vote.objects.get(event=event, user=request.user)
+            serializer = self.get_serializer_class()(vote, data=request.data)
+        except app.models.Vote.DoesNotExist:
+            serializer = self.get_serializer_class()(data=request.data)
+
+        if serializer.is_valid():            
+            vote = serializer.save(event=event, user=request.user)
+            return Response (data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
