@@ -7,6 +7,12 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+class Vote(models.Model):
+	event = models.ForeignKey('Events')
+	direction = models.IntegerField(validators=[MinValueValidator(-1), MaxValueValidator(1)])
+	user = models.ForeignKey('ChronosUser')
 
 ##############################
 # --------- Users! --------- #
@@ -18,6 +24,9 @@ class ChronosUser(AbstractUser):
     )
 
     userType = models.CharField(max_length=3, choices=USER_TYPES, default=REGULAR)
+
+    # We have a reference to the events that were upvoted and downvoted, so that we know
+    # which one to show to the user.
 
 @receiver(post_save, sender=ChronosUser)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -41,7 +50,8 @@ class Events(models.Model):
 	edit_date = models.DateTimeField(auto_now=True, blank=True)
 	start_date = models.DateTimeField()
 	end_date = models.DateTimeField()
-	vote = models.IntegerField(default=0)
+	upvote = models.IntegerField(default=0)
+	downvote = models.IntegerField(default=0)
 	report = models.IntegerField(default=0)
 	is_deleted = models.BooleanField(default=False)
 	picture = models.CharField(max_length=255, null=True)

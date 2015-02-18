@@ -86,7 +86,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
     tags = TagEventSerializer(many=True)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "tags")
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)          
@@ -144,4 +144,43 @@ class EventReadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "upvote", "downvote", "report", "is_deleted", "place_id", "tags")
+
+class VoteEventSerializer(serializers.Serializer):
+    direction = serializers.IntegerField(min_value=-1, max_value=1)
+
+    class Meta:
+        model = app.models.Vote
+        fields = ('direction', 'event', 'user')
+
+    def create(self, validated_data):
+        vote = app.models.Vote.objects.create(**validated_data)
+        vote.save()
+        event = validated_data['event']
+        direction = validated_data['direction']
+        if direction == 1:
+            event.upvote += 1
+        elif direction == -1:
+            event.downvote += 1
+        event.save()
+        return vote
+
+    def update(self, instance, validated_data):
+        direction = validated_data.get('direction')
+        event = validated_data['event']
+        if direction is not None and instance.direction != direction:
+            if instance.direction == 1:
+                event.upvote -= 1
+            elif instance.direction == -1:
+                event.downvote -= 1
+
+            if direction == 1:
+                event.upvote += 1
+            elif direction == -1:
+                event.downvote += 1
+
+            event.save()
+            instance.direction = direction
+            instance.save()
+
+        return instance
