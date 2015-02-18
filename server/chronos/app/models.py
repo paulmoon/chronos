@@ -12,6 +12,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Vote(models.Model):
 	event = models.ForeignKey('Events')
 	direction = models.IntegerField(validators=[MinValueValidator(-1), MaxValueValidator(1)])
+	user = models.ForeignKey('ChronosUser')
 
 ##############################
 # --------- Users! --------- #
@@ -26,7 +27,6 @@ class ChronosUser(AbstractUser):
 
     # We have a reference to the events that were upvoted and downvoted, so that we know
     # which one to show to the user.
-    votes = models.ManyToManyField(Vote, null=True)
 
 @receiver(post_save, sender=ChronosUser)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -43,18 +43,17 @@ class Tag(models.Model):
 # --------- Events! -------- #
 ##############################
 class Events(models.Model):
-	title = models.CharField(max_length=100)
+	name = models.CharField(max_length=100)
 	description = models.TextField()
-	creator = models.IntegerField()
-	create_date = models.DateField()
-	edit_date = models.DateField()
-	comment_id = models.IntegerField()
-	start_date = models.DateField()
-	end_date = models.DateField()
-	upvote = models.IntegerField()
-	downvote = models.IntegerField()
-	report = models.IntegerField()
+	creator = models.ForeignKey(ChronosUser)
+	create_date = models.DateTimeField(auto_now_add=True, blank=True)
+	edit_date = models.DateTimeField(auto_now=True, blank=True)
+	start_date = models.DateTimeField()
+	end_date = models.DateTimeField()
+	upvote = models.IntegerField(default=0)
+	downvote = models.IntegerField(default=0)
+	report = models.IntegerField(default=0)
 	is_deleted = models.BooleanField(default=False)
-	picture = models.CharField(max_length=255)
-	place_id = models.CharField(max_length=100)
-	tags = models.ManyToManyField(Tag, null=True)
+	picture = models.CharField(max_length=255, null=True)
+	place_id = models.CharField(max_length=100, null=True)
+	tags = models.ManyToManyField(Tag, blank=True)

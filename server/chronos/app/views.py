@@ -54,21 +54,25 @@ class DeleteUser(generics.CreateAPIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class UpdateUser(generics.CreateAPIView):
+class UpdateUser(generics.UpdateAPIView):
     """
     Updates the specified user in the system
     """
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    serializer_class = app.serializers.ChronosUserRegisterSerializer
+    serializer_class = app.serializers.ChronosUserUpdateSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = app.serializers.ChronosUserRegisterSerializer(data=request.data)
-        if self.request.user.id != int(request.DATA['id']):
-           return Response({"error":"Cannot modify another user."}, status=status.HTTP_403_FORBIDDEN)
+    def put(self, request, *args, **kwargs):
+        user = app.models.ChronosUser.objects.get(pk=self.request.user.id)
+        serializer = self.get_serializer_class()(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+            # This has to be done because serializer.data is a strange django object, not a dictionary. There's no other way to remove the password field
+            return_data = serializer.data
+            return_data.pop('password')
+            print(return_data)
+            return Response(data=return_data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -114,15 +118,13 @@ class EventView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Events.objects.all()
-        commentid = self.request.query_params.get('commentID')
         placeid = self.request.query_params.get('placeID')
         creatorid = self.request.query_params.get('creatorID')
         fromDate = self.request.query_params.get('fromDate')
         toDate = self.request.query_params.get('toDate')
-        tags = self.request.query_params.get('tags')
+        tags = self.request.query_params.getlist('tags')
         filterargs = {}
-        if commentid is not None:
-            filterargs['comment_id'] = int(commentid)
+        print(tags)
         if placeid is not None:
             filterargs['place_id'] = placeid
         if creatorid is not None:
@@ -134,11 +136,16 @@ class EventView(generics.ListAPIView):
             else:
                 filterargs['start_date'] = fromDate
         if tags:
-            filterargs['tags__in'] = tags
+            filterargs['tags__name__in'] = tags
         queryset = queryset.filter(**filterargs)
         return queryset
 
     def post(self, request, *args, **kwargs):
+        """
+        Create new Event, backend should handle a lot if not all of the authentication/validation with frontend having
+        another layer of security
+        """
+        request.data['creator'] = request.user.id
         serializer = app.serializers.EventWriteSerializer(data=request.data)
         if serializer.is_valid():
             event = serializer.save()

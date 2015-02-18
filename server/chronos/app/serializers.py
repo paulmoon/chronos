@@ -27,24 +27,17 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = app.models.ChronosUser.objects.create(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
         token, created = Token.objects.get_or_create(user=user)
         return token, created, user
-
-
-    def update(self, instance, validated_data):
-        instance.password = validated_data.get('password', instance.password)
-        instance.email = validated_data.get('email', instance.email)
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.save()
-        return instance
 
     def validate_username(self, value):
         """
         Ensure that the username doesn't already exist
         """
         if app.models.ChronosUser.objects.filter(username=value).exists():
-            raise serializers.ValidationError("username")
+            raise serializers.ValidationError("Username already exists")
         return value
 
     def validate_email(self, value):
@@ -52,8 +45,31 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
         Ensure that the email doesn't already exist
         """
         if app.models.ChronosUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError("email");
+            raise serializers.ValidationError("Email already exists");
         return value
+
+class ChronosUserUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(max_length=128, required=False)
+    class Meta:
+        model = app.models.ChronosUser
+        fields = ('id', 'password', 'email', 'first_name', 'last_name')
+
+    def validate_email(self, value):
+        """
+        Ensure that the email doesn't already exist
+        """
+        if app.models.ChronosUser.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already exists");
+        return value
+
+    def update(self, instance, validated_data):
+        if validated_data.get('password'):
+            instance.set_password('password')
+        instance.email = validated_data.get('email', instance.email)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.save()
+        return instance
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -70,7 +86,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
     tags = TagEventSerializer(many=True)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "tags")
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)          
@@ -109,7 +125,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
         """
         Only update the fields that are necessary
         """
-        instance.title = validated_data.get('title', instance.title)
+        instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)
         instance.picture = validated_data.get('picture', instance.picture)
         instance.start_date = validated_data.get('start_date', instance.start_date)
@@ -128,15 +144,48 @@ class EventReadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'title', 'description', 'creator', 'picture', "comment_id", "create_date", "edit_date" , "start_date", "end_date", "upvote", "downvote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "upvote", "downvote", "report", "is_deleted", "place_id", "tags")
 
-class VoteEventSerializer(serializers.ModelSerializer):
+class VoteEventSerializer(serializers.Serializer):
     direction = serializers.IntegerField(min_value=-1, max_value=1)
+
     class Meta:
-        model = app.models.Events
-        fields = ('id', 'direction',)
+        model = app.models.Vote
+        fields = ('direction', 'event', 'user')
+
+    def create(self, validated_data):
+        vote = app.models.Vote.objects.create(**validated_data)
+        vote.save()
+        event = validated_data['event']
+        dir = validated_data['direction']
+        if dir == 1:
+            event.upvote += 1
+        elif dir == -1:
+            event.downvote += 1
+        event.save()
+        return vote
 
     def update(self, instance, validated_data):
-        print (instance)
-        print (validated_data)
+        dir = validated_data.get('direction')
+        event = validated_data['event']
+        print(instance.direction)
+        if dir is not None and instance.direction != dir:
+            if instance.direction == 1:
+                event.upvote -= 1
+                print("Remove upvote")
+            elif instance.direction == -1:
+                event.downvote -= 1
+                print("Remove downvote")
+
+            if dir == 1:
+                event.upvote += 1
+                print("Upvote")
+            elif dir == -1:
+                event.downvote += 1
+                print("Downvote")
+
+            event.save()
+            instance.direction = dir
+            instance.save()
+
         return instance
