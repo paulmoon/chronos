@@ -72,6 +72,9 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+##############################
+# --------- Other! --------- #
+##############################
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Tag

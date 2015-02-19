@@ -74,6 +74,7 @@
       var _dateRangeStart = StateService.getDateRangeStart();
       var _dateRangeEnd = StateService.getDateRangeEnd();
       var _tags = StateService.getTags();
+      var _keywords = StateService.getKeywords();
 
       if(_placeID){
         _url = _url + '&placeID=' + _placeID;
@@ -87,10 +88,17 @@
         }
       }
 
-      //if(_tags){
-        // Can leave the & at beginning even if its the first param
-        //_url = _url + '&placeID=' + _placeID;
-      //}
+      if(_tags){
+        _tags.forEach(function(tag) {
+          _url = _url + '&tag=' + tag;
+        });
+      }
+
+      if(_keywords){
+        _keywords.forEach(function(word) {
+          _url = _url + '&keyword=' + word;
+        });
+      }
 
       return $http.get(_url);
     };

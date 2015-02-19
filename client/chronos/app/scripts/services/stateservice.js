@@ -21,6 +21,7 @@ function StateService() {
 	var _dateRangeStartSearch;
 	var _dateRangeEndSearch;
 	var _tagsSearch;
+	var _keywordsSearch;
 
 	this.hello = function () {
 	return "Hello";
@@ -72,5 +73,16 @@ function StateService() {
 
 	this.getTags = function() {
 		return _tagsSearch;
+	};
+
+	/**
+     * Keywords Search set/get
+     */
+	this.setKeywords = function(_keywords) {
+		_keywordsSearch = _keywords;
+	};
+
+	this.getKeywords = function() {
+		return _keywordsSearch;
 	};
 }
