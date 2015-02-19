@@ -11,50 +11,100 @@
 
   <div class="modal-body">
     <!--Sign Up Modal-->
-    <form ng-if="authModal.shouldShowSignUpModal" role="form">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" id="username" placeholder="username"
-               ng-model="authModal.username">
+    <form ng-if="authModal.shouldShowSignUpModal" role="form" id="signUpForm" name="signUpForm" novalidate>
+      <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
+        <label class="control-label" for="username">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+               ng-model="authModal.username" ng-pattern="/^[\w\+\-@\.]{1,30}$/" required
+               ng-model-options="{ debounce: 100 }" unique-username>
+
+        <span ng-messages="signUpForm.username.$error" ng-messages-multiple ng-if="authModal.formSubmitted">
+          <span ng-message="required" class="help-block">Username is required.</span>
+          <span ng-message="unique" class="help-block">Username is already taken.</span>
+          <span ng-message="pattern" class="help-block">Username should consist of: Alphanumeric characters, +, -, @, or . (Max 30 chars).</span>
+        </span>
       </div>
-      <div class="form-group">
-        <label for="first-name">First Name</label>
-        <input type="text" class="form-control" id="first-name" placeholder="First Name"
-               ng-model="authModal.firstName">
+
+      <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
+        <label for="firstname">First Name</label>
+        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name"
+               ng-model="authModal.firstName" ng-maxlength="30">
+
+        <span ng-messages="signUpForm.firstname.$error" ng-if="authModal.formSubmitted">
+          <span ng-message="maxlength" class="help-block">Your name cannot exceed 30 characters.</span>
+        </span>
       </div>
-      <div class="form-group">
-        <label for="last-name">Last Name</label>
-        <input type="text" class="form-control" id="last-name" placeholder="Last Name"
-               ng-model="authModal.lastName">
+
+      <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
+        <label for="lastname">Last Name</label>
+        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name"
+               ng-model="authModal.lastName" ng-maxlength="30">
+
+        <span ng-messages="signUpForm.lastname.$error" ng-if="authModal.formSubmitted">
+          <span ng-message="maxlength" class="help-block">Your name cannot exceed 30 characters.</span>
+        </span>
       </div>
-      <div class="form-group">
-        <label for="input-email">Email</label>
-        <input type="email" class="form-control" id="input-email" placeholder="email"
-               ng-model="authModal.email">
+
+      <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
+        <label class="control-label" for="email">Email</label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="Email" ng-model="authModal.email"
+               required ng-model-options="{ debounce: 100 }" unique-email>
+
+        <span ng-messages="signUpForm.email.$error" ng-if="authModal.formSubmitted">
+          <span ng-message="required" class="help-block">Email is required.</span>
+          <span ng-message="unique" class="help-block">Email is already taken.</span>
+          <span ng-message="email" class="help-block">Please enter a valid email.</span>
+        </span>
       </div>
-      <div class="form-group">
-        <label for="input-password">Password</label>
-        <input type="password" class="form-control" id="input-password" placeholder="password"
-               ng-model="authModal.password">
+
+      <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
+        <label class="control-label" for="password">Password</label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password"
+               ng-model="authModal.password" required>
+
+        <span ng-messages="signUpForm.password.$error" ng-if="authModal.formSubmitted">
+          <span ng-message="required" class="help-block">Password is required.</span>
+        </span>
       </div>
-      <button type="submit" class="btn btn-primary" ng-click="authModal.signUp()">Sign Up</button>
+
+      <button type="submit" class="btn btn-primary"
+              ng-click="authModal.formSubmitted = true; signUpForm.$valid && authModal.signUp()">Sign Up
+      </button>
       <button type="submit" class="right btn btn-default" ng-click="authModal.cancel()">Cancel</button>
     </form>
 
     <!--Login Modal-->
-    <form ng-if="!authModal.shouldShowSignUpModal" role="form">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" id="username" placeholder="username"
-               ng-model="authModal.username">
+    <form ng-if="!authModal.shouldShowSignUpModal" role="form" id="loginForm" name="loginForm" novalidate>
+      <div class="alert alert-danger" role="alert" ng-show="authModal.loginFailed">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Invalid username or password.
       </div>
-      <div class="form-group">
-        <label for="input-password">Password <a ng-href="/sessions/forgot_password">(forgot password)</a></label>
-        <input type="password" class="form-control" id="input-password" placeholder="password"
-               ng-model="authModal.password">
+
+      <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
+        <label class="control-label" for="username">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+               ng-model="authModal.username" required>
+
+        <span ng-messages="loginForm.username.$error" ng-if="authModal.formSubmitted">
+          <span ng-message="required" class="help-block">Username is required.</span>
+        </span>
       </div>
-      <button type="submit" class="btn btn-primary" ng-click="authModal.login()">Login</button>
-      <button type="submit" class="right btn btn-default" ng-click="authModal.cancel()">Cancel</button>
+
+      <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
+        <label class="control-label" for="password">Password <a ng-href="/sessions/forgot_password">(Forgot password)</a></label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+               ng-model="authModal.password" required>
+
+        <span ng-messages="loginForm.password.$error" ng-if="authModal.formSubmitted">
+          <span ng-message="required" class="help-block">Password is required.</span>
+        </span>
+      </div>
+
+      <button type="submit" class="btn btn-primary"
+              ng-click="authModal.formSubmitted = true; loginForm.$valid && authModal.login()">Login
+      </button>
+      <button type="submit" class="btn btn-default" ng-click="authModal.cancel()">Cancel</button>
     </form>
   </div>
 </div>
