@@ -24,3 +24,24 @@
   background-color: #ffffff;
   height: 100%;
 }
+
+.arrow-group {
+  float: left;
+  width: 10px;
+  margin-right: 10px;
+}
+
+.vote-value {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-weight: bold;
+  text-align: center;
+
+}
+
+.event-card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
