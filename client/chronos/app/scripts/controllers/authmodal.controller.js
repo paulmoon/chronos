@@ -41,7 +41,7 @@
       vm.shouldShowSignUpModal = false;
 
       AuthService.login(vm.username, vm.password)
-        .then(function (data) {
+        .then(function (response) {
           $modalInstance.close();
         }, function (response) {
           vm.loginFailed = true;
@@ -57,10 +57,10 @@
 
       AuthService.signUp(vm.username, vm.firstName, vm.lastName, vm.password, vm.email)
         .then(function (data) {
-          vm.login(vm.username, vm.firstName);
+          AuthService.login(vm.username, vm.password);
           $modalInstance.close();
         }, function (error) {
-          console.log("AuthService.signUp failed. This shouldn't happen if our validation logic is correct!");
+          console.log("AuthService.signUp failed. This shouldn't happen if our validation logic is correct! " + error);
         });
     }
 
