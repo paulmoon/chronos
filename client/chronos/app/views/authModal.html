@@ -21,7 +21,7 @@
         <span ng-messages="signUpForm.username.$error" ng-messages-multiple ng-if="authModal.formSubmitted">
           <span ng-message="required" class="help-block">Username is required.</span>
           <span ng-message="unique" class="help-block">Username is already taken.</span>
-          <span ng-message="pattern" class="help-block">Username consists of alphanumeric characters, +, -, @, and . (Max 30 chars).</span>
+          <span ng-message="pattern" class="help-block">Username should consist of: Alphanumeric characters, +, -, @, or . (Max 30 chars).</span>
         </span>
       </div>
 
@@ -46,19 +46,19 @@
       </div>
 
       <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
-        <label for="email">Email</label>
+        <label class="control-label" for="email">Email</label>
         <input type="email" class="form-control" name="email" id="email" placeholder="Email" ng-model="authModal.email"
                required ng-model-options="{ debounce: 100 }" unique-email>
 
         <span ng-messages="signUpForm.email.$error" ng-if="authModal.formSubmitted">
-          <span ng-message="required" class="help-block">E-mail is required.</span>
-          <span ng-message="unique" class="help-block">E-mail is already taken.</span>
+          <span ng-message="required" class="help-block">Email is required.</span>
+          <span ng-message="unique" class="help-block">Email is already taken.</span>
           <span ng-message="email" class="help-block">Please enter a valid email.</span>
         </span>
       </div>
 
       <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
-        <label for="password">Password</label>
+        <label class="control-label" for="password">Password</label>
         <input type="password" class="form-control" name="password" id="password" placeholder="Password"
                ng-model="authModal.password" required>
 
@@ -78,11 +78,11 @@
       <div class="alert alert-danger" role="alert" ng-show="authModal.loginFailed">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">Error:</span>
-        Invalid username or password
+        Invalid username or password.
       </div>
 
       <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
-        <label for="username">Username</label>
+        <label class="control-label" for="username">Username</label>
         <input type="text" class="form-control" id="username" name="username" placeholder="Username"
                ng-model="authModal.username" required>
 
@@ -92,7 +92,7 @@
       </div>
 
       <div class="form-group" show-input-errors form-submitted="authModal.formSubmitted">
-        <label for="password">Password <a ng-href="/sessions/forgot_password">(Forgot password)</a></label>
+        <label class="control-label" for="password">Password <a ng-href="/sessions/forgot_password">(Forgot password)</a></label>
         <input type="password" class="form-control" id="password" name="password" placeholder="Password"
                ng-model="authModal.password" required>
 
