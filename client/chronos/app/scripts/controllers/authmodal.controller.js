@@ -25,22 +25,13 @@
     vm.email = '';
     vm.shouldShowSignUpModal = shouldShowSignUpModal;
     vm.formSubmitted = false;
+    vm.loginFailed = false;
 
     vm.login = login;
     vm.signUp = signUp;
     vm.cancel = cancel;
 
-    activate();
-
     ////////////////
-
-    /**
-     * @description Initialization code.
-     * @methodOf chronosApp:AuthModalController
-     */
-    function activate() {
-      vm.formSubmitted = false;
-    }
 
     /**
      * @description Calls {@link chronosApp:AuthService#login}|AuthService.login} to login.
@@ -53,8 +44,7 @@
         .then(function (data) {
           $modalInstance.close();
         }, function (response) {
-          // TODO: Show UI error on wrong password.
-          console.log("AuthService.login failed");
+          vm.loginFailed = true;
         });
     }
 
@@ -70,8 +60,7 @@
           vm.login(vm.username, vm.firstName);
           $modalInstance.close();
         }, function (error) {
-          // TODO: Show UI error on Sign Up.
-          console.log("AuthService.signUp failed");
+          console.log("AuthService.signUp failed. This shouldn't happen if our validation logic is correct!");
         });
     }
 
