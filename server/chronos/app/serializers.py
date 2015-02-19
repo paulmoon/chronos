@@ -83,7 +83,7 @@ class TagEventSerializer(serializers.Serializer):
 # --------- Events! -------- #
 ##############################
 class EventWriteSerializer(serializers.ModelSerializer):
-    tags = TagEventSerializer(many=True)
+    tags = TagEventSerializer(many=True, required=False)
     class Meta: 
         model = app.models.Events
         fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "tags")
