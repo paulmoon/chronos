@@ -12,6 +12,7 @@ angular
   .module('chronosApp', [
     'ngAnimate',
     'ngCookies',
+    'ngMessages',
     'ngResource',
     'ngRoute',
     'ngSanitize',
