@@ -88,21 +88,28 @@ class ListUsers(generics.ListAPIView):
 ##############################
 # --------- Events! -------- #
 ##############################
-class EventOnlyView(generics.ListAPIView):
-    permission_classes = (AllowAny,)
-    serializer_class = app.serializers.EventReadSerializer
+class EventOnlyView(generics.RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+    authentication_classes = (TokenAuthentication, )
+    queryset = app.models.Events.objects.all()
 
-    def get(self, request, *args, **kwargs):
-        if "eventID" not in kwargs.keys():
-            return Response("Must provide an eventID in request", status.HTTP_400_BAD_REQUEST)
-        eventID = int(kwargs["eventID"])
-        try:
-            event = Events.objects.get(pk=eventID)
-            serializer = self.get_serializer_class()(event)
-            return Response(serializer.data, status.HTTP_200_OK)
-        except ObjectDoesNotExist:
-            return Response("Event with id {} does not exist.".format(
-                eventID), status.HTTP_404_NOT_FOUND)
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return app.serializers.EventReadSerializer
+        else:
+            return app.serializers.EventWriteSerializer
+
+    # def get(self, request, *args, **kwargs):
+    #     if "eventID" not in kwargs.keys():
+    #         return Response("Must provide an eventID in request", status.HTTP_400_BAD_REQUEST)
+    #     eventID = int(kwargs["eventID"])
+    #     try:
+    #         event = Events.objects.get(pk=eventID)
+    #         serializer = self.get_serializer_class()(event)
+    #         return Response(serializer.data, status.HTTP_200_OK)
+    #     except ObjectDoesNotExist:
+    #         return Response("Event with id {} does not exist.".format(
+    #             eventID), status.HTTP_404_NOT_FOUND)
 
 class EventView(generics.ListAPIView):
     """
