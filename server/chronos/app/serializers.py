@@ -7,14 +7,14 @@ import app
 # --------- Users! --------- #
 ##############################
 class ChronosUserSerializer(serializers.ModelSerializer):
-    class Meta:
+        class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType')
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id')
 
 class ChronosUserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'userType')
+        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'userType', 'place_id')
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
@@ -52,7 +52,7 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=128, required=False)
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'password', 'email', 'first_name', 'last_name')
+        fields = ('id', 'password', 'email', 'first_name', 'last_name', 'place_id')
 
     def validate_email(self, value):
         """
@@ -68,6 +68,7 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
         instance.email = validated_data.get('email', instance.email)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.place_id = validated_data.get('place_id', instance.place_id)
         instance.save()
         return instance
 
