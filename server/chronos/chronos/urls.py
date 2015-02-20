@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^users/delete/$', 'app.views.delete_user'),
 	url(r'^users/update/$', 'app.views.update_user'),
     url(r'^users/profile/$', 'app.views.get_my_user'),
-    url(r'^users/profile/(?P<pk>[0-9]+)/?$', 'app.views.get_user'),
+    url(r'^users/profile/(?P<username>.+)/$', 'app.views.get_user'),
 	url(r'^users/$', 'app.views.list_users'),
 
     url(r'^events/(?P<eventID>[0-9]+)/?$', 'app.views.list_specific_event'),

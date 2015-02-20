@@ -104,6 +104,7 @@ class GetUserInformation(generics.RetrieveAPIView):
     permission_classes = (AllowAny,)
     serializer_class = ChronosPublicUserSerializer
     queryset = ChronosUser.objects.all()
+    lookup_field = "username"
 
 ##############################
 # --------- Events! -------- #
