@@ -13,29 +13,19 @@ angular
   .module('chronosApp')
   .service('StateService', StateService);
 
-//StateService.$inject = [''];
-
-/* @ngInject */
 function StateService() {
 	var _placeIDSearch;
 	var _dateRangeStartSearch;
 	var _dateRangeEndSearch;
 	var _tagsSearch;
 	var _keywordsSearch;
-
-	this.hello = function () {
-	return "Hello";
-	};
-
-	this.goodbye = function () {
-	return "Goodbye";
-	};
+	var _placeNameHolder;
 
 	/**
      * Place ID Search set/get
      */
-	this.setPlaceID = function(_placeID) {
-		_placeIDSearch = _placeID;
+	this.setPlaceID = function(placeID) {
+		_placeIDSearch = placeID;
 	};
 
 	this.getPlaceID = function() {
@@ -45,8 +35,8 @@ function StateService() {
 	/**
      * Date Range Start Search set/get
      */
-	this.setDateRangeStart = function(_dateRangeStart) {
-		_dateRangeStartSearch = _dateRangeStart;
+	this.setDateRangeStart = function(dateRangeStart) {
+		_dateRangeStartSearch = dateRangeStart;
 	};
 
 	this.getDateRangeStart = function() {
@@ -56,8 +46,8 @@ function StateService() {
 	/**
      * Date Range End Search set/get
      */
-	this.setDateRangeEnd = function(_dateRangeEnd) {
-		_dateRangeEndSearch = _dateRangeEnd;
+	this.setDateRangeEnd = function(dateRangeEnd) {
+		_dateRangeEndSearch = dateRangeEnd;
 	};
 
 	this.getDateRangeEnd = function() {
@@ -67,8 +57,8 @@ function StateService() {
 	/**
      * Tags Search set/get
      */
-	this.setTags = function(_tags) {
-		_tagsSearch = _tags;
+	this.setTags = function(tags) {
+		_tagsSearch = tags;
 	};
 
 	this.getTags = function() {
@@ -78,8 +68,8 @@ function StateService() {
 	/**
      * Keywords Search set/get
      */
-	this.setKeywords = function(_keywords) {
-		_keywordsSearch = _keywords;
+	this.setKeywords = function(keywords) {
+		_keywordsSearch = keywords;
 	};
 
 	this.getKeywords = function() {

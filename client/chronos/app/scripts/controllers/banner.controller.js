@@ -19,7 +19,7 @@
     var vm = this;
 
     vm.title = 'BannerController';
-    vm.chosenPlace = null;
+    vm.chosenPlace = '';
     vm.isLoggedIn = AuthService.isLoggedIn;
     vm.logout = AuthService.logout;
 
@@ -28,6 +28,7 @@
     vm.changeLocation = changeLocation;
     vm.saveUserLocation = saveUserLocation;
     vm.openCreateEventModal = openCreateEventModal;
+
 
     ////////////////////////////
 

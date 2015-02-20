@@ -15,9 +15,9 @@
     .module('chronosApp')
     .service('AuthService', AuthService);
 
-  AuthService.$inject = ['$http', '$q', 'RestService'];
+  AuthService.$inject = ['$http', '$q', 'RestService', 'StateService'];
 
-  function AuthService($http, $q, RestService) {
+  function AuthService($http, $q, RestService, StateService) {
     var self = this;
     self._isLoggedIn = false;
     self.username = '';

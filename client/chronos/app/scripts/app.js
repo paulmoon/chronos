@@ -12,11 +12,14 @@ angular
   .module('chronosApp', [
     'ngAnimate',
     'ngCookies',
+    'ngMessages',
     'ngResource',
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'mgcrea.ngStrap.datepicker',
+    'mgcrea.ngStrap.timepicker'
   ])
   .config(function ($routeProvider) {
     $routeProvider

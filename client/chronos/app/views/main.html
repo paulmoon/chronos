@@ -10,11 +10,11 @@
                 <span class="input-group-addon" id="wordsAddon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                 <input type="text" class="form-control" placeholder="Keywords" aria-describedby="wordsAddon" ng-model="vm.searchKeywords">
               </div>
-              <div class="input-group input-group-sm search-area-input-margin" style="width:49.25%;float:left">
+              <div class="input-group input-group-sm search-area-input-margin date-search-left">
                 <span class="input-group-addon" id="startAddon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
-                <input type="text" class="form-control" placeholder="Date (2016-01-01)" aria-describedby="startAddon" style:"margin-right:5px" ng-model="vm.searchDateStart">
+                <input type="text" class="form-control search-area-input-margin" placeholder="Date (2016-01-01)" aria-describedby="startAddon" ng-model="vm.searchDateStart">
               </div>
-              <div class="input-group input-group-sm search-area-input-margin" style="width:49.25%">
+              <div class="input-group input-group-sm search-area-input-margin date-search-right">
                 <span class="input-group-addon" id="endAddon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
                 <input type="text" class="form-control" placeholder="Date Range (2016-01-02)" aria-describedby="endAddon" ng-model="vm.searchDateEnd">
               </div>
@@ -23,8 +23,8 @@
                 <input type="text" class="form-control" placeholder="Tags" aria-describedby="tagAddon" ng-model="vm.addedTags">
                 <span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="vm.addTags()" style="outline:none">Add</button></span>
               </div>
-              <div style="float:left">
-                <span class="label label-info" ng-repeat="tag in vm.displayTags" style="margin-left:3px;">
+              <div class="float-left" ng-repeat="tag in vm.displayTags">
+                <span class="label label-info margin-left-three">
                   {{ tag }}
                   <button type="button" ng-click="vm.removeTag(tag)" class="btn btn-link btn-xs" style="outline:none">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>

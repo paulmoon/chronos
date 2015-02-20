@@ -36,12 +36,15 @@
       vm.removeTag = removeTag;
       vm.addTags = addTags;
 
+      ////////////////////////////////
+
       function searchEvents() {
          vm.tagError = '';
          vm.searchError = '';
          var tempKeywords = '';
 
          if(vm.searchKeywords){
+            // removes punctuation, removes extra spaces, and creates an array of the words
             tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ").split(" ");
             if(tempKeywords.length > 10){
                vm.searchError = "Max of 10 keywords.";
@@ -53,6 +56,7 @@
          }
 
          if(vm.searchDateStart){
+            // regex for the date format 2015-01-01
             if(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(vm.searchDateStart)){
                StateService.setDateRangeStart(vm.searchDateStart);
             }else {
@@ -130,7 +134,7 @@
 
                if(noMatch){
                   if(tag.length > 10){
-                     displayTag = tag.substring(0,19) + "...";
+                     displayTag = tag.substring(0,9) + "...";
                   }
 
                   vm.displayTags.forEach(function(tag3) {

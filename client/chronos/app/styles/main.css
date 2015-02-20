@@ -67,6 +67,23 @@
   height: 75%;
 }
 
+.date-search-left {
+  width:49.25%;
+  float:left;"
+}
+
+.date-search-right {
+  width:49.25%;
+}
+
+.float-left {
+  float:left;
+}
+
+.margin-left-three {
+  margin-left:3px;
+}
+
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 7px;
@@ -75,4 +92,25 @@
     border-radius: 4px;
     background-color: rgba(0,0,0,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+.arrow-group {
+  float: left;
+  width: 10px;
+  margin-right: 10px;
+}
+
+.vote-value {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-weight: bold;
+  text-align: center;
+
+}
+
+.event-card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 8px;
+  margin-right: 8px;
 }
