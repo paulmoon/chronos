@@ -99,18 +99,6 @@ class EventOnlyView(generics.RetrieveUpdateAPIView):
         else:
             return app.serializers.EventWriteSerializer
 
-    # def get(self, request, *args, **kwargs):
-    #     if "eventID" not in kwargs.keys():
-    #         return Response("Must provide an eventID in request", status.HTTP_400_BAD_REQUEST)
-    #     eventID = int(kwargs["eventID"])
-    #     try:
-    #         event = Events.objects.get(pk=eventID)
-    #         serializer = self.get_serializer_class()(event)
-    #         return Response(serializer.data, status.HTTP_200_OK)
-    #     except ObjectDoesNotExist:
-    #         return Response("Event with id {} does not exist.".format(
-    #             eventID), status.HTTP_404_NOT_FOUND)
-
 class EventView(generics.ListAPIView):
     """
     Gets a filtered set of events specified by a set of QUERY_PARAMS
