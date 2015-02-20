@@ -176,6 +176,7 @@ class VoteEventSerializer(serializers.Serializer):
             event.upvote += 1
         elif direction == -1:
             event.downvote += 1
+        
         event.save()
         return vote
 
