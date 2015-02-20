@@ -85,6 +85,27 @@ class ListUsers(generics.ListAPIView):
     def get_queryset(self):
         return ChronosUser.objects.all()
 
+class GetCurrentUserInformation(generics.RetrieveAPIView):
+    """
+    Get the current authenitcated user's information
+    """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, )
+    serializer_class = ChronosUserSerializer
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.get_serializer_class()(request.user)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+class GetUserInformation(generics.RetrieveAPIView):
+    """
+    Get a user's public information based on their id
+    """
+    permission_classes = (AllowAny,)
+    serializer_class = ChronosPublicUserSerializer
+    queryset = ChronosUser.objects.all()
+    lookup_field = "username"
+
 ##############################
 # --------- Events! -------- #
 ##############################
@@ -185,6 +206,8 @@ class TagView(generics.ListCreateAPIView):
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()
 update_user = UpdateUser.as_view()
+get_my_user = GetCurrentUserInformation.as_view()
+get_user = GetUserInformation.as_view()
 list_users = ListUsers.as_view()
 list_specific_event = EventOnlyView.as_view()
 list_create_event = EventView.as_view()
