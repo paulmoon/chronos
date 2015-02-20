@@ -11,6 +11,11 @@ class ChronosUserSerializer(serializers.ModelSerializer):
         model = app.models.ChronosUser
         fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id')
 
+class ChronosPublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.ChronosUser
+        fields = ('id', 'username')
+
 class ChronosUserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser

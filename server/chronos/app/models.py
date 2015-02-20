@@ -23,6 +23,7 @@ class ChronosUser(AbstractUser):
         (REGULAR, 'Regular'),
     )
 
+    place_id = models.CharField(max_length=100, null=True)
     userType = models.CharField(max_length=3, choices=USER_TYPES, default=REGULAR)
     place_id = models.CharField(max_length=100, null=True)
 
