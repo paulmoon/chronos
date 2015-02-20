@@ -66,15 +66,15 @@
     /**
      * @description API call for getting a filtered list of events
      * @methodOf chronosApp:RestService
+     * @param url
+     * @param placeID
+     * @param startDate
+     * @param endDate
+     * @param tags
+     * @param keywords
      * @returns {HttpPromise}
      */
-    this.getFilteredEvents = function() {
-      var _url = setting.serverUrl + '/events/?';
-      var _placeID = StateService.getPlaceID();
-      var _dateRangeStart = StateService.getDateRangeStart();
-      var _dateRangeEnd = StateService.getDateRangeEnd();
-      var _tags = StateService.getTags();
-      var _keywords = StateService.getKeywords();
+    this.getFilteredEvents = function(_url, _placeID, _dateRangeStart, _dateRangeEnd, _tags, _keywords) {
 
       if(_placeID){
         _url = _url + '&placeID=' + _placeID;

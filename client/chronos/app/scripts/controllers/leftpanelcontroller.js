@@ -14,9 +14,9 @@
     .module('chronosApp')
     .controller('LeftPanelController', LeftPanelController);
 
-  LeftPanelController.$inject = ['RestService', '$modal', 'StateService'];
+  LeftPanelController.$inject = ['RestService', '$modal', 'StateService', 'setting'];
 
-   function LeftPanelController(RestService, $modal, StateService) {
+   function LeftPanelController(RestService, $modal, StateService, setting) {
       var vm = this;
 
       vm.title = 'LeftPanelController';
@@ -46,7 +46,7 @@
          if(vm.searchKeywords){
             // removes punctuation, removes extra spaces, and creates an array of the words
             tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ").split(" ");
-            if(tempKeywords.length > 10){
+            if(tempKeywords.length > setting.maxKeywords){
                vm.searchError = "Max of 10 keywords.";
             } else {
                StateService.setKeywords(tempKeywords);
@@ -79,14 +79,14 @@
          if(vm.searchError){
             vm.events = [];
          }else{
-            RestService.getFilteredEvents().
-            success(function(data, status, headers, config) {
-               vm.events = data;
-            }).
-            error(function(data, status, headers, config) {
-               vm.events = [];
-               vm.searchError = "Search Failed.";
-            });
+            RestService.getFilteredEvents(setting.serverUrl + '/events/?', StateService.getPlaceID(), StateService.getDateRangeStart(), StateService.getDateRangeEnd(), StateService.getTags(), StateService.getKeywords()).
+               success(function(data, status, headers, config) {
+                  vm.events = data;
+               }).
+               error(function(data, status, headers, config) {
+                  vm.events = [];
+                  vm.searchError = "Search Failed.";
+               });
          }
       }
 
@@ -116,12 +116,12 @@
                var noMatch = true;
                var displayTag = tag;
 
-               if(tag.length > 50){
+               if(tag.length > setting.maxTagLength){
                   vm.tagError = "Max tag length of 50 characters.";
                   return;
                }
 
-               if(vm.displayTags.length > 4){
+               if(vm.displayTags.length > setting.maxNumberTags){
                   vm.tagError = "Max of 5 tags.";
                   return;
                }
@@ -133,7 +133,7 @@
                });
 
                if(noMatch){
-                  if(tag.length > 10){
+                  if(tag.length > setting.tagDisplayLength){
                      displayTag = tag.substring(0,9) + "...";
                   }
 
