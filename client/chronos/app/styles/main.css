@@ -3,6 +3,14 @@
   background-color: white;
 }
 
+.pane {
+  top: 60px;
+  bottom: 10px;
+  position: absolute;
+  background-color: blue;
+  width: 100%;
+}
+
 .left-pane {
   float: left;
   width: 50%;
@@ -15,4 +23,25 @@
   width: 50%;
   background-color: #ffffff;
   height: 100%;
+}
+
+.arrow-group {
+  float: left;
+  width: 10px;
+  margin-right: 10px;
+}
+
+.vote-value {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-weight: bold;
+  text-align: center;
+
+}
+
+.event-card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 8px;
+  margin-right: 8px;
 }

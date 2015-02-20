@@ -9,12 +9,17 @@ import app
 class ChronosUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType')
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id')
+
+class ChronosPublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.ChronosUser
+        fields = ('id', 'username')
 
 class ChronosUserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'userType')
+        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'userType', 'place_id')
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
@@ -32,21 +37,12 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
         token, created = Token.objects.get_or_create(user=user)
         return token, created, user
 
-
-    def update(self, instance, validated_data):
-        instance.password = validated_data.get('password', instance.password)
-        instance.email = validated_data.get('email', instance.email)
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.save()
-        return instance
-
     def validate_username(self, value):
         """
         Ensure that the username doesn't already exist
         """
         if app.models.ChronosUser.objects.filter(username=value).exists():
-            raise serializers.ValidationError("username")
+            raise serializers.ValidationError("Username already exists")
         return value
 
     def validate_email(self, value):
@@ -54,8 +50,32 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
         Ensure that the email doesn't already exist
         """
         if app.models.ChronosUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError("email");
+            raise serializers.ValidationError("Email already exists");
         return value
+
+class ChronosUserUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(max_length=128, required=False)
+    class Meta:
+        model = app.models.ChronosUser
+        fields = ('id', 'password', 'email', 'first_name', 'last_name', 'place_id')
+
+    def validate_email(self, value):
+        """
+        Ensure that the email doesn't already exist
+        """
+        if app.models.ChronosUser.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already exists");
+        return value
+
+    def update(self, instance, validated_data):
+        if validated_data.get('password'):
+            instance.set_password('password')
+        instance.email = validated_data.get('email', instance.email)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.place_id = validated_data.get('place_id', instance.place_id)
+        instance.save()
+        return instance
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -69,10 +89,10 @@ class TagEventSerializer(serializers.Serializer):
 # --------- Events! -------- #
 ##############################
 class EventWriteSerializer(serializers.ModelSerializer):
-    tags = TagEventSerializer(many=True)
+    tags = TagEventSerializer(many=True, required=False)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "tags")
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)          
@@ -128,6 +148,50 @@ class EventReadSerializer(serializers.ModelSerializer):
     allow the writing of events using only the foreign keys of tags.
     """
     tags = TagSerializer(many=True)
+    vote = serializers.SerializerMethodField()
+    
     class Meta: 
         model = app.models.Events
         fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+
+    def get_vote(self, obj):
+        return obj.upvote - obj.downvote
+
+class VoteEventSerializer(serializers.Serializer):
+    direction = serializers.IntegerField(min_value=-1, max_value=1)
+
+    class Meta:
+        model = app.models.Vote
+        fields = ('direction', 'event', 'user')
+
+    def create(self, validated_data):
+        vote = app.models.Vote.objects.create(**validated_data)
+        vote.save()
+        event = validated_data['event']
+        direction = validated_data['direction']
+        if direction == 1:
+            event.upvote += 1
+        elif direction == -1:
+            event.downvote += 1
+        event.save()
+        return vote
+
+    def update(self, instance, validated_data):
+        direction = validated_data.get('direction')
+        event = validated_data['event']
+        if direction is not None and instance.direction != direction:
+            if instance.direction == 1:
+                event.upvote -= 1
+            elif instance.direction == -1:
+                event.downvote -= 1
+
+            if direction == 1:
+                event.upvote += 1
+            elif direction == -1:
+                event.downvote += 1
+
+            event.save()
+            instance.direction = direction
+            instance.save()
+
+        return instance

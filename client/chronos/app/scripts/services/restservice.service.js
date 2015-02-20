@@ -112,5 +112,20 @@
         tags: tags
       });
     }
+
+    /**
+     * @desciption API call for voting for a specific event
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event to vote on
+     * @param direction The direction to vote the event in, either 1, 0, or -1
+     * @returns {HttpPromise}
+     */
+    this.voteEvent = function(eventId, direction) {
+        return $http.post(setting.serverUrl + '/events/vote/', {
+            event_id: eventId,
+            direction: direction
+        });
+    }
+    
   }
 })();
