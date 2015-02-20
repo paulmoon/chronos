@@ -52,18 +52,52 @@
     };
 
     /**
-     * @description API call for getting a filtered list of events
+     * @description API call for updating a user location.
      * @methodOf chronosApp:RestService
+     * @param {string} location ID
      * @returns {HttpPromise}
      */
-    this.getFilteredEvents = function() {
-      var _url = setting.serverUrl + '/events/?';
-      var _placeID = StateService.getPlaceID();
+    this.updateUserLocation = function (placeID) {
+      return $http.put(setting.serverUrl + '/users/update/', {
+        place_id: placeID
+      });
+    };
 
-      // Add more filter options as appropriate
+    /**
+     * @description API call for getting a filtered list of events
+     * @methodOf chronosApp:RestService
+     * @param url
+     * @param placeID
+     * @param startDate
+     * @param endDate
+     * @param tags
+     * @param keywords
+     * @returns {HttpPromise}
+     */
+    this.getFilteredEvents = function(_url, _placeID, _dateRangeStart, _dateRangeEnd, _tags, _keywords) {
+
       if(_placeID){
-        // Can leave the & at beginning even if its the first param
         _url = _url + '&placeID=' + _placeID;
+      }
+
+      if(_dateRangeStart){
+        if(_dateRangeEnd){
+          _url = _url + '&fromDate=' + _dateRangeStart + '&toDate=' + _dateRangeEnd;
+        }else{
+          _url = _url + '&fromDate=' + _dateRangeStart;
+        }
+      }
+
+      if(_tags){
+        _tags.forEach(function(tag) {
+          _url = _url + '&tag=' + tag;
+        });
+      }
+
+      if(_keywords){
+        _keywords.forEach(function(word) {
+          _url = _url + '&keyword=' + word;
+        });
       }
 
       return $http.get(_url);
@@ -89,7 +123,7 @@
         end_date: endDate,
         tags: tags
       });
-    }
+    };
 
     /**
      * @description API call for updating a event
@@ -111,7 +145,7 @@
         end_date: endDate,
         tags: tags
       });
-    }
+    };
 
     /**
      * @desciption API call for voting for a specific event
@@ -125,7 +159,7 @@
             event_id: eventId,
             direction: direction
         });
-    }
+    };
     
   }
 })();

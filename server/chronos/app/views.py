@@ -17,6 +17,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
 from django.conf import settings
 import datetime
+from sets import Set
+from django.db.models import Q
 
 ##############################
 # --------- Users! --------- #
@@ -137,7 +139,9 @@ class EventView(generics.ListAPIView):
         creatorid = self.request.query_params.get('creatorID')
         fromDate = self.request.query_params.get('fromDate')
         toDate = self.request.query_params.get('toDate')
-        tags = self.request.query_params.getlist('tags')
+        tags = self.request.query_params.getlist('tag')
+        keywords = self.request.query_params.getlist('keyword')
+
         filterargs = {}
         if placeid is not None:
             filterargs['place_id'] = placeid
@@ -146,13 +150,27 @@ class EventView(generics.ListAPIView):
         # If the from date is only specified, then we are looking for only that date
         if fromDate is not None:
             if toDate is not None:
-                filterargs['start_date__range'] = [fromDate, toDate]
+                if ':' not in toDate:
+                    filterargs['start_date__range'] = [fromDate, toDate[:10] + 'T23:59:59']
+                else:
+                    filterargs['start_date__range'] = [fromDate, toDate]
             else:
-                filterargs['start_date'] = fromDate
-        if tags:
+                filterargs['start_date__range'] = [fromDate, fromDate[:10] + 'T23:59:59']
+        if len(tags) > 0:
             filterargs['tags__name__in'] = tags
-        queryset = queryset.filter(**filterargs)
-        return queryset
+
+        queryset = queryset.filter(**filterargs).order_by('start_date')
+        
+        if len(keywords) > 0:
+            qset = Q()
+
+            for word in keywords:
+                qset |= Q(name__contains=word)
+                qset |= Q(description__contains=word)
+
+            queryset = queryset.filter(qset).order_by('start_date')
+
+        return Set(queryset)
 
     def post(self, request, *args, **kwargs):
         """

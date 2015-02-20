@@ -13,19 +13,22 @@
     .module('chronosApp')
     .controller('BannerController', BannerController);
 
-  BannerController.$inject = ['AuthService', 'StateService', '$modal'];
+  BannerController.$inject = ['AuthService', 'StateService', '$modal', 'RestService'];
 
-  function BannerController(AuthService, StateService, $modal) {
+  function BannerController(AuthService, StateService, $modal, RestService) {
     var vm = this;
 
     vm.title = 'BannerController';
-    vm.chosenPlace = null;
+    vm.chosenPlace = '';
     vm.isLoggedIn = AuthService.isLoggedIn;
     vm.logout = AuthService.logout;
 
     vm.openSignupModal = openSignupModal;
     vm.openLoginModal = openLoginModal;
     vm.changeLocation = changeLocation;
+    vm.saveUserLocation = saveUserLocation;
+    vm.openCreateEventModal = openCreateEventModal;
+
 
     ////////////////////////////
 
@@ -53,8 +56,37 @@
       });
     }
 
+    function openCreateEventModal() {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/eventModal.html',
+        controller: 'EventModalController as eventModal',
+        size: 'lg',
+        resolve: {
+          shouldShowEventCreateModal: function () {
+            return true;
+          }
+        }
+      });
+    }
+
     function changeLocation(chosenPlaceDetails) {
       StateService.setPlaceID(chosenPlaceDetails.place_id);
+
+      if(vm.isLoggedIn()){
+        vm.saveUserLocation();
+      }
+    }
+
+    function saveUserLocation() {
+      var _chosenPlaceID = StateService.getPlaceID();
+
+      RestService.updateUserLocation(_chosenPlaceID).
+        success(function(data, status, headers, config) {
+           // Fill in at later date
+        }).
+        error(function(data, status, headers, config) {
+           // Fill in at later date
+        });
     }
   }
 })();

@@ -13,25 +13,66 @@ angular
   .module('chronosApp')
   .service('StateService', StateService);
 
-//StateService.$inject = [''];
-
-/* @ngInject */
 function StateService() {
-	var _placeIDHolder;
+	var _placeIDSearch;
+	var _dateRangeStartSearch;
+	var _dateRangeEndSearch;
+	var _tagsSearch;
+	var _keywordsSearch;
+	var _placeNameHolder;
 
-	this.hello = function () {
-	return "Hello";
-	};
-
-	this.goodbye = function () {
-	return "Goodbye";
-	};
-
-	this.setPlaceID = function(_placeID) {
-		_placeIDHolder = _placeID;
+	/**
+     * Place ID Search set/get
+     */
+	this.setPlaceID = function(placeID) {
+		_placeIDSearch = placeID;
 	};
 
 	this.getPlaceID = function() {
-		return _placeIDHolder;
+		return _placeIDSearch;
+	};
+
+	/**
+     * Date Range Start Search set/get
+     */
+	this.setDateRangeStart = function(dateRangeStart) {
+		_dateRangeStartSearch = dateRangeStart;
+	};
+
+	this.getDateRangeStart = function() {
+		return _dateRangeStartSearch;
+	};
+
+	/**
+     * Date Range End Search set/get
+     */
+	this.setDateRangeEnd = function(dateRangeEnd) {
+		_dateRangeEndSearch = dateRangeEnd;
+	};
+
+	this.getDateRangeEnd = function() {
+		return _dateRangeEndSearch;
+	};
+
+	/**
+     * Tags Search set/get
+     */
+	this.setTags = function(tags) {
+		_tagsSearch = tags;
+	};
+
+	this.getTags = function() {
+		return _tagsSearch;
+	};
+
+	/**
+     * Keywords Search set/get
+     */
+	this.setKeywords = function(keywords) {
+		_keywordsSearch = keywords;
+	};
+
+	this.getKeywords = function() {
+		return _keywordsSearch;
 	};
 }
