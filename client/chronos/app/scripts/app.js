@@ -45,5 +45,9 @@ angular
     });
   })
   .constant('setting', {
-    serverUrl: 'http://localhost:8000'
+    serverUrl: 'http://localhost:8000',
+    tagDisplayLength: 10,
+    maxKeywords: 10,
+    maxTagLength: 50,
+    maxNumberTags: 4
   });

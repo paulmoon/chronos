@@ -77,6 +77,9 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+##############################
+# --------- Other! --------- #
+##############################
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Tag
@@ -173,6 +176,7 @@ class VoteEventSerializer(serializers.Serializer):
             event.upvote += 1
         elif direction == -1:
             event.downvote += 1
+        
         event.save()
         return vote
 
