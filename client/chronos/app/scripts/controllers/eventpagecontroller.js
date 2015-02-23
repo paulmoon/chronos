@@ -9,6 +9,10 @@
  * Controller of the chronosApp
  */
 angular.module('chronosApp')
-  .controller('EventPageController', function ($scope, $routeParams) {
-    $scope.eventId = $routeParams.eventId;
-  });
+  .controller('EventPageController', EventPageController);
+
+  EventPageController.$inject = ['AuthService', 'StateService', 'RestService','$modal'];
+
+  function EventPageController(AuthService, StateService, RestService, $modal) {
+    var vm = this;
+  }
