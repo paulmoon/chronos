@@ -19,9 +19,10 @@ angular
     'ngTouch',
     'ui.bootstrap',
     'mgcrea.ngStrap.datepicker',
-    'mgcrea.ngStrap.timepicker'
+    'mgcrea.ngStrap.timepicker',
+    'ngTagsInput'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, tagsInputConfigProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html'
@@ -38,6 +39,10 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+    tagsInputConfigProvider.setDefaults('tagsInput', {
+      placeholder: 'New tag',
+      removeTagSymbol: '✖'
+    });
   })
   .constant('setting', {
     serverUrl: 'http://localhost:8000',

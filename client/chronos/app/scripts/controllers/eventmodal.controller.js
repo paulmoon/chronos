@@ -29,6 +29,7 @@
     vm.createEvent = createEvent;
     vm.cancel = cancel;
 
+
     ////////////////
 
     /**
