@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css" />
     <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/fullcalendar/fullcalendar.css" />
-
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -65,6 +64,7 @@
     <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
     <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
     <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script src="bower_components/fullcalendar/fullcalendar.js"></script>
     <script src="bower_components/angular-ui-calendar/src/calendar.js"></script>
     <!-- endbower -->
@@ -73,24 +73,31 @@
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
 
-    <script src="scripts/controllers/authmodal.controller.js"></script>
-    <script src="scripts/controllers/eventmodal.controller.js"></script>
-    <script src="scripts/controllers/banner.controller.js"></script>
-    <script src="scripts/controllers/eventpagecontroller.js"></script>
-    <script src="scripts/controllers/leftpanelcontroller.js"></script>
-    <script src="scripts/controllers/eventcard.controller.js"></script>
-    <script src="scripts/controllers/rightPanel.controller.js"></script>
- 
-    <script src="scripts/directives/banner.js"></script>
-    <script src="scripts/directives/eventcard.js"></script>
-    <script src="scripts/directives/googleautocomplete.js"></script>
-    <script src="scripts/directives/showInputErrors.directive.js"></script>
-    <script src="scripts/directives/uniqueUsername.directive.js"></script>
-    <script src="scripts/directives/uniqueEmail.directive.js"></script>
+    <script src="scripts/auth/authModal.controller.js"></script>
+    <script src="scripts/auth/authModal.html"></script>
+    <script src="scripts/auth/showInputErrors.directive.js"></script>
+    <script src="scripts/auth/uniqueUsername.directive.js"></script>
+    <script src="scripts/auth/uniqueEmail.directive.js"></script>
 
-    <script src="scripts/services/authService.service.js"></script>
-    <script src="scripts/services/restService.service.js"></script>
-    <script src="scripts/services/stateService.service.js"></script>
+    <script src="scripts/banner/banner.controller.js"></script>
+    <script src="scripts/banner/banner.directive.js"></script>
+    <script src="scripts/banner/banner.html"></script>
+    <script src="scripts/banner/googleAutocomplete.directive.js"></script>
+
+    <script src="scripts/calendar/calendar.controller.js"></script>
+
+    <script src="scripts/events/eventCard.controller.js"></script>
+    <script src="scripts/events/eventCard.directive.js"></script>
+    <script src="scripts/events/eventCard.html"></script>
+    <script src="scripts/events/eventModal.controller.js"></script>
+    <script src="scripts/events/eventPage.controller.js"></script>
+    <script src="scripts/events/leftPanel.controller.js"></script>
+
+    <script src="scripts/factories/events.factory.js"></script>
+
+    <script src="scripts/services/auth.service.js"></script>
+    <script src="scripts/services/rest.service.js"></script>
+    <script src="scripts/services/state.service.js"></script>
 
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
     <!-- endbuild -->

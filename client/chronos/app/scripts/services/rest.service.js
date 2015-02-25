@@ -56,15 +56,18 @@
      * @methodOf chronosApp:RestService
      * @returns {HttpPromise}
      */
-    this.getFilteredEvents = function() {
+    this.getFilteredEvents = function (filterParams) {
       var _url = setting.serverUrl + '/events/?';
       var _placeID = StateService.getPlaceID();
 
       // Add more filter options as appropriate
-      if(_placeID){
+      if (_placeID) {
         // Can leave the & at beginning even if its the first param
         _url = _url + '&placeID=' + _placeID;
       }
+
+      var result = $.param(filterParams);
+      console.log(result);
 
       return $http.get(_url);
     };
@@ -126,6 +129,6 @@
             direction: direction
         });
     }
-    
+
   }
 })();
