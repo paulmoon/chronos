@@ -24,6 +24,11 @@
                        ng-model="eventModal.picture">
             </div>
             <hr>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="eventModal.locationName" details="chosenPlaceDetails"
+                 callback="eventModal.locationPicked" placeholder="Enter A Location"  googleautocomplete/>
+            </div>
+            <hr>
             <div class="form-group form-inline">
                 <label class="control-label"><i class="fa fa-calendar"></i> Start Date</label>
                 <div class="form-group">
