@@ -20,7 +20,7 @@
     vm.title = 'EventModalController';
     vm.eventName = '';
     vm.description = '';
-    vm.locationId = '';
+    vm.locationId = null;
     vm.locationName = '';
     vm.startDate = '';
     vm.endDate = '';
@@ -80,7 +80,6 @@
      */
     function locationPicked(details) {
       vm.locationId = details.place_id;
-      console.log(vm.locationId);
     };
   }
 })();
