@@ -95,7 +95,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
     tags = TagEventSerializer(many=True, required=False)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "place_name", "tags")
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)          
@@ -155,7 +155,7 @@ class EventReadSerializer(serializers.ModelSerializer):
     
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "place_name", "tags")
 
     def get_vote(self, obj):
         return obj.upvote - obj.downvote
