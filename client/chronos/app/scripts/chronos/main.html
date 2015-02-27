@@ -4,7 +4,7 @@
     <div class="media" style="margin:10px">
       <button type="button" ng-click="vm.searchEvents()" class="btn btn-primary">Search Events</button>
       <button type="button" ng-click="vm.openCreateEventModal()" class="btn btn-primary">Create Events</button>
-      <eventcard ng-repeat="event in vm.events"
+      <eventcard ng-repeat="event in vm.eventFactory.events"
                  title="event.name"
                  event-id="event.id"
                  description="event.description"
@@ -17,7 +17,5 @@
                  report="event.report"></eventcard>
     </div>
   </div>
-  <div class="right-pane" ng-controller="CalendarController as vm">
-    <div ui-calendar ng-model="eventSources"></div>
-  </div>
+  <ng-include src="'scripts/calendar/calendar.html'"></ng-include>
 </div>

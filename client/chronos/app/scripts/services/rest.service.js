@@ -14,9 +14,9 @@
     .module('chronosApp')
     .service('RestService', RestService);
 
-  RestService.$inject = ['$http', 'setting', 'StateService'];
+  RestService.$inject = ['$http', 'settings', 'StateService'];
 
-  function RestService($http, setting, StateService) {
+  function RestService($http, settings, StateService) {
     /**
      * @description API call for verifying credentials.
      * @methodOf chronosApp:RestService
@@ -25,7 +25,7 @@
      * @returns {HttpPromise}
      */
     this.login = function (username, password) {
-      return $http.post(setting.serverUrl + '/users/verify_credentials/', {
+      return $http.post(settings.serverUrl + '/users/verify_credentials/', {
         username: username,
         password: password
       });
@@ -42,7 +42,7 @@
      * @returns {HttpPromise}
      */
     this.createUser = function (username, firstName, lastName, password, email) {
-      return $http.post(setting.serverUrl + '/users/create/', {
+      return $http.post(settings.serverUrl + '/users/create/', {
         username: username,
         first_name: firstName,
         last_name: lastName,
@@ -57,10 +57,8 @@
      * @returns {HttpPromise}
      */
     this.getFilteredEvents = function (filterParams) {
-      var _url = setting.serverUrl + '/events/?';
+      var _url = settings.serverUrl + '/events/?';
       var _params = $.param(filterParams);
-      console.log(_params);
-
       return $http.get(_url + _params);
     };
 
@@ -76,7 +74,7 @@
      * @returns {HttpPromise}
      */
     this.createEvent = function (eventName, description, picture, startDate, endDate, tags) {
-      return $http.post(setting.serverUrl + '/events/', {
+      return $http.post(settings.serverUrl + '/events/', {
         name: eventName,
         description: description,
         picture: picture,
@@ -98,7 +96,7 @@
      * @returns {HttpPromise}
      */
     this.updateEvent = function (eventName, description, picture, startDate, endDate, tags) {
-      return $http.put(setting.serverUrl + '/events/', {
+      return $http.put(settings.serverUrl + '/events/', {
         name: eventName,
         description: description,
         picture: picture,
@@ -116,7 +114,7 @@
      * @returns {HttpPromise}
      */
     this.voteEvent = function (eventId, direction) {
-      return $http.post(setting.serverUrl + '/events/vote/', {
+      return $http.post(settings.serverUrl + '/events/vote/', {
         event_id: eventId,
         direction: direction
       });

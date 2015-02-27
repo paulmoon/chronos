@@ -3,43 +3,43 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', 'RestService'];
+  CalendarController.$inject = ['$scope', 'settings', 'EventFactory'];
 
-  function CalendarController($scope, RestService) {
+  function CalendarController($scope, settings, EventFactory) {
     /* jshint validthis: true */
     var vm = this;
 
     vm.title = 'CalendarController';
-    vm.generateEvents = generateEvents;
-
-    // Need to use scope.eventSources instead of vm.eventSources because of
-    $scope.eventSources = {};
+    // Provide a function that FullCalendar will call as necessary to retrieve events
+    vm.eventSources = [EventFactory.fullCalendarGetEvents];
 
     activate();
 
     ////////////////
 
     function activate() {
+      // Need to use scope instead of vm because of ui.calendar
+
       $scope.uiConfig = {
         calendar: {
-          height: 2400,
+          header: {
+            left: 'month basicWeek',
+            center: 'title'
+          },
           editable: false,
-          dayClick: $scope.dayClick,
-          eventResize: $scope.eventResize
+          eventLimit: settings.eventLimit,
+          dayClick: dayClick,
+          eventResize: vm.eventResize
         }
-      };
-
-      $scope.eventSources = {
-        events: generateEvents,
-        color: 'yellow',   // an option!
-        textColor: 'black' // an option!
       };
     }
 
+    function dayClick(date, jsEvent, view) {
+      console.log("day clicked! " + date + ' ' + jsEvent + ' ' + view);
+    }
 
     function generateEvents(start, end, timezone, callback) {
       console.log('Generate Events');
     }
   }
-
 })();

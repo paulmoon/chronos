@@ -3,7 +3,6 @@
  * @ngdoc function
  * @name chronosApp.controller:LeftPanelController
  * @description
- * # LeftPanelController
  * Controller of the chronosApp
  */
 
@@ -14,31 +13,25 @@
     .module('chronosApp')
     .controller('LeftPanelController', LeftPanelController);
 
-  LeftPanelController.$inject = ['RestService', 'StateService', '$modal'];
+  LeftPanelController.$inject = ['EventFactory', 'StateService', '$modal'];
 
-  function LeftPanelController(RestService, StateService, $modal) {
+  function LeftPanelController(EventFactory, StateService, $modal) {
     var vm = this;
 
     vm.title = 'LeftPanelController';
-    vm.events = [];
+    vm.eventFactory = EventFactory;
 
     vm.searchEvents = searchEvents;
     vm.openCreateEventModal = openCreateEventModal;
 
     function searchEvents() {
+      var filterParams = {};
+
       if (StateService.getPlaceID()) {
-        var filterParams = {
-          placeID: StateService.getPlaceID()
-        };
+        filterParams.placeID = StateService.getPlaceID();
       }
 
-      RestService.getFilteredEvents(filterParams || {}).
-        success(function (data, status, headers, config) {
-          vm.events = data;
-        }).
-        error(function (data, status, headers, config) {
-          // Fill in at later date
-        });
+      EventFactory.getFilteredEvents(filterParams);
     }
 
     function openCreateEventModal() {

@@ -1,4 +1,12 @@
+/**
+ * @author Paul Moon
+ * @name chronosApp.RouteProviderConfigs
+ * @description Configuration for $routeProvider
+ */
+
 (function () {
+  'use strict';
+
   angular
     .module('chronosApp')
     .config(RouteProviderConfigs);
