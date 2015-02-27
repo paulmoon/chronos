@@ -58,18 +58,10 @@
      */
     this.getFilteredEvents = function (filterParams) {
       var _url = setting.serverUrl + '/events/?';
-      var _placeID = StateService.getPlaceID();
+      var _params = $.param(filterParams);
+      console.log(_params);
 
-      // Add more filter options as appropriate
-      if (_placeID) {
-        // Can leave the & at beginning even if its the first param
-        _url = _url + '&placeID=' + _placeID;
-      }
-
-      var result = $.param(filterParams);
-      console.log(result);
-
-      return $http.get(_url);
+      return $http.get(_url + _params);
     };
 
     /**
@@ -83,7 +75,7 @@
      * @param tags
      * @returns {HttpPromise}
      */
-    this.createEvent = function(eventName, description, picture, startDate, endDate, tags) {
+    this.createEvent = function (eventName, description, picture, startDate, endDate, tags) {
       return $http.post(setting.serverUrl + '/events/', {
         name: eventName,
         description: description,
@@ -114,7 +106,7 @@
         end_date: endDate,
         tags: tags
       });
-    }
+    };
 
     /**
      * @desciption API call for voting for a specific event
@@ -123,12 +115,11 @@
      * @param direction The direction to vote the event in, either 1, 0, or -1
      * @returns {HttpPromise}
      */
-    this.voteEvent = function(eventId, direction) {
-        return $http.post(setting.serverUrl + '/events/vote/', {
-            event_id: eventId,
-            direction: direction
-        });
-    }
-
+    this.voteEvent = function (eventId, direction) {
+      return $http.post(setting.serverUrl + '/events/vote/', {
+        event_id: eventId,
+        direction: direction
+      });
+    };
   }
 })();

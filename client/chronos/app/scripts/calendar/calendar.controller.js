@@ -1,15 +1,15 @@
 (function () {
   angular
     .module('chronosApp')
-    .controller('RightPanelController', RightPanelController);
+    .controller('CalendarController', CalendarController);
 
-  RightPanelController.$inject = ['$scope', 'RestService'];
+  CalendarController.$inject = ['$scope', 'RestService'];
 
-  function RightPanelController($scope, RestService) {
+  function CalendarController($scope, RestService) {
     /* jshint validthis: true */
     var vm = this;
 
-    vm.title = 'RightPanelController';
+    vm.title = 'CalendarController';
     vm.generateEvents = generateEvents;
 
     // Need to use scope.eventSources instead of vm.eventSources because of
@@ -39,12 +39,7 @@
 
     function generateEvents(start, end, timezone, callback) {
       console.log('Generate Events');
-
-
-
-
     }
-
   }
 
 })();

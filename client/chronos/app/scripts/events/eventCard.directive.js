@@ -1,4 +1,3 @@
-
 /**
  * @author Justin Guze
  * @ngdoc directive
@@ -7,32 +6,32 @@
  * # eventCard
  */
 
-(function() {
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('chronosApp')
-  .directive('eventcard', eventcard);
+  angular
+    .module('chronosApp')
+    .directive('eventcard', eventcard);
 
   function eventcard() {
     var directive = {
-      templateUrl: 'scripts/directives/eventcard.html',
+      templateUrl: 'scripts/events/eventCard.html',
       restrict: 'E',
       scope: {
-        title:'=',
-        description:'=',
-        eventId:'=',
-        creator:'=',
-        creationDate:'=',
-        location:'=',
-        startDate:'=',
-        endDate:'=',
-        vote:'=',
-        report:'=',
+        title: '=',
+        description: '=',
+        eventId: '=',
+        creator: '=',
+        creationDate: '=',
+        location: '=',
+        startDate: '=',
+        endDate: '=',
+        vote: '=',
+        report: '=',
       },
       controller: 'EventCardController',
-        controllerAs: 'vm',
-        bindToController: true
+      controllerAs: 'vm',
+      bindToController: true
     };
     return directive
   };

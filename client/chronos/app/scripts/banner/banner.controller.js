@@ -31,7 +31,7 @@
 
     function openSignupModal() {
       var modalInstance = $modal.open({
-        templateUrl: 'views/authModal.html',
+        templateUrl: 'scripts/auth/authModal.html',
         controller: 'AuthModalController as authModal',
         resolve: {
           shouldShowSignUpModal: function () {
@@ -43,7 +43,7 @@
 
     function openLoginModal() {
       var modalInstance = $modal.open({
-        templateUrl: 'views/authModal.html',
+        templateUrl: 'scripts/auth/authModal.html',
         controller: 'AuthModalController as authModal',
         resolve: {
           shouldShowSignUpModal: function () {

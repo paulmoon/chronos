@@ -17,21 +17,21 @@ angular
 
 /* @ngInject */
 function StateService() {
-	var _placeIDHolder;
+  var _placeIDHolder;
 
-	this.hello = function () {
-	return "Hello";
-	};
+  this.hello = function () {
+    return "Hello";
+  };
 
-	this.goodbye = function () {
-	return "Goodbye";
-	};
+  this.goodbye = function () {
+    return "Goodbye";
+  };
 
-	this.setPlaceID = function(_placeID) {
-		_placeIDHolder = _placeID;
-	};
+  this.setPlaceID = function (_placeID) {
+    _placeIDHolder = _placeID;
+  };
 
-	this.getPlaceID = function() {
-		return _placeIDHolder;
-	};
+  this.getPlaceID = function () {
+    return _placeIDHolder;
+  };
 }

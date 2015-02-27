@@ -8,15 +8,15 @@
   function RouteProviderConfigs($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html'
+        templateUrl: 'scripts/chronos/main.html'
         // controller: 'MainCtrl'
       })
       .when('/about', {
-        templateUrl: 'views/about.html'
+        templateUrl: 'scripts/chronos/about.html'
         // controller: 'AboutCtrl'
       })
       .when('/event/:eventId', {
-        templateUrl: 'views/eventpage.html',
+        templateUrl: 'scripts/chronos/eventModal.html',
         controller: 'EventPageController'
       })
       .otherwise({

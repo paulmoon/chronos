@@ -55,7 +55,7 @@
     };
 
     /**
-     * @description Create a new user account. All params are required.
+     * @description Create a new user account. firstName, lastName, and email are required.
      * @methodOf chronosApp:AuthService
      * @param {string} username
      * @param {string} firstName
