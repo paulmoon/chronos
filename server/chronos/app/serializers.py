@@ -152,7 +152,7 @@ class EventReadSerializer(serializers.ModelSerializer):
     """
     tags = TagSerializer(many=True)
     vote = serializers.SerializerMethodField()
-    
+    creator = ChronosPublicUserSerializer()
     class Meta: 
         model = app.models.Events
         fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "place_name", "tags")
