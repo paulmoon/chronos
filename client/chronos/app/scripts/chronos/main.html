@@ -4,7 +4,7 @@
     <div class="media" style="margin:10px">
       <button type="button" ng-click="vm.searchEvents()" class="btn btn-primary">Search Events</button>
       <button type="button" ng-click="vm.openCreateEventModal()" class="btn btn-primary">Create Events</button>
-      <eventcard ng-repeat="event in vm.eventFactory.events"
+      <eventcard ng-repeat="event in vm.eventFactory.highlightedEvents"
                  title="event.name"
                  event-id="event.id"
                  description="event.description"

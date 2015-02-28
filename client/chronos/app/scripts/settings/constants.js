@@ -11,6 +11,6 @@
     .module('chronosApp')
     .constant('settings', {
       serverUrl: 'http://localhost:8000',
-      eventLimit: 5
+      calendarEventLimitPerDay: 4
     });
 })();
