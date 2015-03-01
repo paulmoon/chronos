@@ -33,7 +33,6 @@
 
     vm.locationPicked = locationPicked;
 
-
     ////////////////
 
     /**
@@ -71,7 +70,7 @@
      */
     function cancel() {
       $modalInstance.dismiss('cancel');
-    };
+    }
 
     /**
      * @description Callback function when a location is chosen
@@ -80,6 +79,6 @@
      */
     function locationPicked(details) {
       vm.locationId = details.place_id;
-    };
+    }
   }
 })();

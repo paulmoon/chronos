@@ -29,12 +29,11 @@
     vm.saveUserLocation = saveUserLocation;
     vm.openCreateEventModal = openCreateEventModal;
 
-
     ////////////////////////////
 
     function openSignupModal() {
       var modalInstance = $modal.open({
-        templateUrl: 'views/authModal.html',
+        templateUrl: 'scripts/auth/authModal.html',
         controller: 'AuthModalController as authModal',
         resolve: {
           shouldShowSignUpModal: function () {
@@ -46,7 +45,7 @@
 
     function openLoginModal() {
       var modalInstance = $modal.open({
-        templateUrl: 'views/authModal.html',
+        templateUrl: 'scripts/auth/authModal.html',
         controller: 'AuthModalController as authModal',
         resolve: {
           shouldShowSignUpModal: function () {
@@ -58,7 +57,7 @@
 
     function openCreateEventModal() {
       var modalInstance = $modal.open({
-        templateUrl: 'views/eventModal.html',
+        templateUrl: 'scripts/events/eventModal.html',
         controller: 'EventModalController as eventModal',
         size: 'lg',
         resolve: {
@@ -72,7 +71,7 @@
     function changeLocation(chosenPlaceDetails) {
       StateService.setPlaceID(chosenPlaceDetails.place_id);
 
-      if(vm.isLoggedIn()){
+      if (vm.isLoggedIn()) {
         vm.saveUserLocation();
       }
     }
@@ -81,11 +80,11 @@
       var _chosenPlaceID = StateService.getPlaceID();
 
       RestService.updateUserLocation(_chosenPlaceID).
-        success(function(data, status, headers, config) {
-           // Fill in at later date
+        success(function (data, status, headers, config) {
+          // Fill in at later date
         }).
-        error(function(data, status, headers, config) {
-           // Fill in at later date
+        error(function (data, status, headers, config) {
+          // Fill in at later date
         });
     }
   }

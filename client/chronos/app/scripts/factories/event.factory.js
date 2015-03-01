@@ -1,0 +1,221 @@
+/**
+ * @author Paul Moon
+ * @ngdoc service
+ * @name chronosApp.EventFactory
+ * @description Factory used for retrieving (filtered) events from a single place.
+ */
+
+(function () {
+  'use strict';
+
+  angular
+    .module('chronosApp')
+    .service('EventFactory', EventFactory);
+
+  EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService'];
+
+  /* @ngInject */
+  function EventFactory($log, $q, RestService, StateService) {
+    var factory = {
+      events: [],
+      selectedEvents: [],
+      keywords: [],
+      tags: [],
+      selectedEventsStartRange: undefined,
+      selectedEventsEndRange: undefined,
+      dateRangeStart: undefined,
+      dateRangeEnd: undefined,
+
+      getEvents: getEvents,
+      getSelectedEvents: getSelectedEvents,
+      updateKeywords: updateKeywords,
+      updateTags: updateTags,
+      updateDateRange: updateDateRange,
+      updateDateRangeStart: updateDateRangeStart,
+      updateSelectionRange: updateSelectionRange,
+      updateEvents: updateEvents,
+    };
+
+    return factory;
+
+    //////////////////////
+
+    /**
+     * @description Returns the events that the factory holds.
+     * @methodOf chronosApp:EventFactory
+     * @returns List of events in the EventFactory.
+     */
+    function getEvents() {
+      return factory.events;
+    }
+
+    /**
+     * @description Returns the events that the application is currently displaying.
+     * @methodOf chronosApp:EventFactory
+     * @returns List of events that the application is currently showing.
+     */
+    function getSelectedEvents() {
+      return factory.selectedEvents;
+    }
+
+    /**
+     * @description Update events with given keywords
+     * @methodOf chronosApp:EventFactory
+     * @param keywords Array of keywords by which keywords will be filtered
+     * @returns {*}
+     */
+    function updateKeywords(keywords) {
+      factory.keywords = keywords;
+      return _updateEvents();
+    }
+
+    /**
+     * @description Update events with given tags
+     * @methodOf chronosApp:EventFactory
+     * @param tags Array of tags by which events will be filtered
+     * @returns {*}
+     */
+    function updateTags(tags) {
+      factory.tags = tags;
+      return _updateEvents();
+    }
+
+    /**
+     * Update the events using the specified date range start.
+     * @param start Moment type
+     * @returns {Promise}
+     */
+    function updateDateRangeStart(start) {
+      factory.dateRangeStart = start;
+      return _updateEvents();
+    }
+
+    /**
+     * @description Update events with the given date range
+     * @methodOf chronosApp:EventFactory
+     * @param start Moment type
+     * @param end Moment type
+     * @returns {*} List of events filtered with new date range.
+     */
+    function updateDateRange(start, end) {
+      factory.dateRangeStart = start;
+      factory.dateRangeEnd = end;
+      return _updateEvents();
+    }
+
+    /**
+     * @description Sets the start and end range for which to display the events. If June 15th selected,
+     * then the start time will be June 15th 12:00:00 AM (UTC) and the end time will be June 16th
+     * 12:00:00 AM (UTC).
+     * @methodOf chronosApp:EventFactory
+     * @param start Moment type
+     * @param end Moment type
+     */
+    function updateSelectionRange(start, end) {
+      factory.selectedEventsStartRange = start;
+      factory.selectedEventsEndRange = end;
+
+      // The only time we don't display any events is if eventStart > end or eventEnd < start.
+      // Converse by De Morgan's Law: If eventStart <= end and eventEnd >= start
+      factory.selectedEvents = factory.events.filter(function (element) {
+        if (element.start_date.diff(element.end_date) === 0) {
+          return element.start_date < end && element.end_date >= start;
+        }
+
+        // An event ending at 12AM June 15th should not be shown when we select on June 15th. Similarly, an event
+        // beginning on June 15th 12AM should not be shown when we click on June 14th (clicked date's end =
+        // June 15th 12AM). Since we don't want to show the event because they are on different days,
+        // strict inequality is used.
+        return element.start_date < end && element.end_date > start;
+      });
+    }
+
+    /**
+     * @description Batch update the events. New keywords, tags, fromDate and toDate, and other keys in filterParams
+     * are used to filter the events. This expects dateRangeStart and dateRangeEnd to be Moment objects.
+     * @methodOf chronosApp:EventFactory
+     * @param filterParams Object of {key: value} filter parameters.
+     */
+    function updateEvents(filterParams) {
+      if (filterParams.keywords) {
+        factory.keywords = filterParams.keywords;
+      }
+      if (filterParams.tags) {
+        factory.tags = filterParams.tags;
+      }
+      if (filterParams.fromDate) {
+        factory.dateRangeStart = filterParams.fromDate;
+      }
+      if (filterParams.toDate) {
+        factory.dateRangeEnd = filterParams.toDate;
+      }
+      return _updateEvents(filterParams);
+    }
+
+    /**
+     * @description Internal method for updating EventFactory.events.
+     * @methodOf chronosApp:EventFactory
+     * @returns Promise containing list of events if succeeded or rejected promise otherwise.
+     * @private
+     */
+    function _updateEvents(extraParams) {
+      var filterParams = _constructFilterParams();
+
+      if (StateService.getPlaceID()) {
+        filterParams.placeID = StateService.getPlaceID();
+      }
+
+      if (extraParams) {
+        // FIXME: Test why the ordering of parameters matter
+        filterParams = $.extend({}, extraParams, filterParams);
+      }
+
+      return RestService.getFilteredEvents(filterParams)
+        .then(function (response) {
+          var newEvents = response.data;
+
+          for (var i = 0; i < newEvents.length; i++) {
+            newEvents[i].start_date = moment(newEvents[i].start_date).utc();
+            newEvents[i].end_date = moment(newEvents[i].end_date).utc();
+          }
+
+          factory.events = newEvents;
+          factory.selectedEvents = newEvents;
+          return response.data;
+        }, function (response) {
+          $log.warn('Failed to retrieve filtered events: ' + filterParams);
+          $log.warn('Response: ' + response);
+          return $q.reject(response);
+        });
+    }
+
+    /**
+     * Helper method for constructing {key: value} filter parameter object
+     * @methodOf chronosApp:EventFactory
+     * @returns {{}} filterParam object
+     * @private
+     */
+    function _constructFilterParams() {
+      var filterParams = {};
+
+      if (factory.keywords.length > 0) {
+        filterParams.keywords = factory.keywords.join(',');
+      }
+
+      if (factory.tags.length > 0) {
+        filterParams.tags = factory.tags.join(',');
+      }
+
+      // Provide YYYY-MM-DD for Django.
+      if (factory.dateRangeStart) {
+        filterParams.fromDate = factory.dateRangeStart.format('YYYY-MM-DD');
+      }
+
+      if (factory.dateRangeEnd) {
+        filterParams.toDate = factory.dateRangeEnd.format('YYYY-MM-DD');
+      }
+
+      return filterParams;
+    }
+  }
+})();

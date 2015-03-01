@@ -139,8 +139,8 @@ class EventView(generics.ListAPIView):
         creatorid = self.request.query_params.get('creatorID')
         fromDate = self.request.query_params.get('fromDate')
         toDate = self.request.query_params.get('toDate')
-        tags = self.request.query_params.getlist('tag')
-        keywords = self.request.query_params.getlist('keyword')
+        tags = self.request.query_params.getlist('tags')
+        keywords = self.request.query_params.getlist('keywords')
 
         filterargs = {}
         if placeid is not None:
@@ -160,7 +160,7 @@ class EventView(generics.ListAPIView):
             filterargs['tags__name__in'] = tags
 
         queryset = queryset.filter(**filterargs).order_by('start_date')
-        
+
         if len(keywords) > 0:
             qset = Q()
 
