@@ -60,3 +60,8 @@
 .event-dates {
   padding-right: 20px;
 }
+
+/* Models have a z-index of 1050, so we need to force google autocompelte to be higher */
+.pac-container {
+    z-index: 1051 !important;
+}

@@ -14,9 +14,9 @@
     .module('chronosApp')
     .service('RestService', RestService);
 
-  RestService.$inject = ['$http', 'setting', 'StateService'];
+  RestService.$inject = ['$http', 'settings', 'StateService'];
 
-  function RestService($http, setting, StateService) {
+  function RestService($http, settings, StateService) {
     /**
      * @description API call for verifying credentials.
      * @methodOf chronosApp:RestService
@@ -25,7 +25,7 @@
      * @returns {HttpPromise}
      */
     this.login = function (username, password) {
-      return $http.post(setting.serverUrl + '/users/verify_credentials/', {
+      return $http.post(settings.serverUrl + '/users/verify_credentials/', {
         username: username,
         password: password
       });
@@ -42,7 +42,7 @@
      * @returns {HttpPromise}
      */
     this.createUser = function (username, firstName, lastName, password, email) {
-      return $http.post(setting.serverUrl + '/users/create/', {
+      return $http.post(settings.serverUrl + '/users/create/', {
         username: username,
         first_name: firstName,
         last_name: lastName,
@@ -58,7 +58,7 @@
      * @returns {HttpPromise}
      */
     this.updateUserLocation = function (placeID) {
-      return $http.put(setting.serverUrl + '/users/update/', {
+      return $http.put(settings.serverUrl + '/users/update/', {
         place_id: placeID
       });
     };
@@ -66,41 +66,13 @@
     /**
      * @description API call for getting a filtered list of events
      * @methodOf chronosApp:RestService
-     * @param url
-     * @param placeID
-     * @param startDate
-     * @param endDate
-     * @param tags
-     * @param keywords
+     * @param filterParams parameters for filtering the events
      * @returns {HttpPromise}
      */
-    this.getFilteredEvents = function(_url, _placeID, _dateRangeStart, _dateRangeEnd, _tags, _keywords) {
-
-      if(_placeID){
-        _url = _url + '&placeID=' + _placeID;
-      }
-
-      if(_dateRangeStart){
-        if(_dateRangeEnd){
-          _url = _url + '&fromDate=' + _dateRangeStart + '&toDate=' + _dateRangeEnd;
-        }else{
-          _url = _url + '&fromDate=' + _dateRangeStart;
-        }
-      }
-
-      if(_tags){
-        _tags.forEach(function(tag) {
-          _url = _url + '&tag=' + tag;
-        });
-      }
-
-      if(_keywords){
-        _keywords.forEach(function(word) {
-          _url = _url + '&keyword=' + word;
-        });
-      }
-
-      return $http.get(_url);
+    this.getFilteredEvents = function (filterParams) {
+      var _url = settings.serverUrl + '/events/?';
+      var _params = $.param(filterParams);
+      return $http.get(_url + _params);
     };
 
     /**
@@ -114,13 +86,15 @@
      * @param tags
      * @returns {HttpPromise}
      */
-    this.createEvent = function(eventName, description, picture, startDate, endDate, tags) {
-      return $http.post(setting.serverUrl + '/events/', {
+    this.createEvent = function(eventName, description, picture, startDate, endDate, place_id, place_name, tags) {
+      return $http.post(settings.serverUrl + '/events/', {
         name: eventName,
         description: description,
         picture: picture,
         start_date: startDate,
         end_date: endDate,
+        place_id: place_id,
+        place_name: place_name,
         tags: tags
       });
     };
@@ -137,7 +111,7 @@
      * @returns {HttpPromise}
      */
     this.updateEvent = function (eventName, description, picture, startDate, endDate, tags) {
-      return $http.put(setting.serverUrl + '/events/', {
+      return $http.put(settings.serverUrl + '/events/', {
         name: eventName,
         description: description,
         picture: picture,
@@ -154,12 +128,11 @@
      * @param direction The direction to vote the event in, either 1, 0, or -1
      * @returns {HttpPromise}
      */
-    this.voteEvent = function(eventId, direction) {
-        return $http.post(setting.serverUrl + '/events/vote/', {
-            event_id: eventId,
-            direction: direction
-        });
+    this.voteEvent = function (eventId, direction) {
+      return $http.post(settings.serverUrl + '/events/vote/', {
+        event_id: eventId,
+        direction: direction
+      });
     };
-    
   }
 })();

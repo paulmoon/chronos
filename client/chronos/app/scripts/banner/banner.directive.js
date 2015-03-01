@@ -1,5 +1,3 @@
-
-
 /**
  * @ngdoc directive
  * @name chronosApp.directive:banner
@@ -14,7 +12,7 @@
     .module('chronosApp')
     .directive('banner', function () {
       return {
-        templateUrl: 'scripts/directives/banner.html',
+        templateUrl: 'scripts/banner/banner.html',
         restrict: 'E'
       };
     });
