@@ -150,12 +150,12 @@ class EventView(generics.ListAPIView):
         # If the from date is only specified, then we are looking for only that date
         if fromDate is not None:
             if toDate is not None:
-                print (fromDate)
-                print (toDate)
-                filterargs['start_date__range'] = [fromDate, toDate]
+                if ':' not in toDate:
+                    filterargs['start_date__range'] = [fromDate, toDate[:10] + 'T23:59:59']
+                else:
+                    filterargs['start_date__range'] = [fromDate, toDate]
             else:
-                filterargs['start_date__range'] = [fromDate, fromDate]
-
+                filterargs['start_date__range'] = [fromDate, fromDate[:10] + 'T23:59:59']
         if len(tags) > 0:
             filterargs['tags__name__in'] = tags
 
