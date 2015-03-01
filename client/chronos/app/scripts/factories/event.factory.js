@@ -31,6 +31,7 @@
       updateKeywords: updateKeywords,
       updateTags: updateTags,
       updateDateRange: updateDateRange,
+      updateDateRangeStart: updateDateRangeStart,
       updateSelectionRange: updateSelectionRange,
       updateEvents: updateEvents,
     };
@@ -80,6 +81,16 @@
     }
 
     /**
+     * Update the events using the specified date range start.
+     * @param start Moment type
+     * @returns {Promise}
+     */
+    function updateDateRangeStart(start) {
+      factory.dateRangeStart = start;
+      return _updateEvents();
+    }
+
+    /**
      * @description Update events with the given date range
      * @methodOf chronosApp:EventFactory
      * @param start Moment type
@@ -121,7 +132,7 @@
 
     /**
      * @description Batch update the events. New keywords, tags, fromDate and toDate, and other keys in filterParams
-     * are used to filter the events.
+     * are used to filter the events. This expects dateRangeStart and dateRangeEnd to be Moment objects.
      * @methodOf chronosApp:EventFactory
      * @param filterParams Object of {key: value} filter parameters.
      */
@@ -132,11 +143,12 @@
       if (filterParams.tags) {
         factory.tags = filterParams.tags;
       }
-      if (filterParams.fromDate && filterParams.toDate) {
-        factory.fromDate = filterParams.fromDate;
-        factory.toDate = filterParams.toDate;
+      if (filterParams.fromDate) {
+        factory.dateRangeStart = filterParams.fromDate;
       }
-
+      if (filterParams.toDate) {
+        factory.dateRangeEnd = filterParams.toDate;
+      }
       return _updateEvents(filterParams);
     }
 
@@ -195,8 +207,11 @@
       }
 
       // Provide YYYY-MM-DD for Django.
-      if (factory.dateRangeStart && factory.dateRangeEnd) {
+      if (factory.dateRangeStart) {
         filterParams.fromDate = factory.dateRangeStart.format('YYYY-MM-DD');
+      }
+
+      if (factory.dateRangeEnd) {
         filterParams.toDate = factory.dateRangeEnd.format('YYYY-MM-DD');
       }
 

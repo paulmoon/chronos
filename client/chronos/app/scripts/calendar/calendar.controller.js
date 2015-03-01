@@ -49,6 +49,7 @@
      * @methodOf chronosApp:CalendarController
      * @param start Start time of the range in which events are to be shown. Moment type.
      * @param end End time of the range in which events are to be shown. Moment type.
+     * @param timezone String/boolean indicating timezone e.g. false, 'local', 'UTC', 'America/Chicago'.
      * @param callback Function to be called after events are retrieved.
      */
     function getEvents(start, end, timezone, callback) {
@@ -122,7 +123,9 @@
      */
     function unselect(view, jsEvent) {
       // view !== undefined if user clicks outside of calendar. Clear highlighted events.
-      if (view !== undefined) {
+      if (typeof view !== 'undefined') {
+        EventFactory.selectedEventsStartRange = null;
+        EventFactory.selectedEventsEndRange = null;
         EventFactory.selectedEvents = EventFactory.getEvents();
       }
     }
