@@ -22,6 +22,7 @@
       'ui.bootstrap',
       'mgcrea.ngStrap.datepicker',
       'mgcrea.ngStrap.timepicker',
-      'ui.calendar'
+      'ui.calendar',
+      'ngTagsInput'
     ]);
 })();

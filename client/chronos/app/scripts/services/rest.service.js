@@ -52,8 +52,21 @@
     };
 
     /**
+     * @description API call for updating a user location.
+     * @methodOf chronosApp:RestService
+     * @param {string} location ID
+     * @returns {HttpPromise}
+     */
+    this.updateUserLocation = function (placeID) {
+      return $http.put(settings.serverUrl + '/users/update/', {
+        place_id: placeID
+      });
+    };
+
+    /**
      * @description API call for getting a filtered list of events
      * @methodOf chronosApp:RestService
+     * @param filterParams parameters for filtering the events
      * @returns {HttpPromise}
      */
     this.getFilteredEvents = function (filterParams) {
@@ -73,13 +86,15 @@
      * @param tags
      * @returns {HttpPromise}
      */
-    this.createEvent = function (eventName, description, picture, startDate, endDate, tags) {
+    this.createEvent = function(eventName, description, picture, startDate, endDate, place_id, place_name, tags) {
       return $http.post(settings.serverUrl + '/events/', {
         name: eventName,
         description: description,
         picture: picture,
         start_date: startDate,
         end_date: endDate,
+        place_id: place_id,
+        place_name: place_name,
         tags: tags
       });
     };

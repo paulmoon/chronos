@@ -77,6 +77,9 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+##############################
+# --------- Other! --------- #
+##############################
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Tag
@@ -92,7 +95,7 @@ class EventWriteSerializer(serializers.ModelSerializer):
     tags = TagEventSerializer(many=True, required=False)
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "place_name", "tags")
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)          
@@ -149,10 +152,10 @@ class EventReadSerializer(serializers.ModelSerializer):
     """
     tags = TagSerializer(many=True)
     vote = serializers.SerializerMethodField()
-    
+    creator = ChronosPublicUserSerializer()
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "tags")
+        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "report", "is_deleted", "place_id", "place_name", "tags")
 
     def get_vote(self, obj):
         return obj.upvote - obj.downvote
@@ -173,6 +176,7 @@ class VoteEventSerializer(serializers.Serializer):
             event.upvote += 1
         elif direction == -1:
             event.downvote += 1
+        
         event.save()
         return vote
 

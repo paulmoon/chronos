@@ -1,37 +1,30 @@
-'use strict';
-
 /**
  * @author Justin Guze
  * @ngdoc service
  * @name chronosApp.stateService
- * @description
- * # stateService
- * Service in the chronosApp.
+ * @description Holds application state information such as place ID.
  */
 
-angular
-  .module('chronosApp')
-  .service('StateService', StateService);
+(function () {
+  'use strict';
 
-//StateService.$inject = [''];
+  angular
+    .module('chronosApp')
+    .service('StateService', StateService);
 
-/* @ngInject */
-function StateService() {
-  var _placeIDHolder;
+  function StateService() {
+    var _placeIDSearch;
 
-  this.hello = function () {
-    return "Hello";
-  };
+    /**
+     * Place ID Search set/get
+     */
+    this.setPlaceID = function (placeID) {
+      _placeIDSearch = placeID;
+    };
 
-  this.goodbye = function () {
-    return "Goodbye";
-  };
+    this.getPlaceID = function () {
+      return _placeIDSearch;
+    };
+  }
+})();
 
-  this.setPlaceID = function (_placeID) {
-    _placeIDHolder = _placeID;
-  };
-
-  this.getPlaceID = function () {
-    return _placeIDHolder;
-  };
-}

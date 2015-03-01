@@ -20,6 +20,8 @@
     vm.title = 'EventModalController';
     vm.eventName = '';
     vm.description = '';
+    vm.locationId = null;
+    vm.locationName = '';
     vm.startDate = '';
     vm.endDate = '';
     vm.picture = null;
@@ -29,6 +31,8 @@
     vm.createEvent = createEvent;
     vm.cancel = cancel;
 
+    vm.locationPicked = locationPicked;
+
     ////////////////
 
     /**
@@ -37,7 +41,7 @@
      */
     function createEvent() {
       vm.shouldShowEventCreateModal = true;
-      RestService.createEvent(vm.eventName, vm.description, vm.picture, vm.startDate, vm.endDate, vm.tags)
+      RestService.createEvent(vm.eventName, vm.description, vm.picture, vm.startDate, vm.endDate, vm.locationId, vm.locationName, vm.tags)
         .then(function (data) {
           $modalInstance.close();
         }, function () {
@@ -62,10 +66,19 @@
 
     /**
      * @description Closes the modal window.
-     * @methodOf chronosApp:RestModalController
+     * @methodOf chronosApp:EventModalController
      */
     function cancel() {
       $modalInstance.dismiss('cancel');
+    }
+
+    /**
+     * @description Callback function when a location is chosen
+     * @methodOf chronosApp:EventModalController
+     * @parameters Details from a google autocomplete call
+     */
+    function locationPicked(details) {
+      vm.locationId = details.place_id;
     }
   }
 })();
