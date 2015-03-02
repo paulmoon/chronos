@@ -1,15 +1,45 @@
-<div class="media-left event-card">
-  <div class="arrow-group">
-    <div class="glyphicon glyphicon-arrow-up" ng-style="vm.upArrowStyle" ng-click="vm.upvoteEvent()"/>
-    <div class="vote-value">{{vm.vote}}</div>
-    <div class="glyphicon glyphicon-arrow-down" ng-style="vm.downArrowStyle" ng-click="vm.downvoteEvent()"/>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading"><a href="#/event/{{vm.eventId}}" style="text-decoration:none; color:black;">{{ vm.title }}</a></h4>
-    <div style="float:left">
-      <div>{{ vm.description }}</div>
-      <div><strong>Start Date:</strong> <strong>End Date:</strong> </div>
+<div class="event-card-panel panel panel-default">
+  <div class="media-left event-card panel-body">
+    <div class="arrow-group">
+      <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.upvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
+        <span class="glyphicon glyphicon-chevron-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
+      </button>
+      <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+        <span class="glyphicon glyphicon-chevron-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
+      </button>
+      <div class="vote-value"> {{vm.vote}}</div>
+      <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.downvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
+        <span class="glyphicon glyphicon-chevron-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
+      </button>
+      <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+        <span class="glyphicon glyphicon-chevron-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
+      </button>
+    </div>
+    <div ng-if="vm.picture" class="picture-group">
+      <img ng-src="{{vm.picture}}" alt="Event Picture" class="event-picture">
+    </div>
+    <div class="media-body">
+      <div class="event-creation" style="float:right">Created by <a ng-click="vm.goUser()" style="text-decoration:none">{{vm.creator.username}}</a></div>
+      <h4 class="media-heading"><a href="#/event/{{vm.eventId}}" class="event-name" style="text-decoration:none">{{ vm.displayName }}</a></h4>
+      <div class="event-details">{{vm.displayStartDate}} to {{vm.displayEndDate}}</div>
+      <div class="event-details">{{vm.displayPlace}}</div>
+      <div style="float:right">
+        <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.reportEvent()" class="btn btn-link btn-xs" style="outline:none">
+          <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+        </button>
+        <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.followEvent()" class="btn btn-link btn-xs" style="outline:none">
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </button>
+        <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+          <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+        </button>
+        <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="float-left" ng-repeat="tag in vm.tags">
+        <span class="label label-info margin-right-two">{{ tag.name }}</span>
+      </div>
     </div>
   </div>
-  <hr>
 </div>

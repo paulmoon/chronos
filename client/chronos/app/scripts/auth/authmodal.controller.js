@@ -42,7 +42,7 @@
 
       AuthService.login(vm.username, vm.password)
         .then(function (response) {
-          $modalInstance.close();
+          $modalInstance.close("login");
         }, function (response) {
           vm.loginFailed = true;
         });

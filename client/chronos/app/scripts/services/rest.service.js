@@ -64,6 +64,15 @@
     };
 
     /**
+     * @description API call for retrieving the current users information
+     * @methodOf chronosApp:RestService
+     * @returns {HttpPromise}
+     */
+    this.getCurrentUserInformation = function () {
+      return $http.get(setting.serverUrl + '/users/profile/');
+    };
+
+    /**
      * @description API call for getting a filtered list of events
      * @methodOf chronosApp:RestService
      * @param filterParams parameters for filtering the events
@@ -72,6 +81,7 @@
     this.getFilteredEvents = function (filterParams) {
       var _url = settings.serverUrl + '/events/?';
       var _params = $.param(filterParams);
+
       return $http.get(_url + _params);
     };
 
