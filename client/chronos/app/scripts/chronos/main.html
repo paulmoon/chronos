@@ -59,16 +59,20 @@
             </div>
             <div ng-if="!vm.searchError">
               <eventcard ng-repeat="event in vm.getEvents()"
-                         title="event.name"
+                         event-name="event.name"
                          event-id="event.id"
                          description="event.description"
                          creator="event.creator"
                          creation-date="event.create_date"
                          start-date="event.start_date"
                          end-date="event.end_date"
-                         location="event.place_id"
+                         place="event.place_id"
                          vote="event.vote"
-                         report="event.report"></eventcard>
+                         report="event.report"
+                         tags="event.tags" 
+                         deleted="event.is_deleted"
+                         edit-date="event.edit_date"
+                         picture="event.picture"></eventcard>
             </div>
             <div ng-if="vm.searchError">
               <div class="alert alert-danger alert-dismissable" role="alert">

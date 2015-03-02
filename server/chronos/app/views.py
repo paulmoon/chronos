@@ -17,8 +17,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
 from django.conf import settings
 import datetime
-from sets import Set
-from django.db.models import Q
+from django.db.models import Q, Count
 
 ##############################
 # --------- Users! --------- #
@@ -139,8 +138,8 @@ class EventView(generics.ListAPIView):
         creatorid = self.request.query_params.get('creatorID')
         fromDate = self.request.query_params.get('fromDate')
         toDate = self.request.query_params.get('toDate')
-        tags = self.request.query_params.getlist('tags')
-        keywords = self.request.query_params.getlist('keywords')
+        tags = self.request.query_params.getlist('tag')
+        keywords = self.request.query_params.getlist('keyword')
 
         filterargs = {}
         if placeid is not None:
@@ -159,7 +158,7 @@ class EventView(generics.ListAPIView):
         if len(tags) > 0:
             filterargs['tags__name__in'] = tags
 
-        queryset = queryset.filter(**filterargs).order_by('start_date')
+        queryset = queryset.filter(**filterargs)
 
         if len(keywords) > 0:
             qset = Q()
@@ -168,9 +167,10 @@ class EventView(generics.ListAPIView):
                 qset |= Q(name__contains=word)
                 qset |= Q(description__contains=word)
 
-            queryset = queryset.filter(qset).order_by('start_date')
+            queryset = queryset.filter(qset)
 
-        return Set(queryset)
+        queryset = queryset.annotate(itemcount=Count('id')).order_by('-itemcount','start_date')
+        return queryset
 
     def post(self, request, *args, **kwargs):
         """

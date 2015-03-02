@@ -25,6 +25,23 @@
     vm.upvoteEvent = upvoteEvent;
     vm.downvoteEvent = downvoteEvent;
 
+    vm.reportEvent = reportEvent;
+    vm.followEvent = followEvent;
+    vm.goUser = goUser;
+    vm.isLoggedIn = AuthService.isLoggedIn();
+
+    vm.displayPlace = vm.place;
+    vm.displayStartDate = vm.startDate._i.replace("T"," @ ");
+    vm.displayEndDate = vm.endDate._i.replace("T"," @ ");
+    vm.displayStartDate = vm.displayStartDate.substring(0, vm.displayEndDate.length - 4);
+    vm.displayEndDate = vm.displayEndDate.substring(0, vm.displayEndDate.length - 4);
+
+    if (vm.eventName.length > 70){
+      vm.displayName = vm.eventName.substring(0, 70) + "...";
+    } else {
+      vm.displayName = vm.eventName;
+    }
+
     /**
      * @description Adds a vote for an event in the direction specified, and associates it with
      *  the current user
@@ -38,7 +55,7 @@
           callback();
         },
         function (response) {
-          console.log("Failed");
+          //TODO: Add something here
         })
     }
 
@@ -66,6 +83,30 @@
         };
         vm.upArrowStyle = {};
       });
+    }
+
+    /**
+     * @description Reports the event
+     * @memberOf chronosApp:EventCardController
+     */
+    function reportEvent() {
+      // Future Functionality
+    }
+
+    /**
+     * @description Saves the event to the user
+     * @memberOf chronosApp:EventCardController
+     */
+    function followEvent() {
+      // Future Functionality
+    }
+
+    /**
+     * @description Handles when a user clicks a username
+     * @memberOf chronosApp:EventCardController
+     */
+    function goUser() {
+      // Future Functionality
     }
   }
 })();

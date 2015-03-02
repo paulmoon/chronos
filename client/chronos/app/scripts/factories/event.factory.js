@@ -199,11 +199,11 @@
       var filterParams = {};
 
       if (factory.keywords.length > 0) {
-        filterParams.keywords = factory.keywords.join(',');
+        filterParams.keywords = factory.keywords;
       }
 
       if (factory.tags.length > 0) {
-        filterParams.tags = factory.tags.join(',');
+        filterParams.tags = factory.tags;
       }
 
       // Provide YYYY-MM-DD for Django.
