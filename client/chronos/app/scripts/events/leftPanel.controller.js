@@ -43,7 +43,6 @@
       vm.searchError = '';
       var tempKeywords = '';
       var filterParams = {};
-      var extraParams = [];
 
       if (vm.searchKeywords) {
         // removes punctuation, removes extra spaces, and creates an array of the words
@@ -75,7 +74,7 @@
       if (vm.searchError) {
         EventFactory.events = [];
       } else {
-        EventFactory.updateEvents(filterParams, extraParams);
+        EventFactory.updateEvents(filterParams);
       }
     }
 
