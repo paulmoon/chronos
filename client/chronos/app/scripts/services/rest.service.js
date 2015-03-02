@@ -80,33 +80,9 @@
      */
     this.getFilteredEvents = function (filterParams) {
       var _url = settings.serverUrl + '/events/?';
-      //var _params = $.param(filterParams);
+      var _params = $.param(filterParams);
 
-      if (filterParams.placeID) {
-        _url = _url + '&placeID=' + filterParams.placeID;
-      }
-      if (filterParams.creatorID) {
-        _url = _url + '&creatorID=' + filterParams.creatorID;
-      }
-      if (filterParams.fromDate) {
-        _url = _url + '&fromDate=' + filterParams.fromDate;
-      }
-      if (filterParams.toDate) {
-        _url = _url + '&toDate=' + filterParams.toDate;
-      }
-
-      if (filterParams.tags) {
-        filterParams.tags.forEach(function (tag) {
-          _url = _url + '&tag=' + tag;
-        });
-      }
-      if (filterParams.keywords) {
-        filterParams.keywords.forEach(function (keyword) {
-           _url = _url + '&keyword=' + keyword;
-        });
-      }
-
-      return $http.get(_url);
+      return $http.get(_url + _params);
     };
 
     /**

@@ -43,6 +43,7 @@
       vm.searchError = '';
       var tempKeywords = '';
       var filterParams = {};
+      var extraParams = [];
 
       if (vm.searchKeywords) {
         // removes punctuation, removes extra spaces, and creates an array of the words
@@ -72,11 +73,9 @@
       }
 
       if (vm.searchError) {
-        // Should we be doing this?
         EventFactory.events = [];
       } else {
-        filterParams.placeID = StateService.getPlaceID();
-        EventFactory.updateEvents(filterParams);
+        EventFactory.updateEvents(filterParams, extraParams);
       }
     }
 
