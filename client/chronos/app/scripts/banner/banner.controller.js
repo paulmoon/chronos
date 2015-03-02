@@ -41,6 +41,20 @@
           }
         }
       });
+
+      modalInstance.result
+        .then(function (loginValue) {
+          if(loginValue == "login"){
+            RestService.getCurrentUserInformation().
+              success(function(data, status, headers, config) {
+                // MORE CODE NEEDS TO BE ADDED HERE WHEN BUG IS FIXED
+                //StateService.setPlaceID(data.place_id);
+              }).
+              error(function(data, status, headers, config) {
+                // TODO: add something here
+              });
+          }
+        });
     }
 
     function openLoginModal() {
