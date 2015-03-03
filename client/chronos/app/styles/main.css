@@ -7,7 +7,7 @@
   top: 60px;
   bottom: 10px;
   position: absolute;
-  background-color: #b8ec79;
+  background-color: #ffffff;
   width: 100%;
 }
 
@@ -49,6 +49,20 @@
   background:#FAFAFA;
 }
 
+.event-card-panel{
+  float: top;
+  background:#FFF;
+}
+
+.event-card-panel:hover{
+  float: top;
+  background:#FBFBFB;
+}
+
+.event-card{
+  margin-top:5px;
+}
+
 .add-opacity {
   opacity: 0.6;
 }
@@ -84,6 +98,10 @@
   margin-left:3px;
 }
 
+.margin-right-two {
+  margin-right:2px;
+}
+
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 7px;
@@ -96,21 +114,51 @@
 
 .arrow-group {
   float: left;
-  width: 10px;
-  margin-right: 10px;
+  margin-right: 20px;
+}
+
+.picture-group {
+  float: left;
+  margin-right: 20px;
 }
 
 .vote-value {
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin-top: 4px;
+  margin-bottom: 4px;
   font-weight: bold;
   text-align: center;
-
+  font-size: 15px;
+  color:#9BA5B3;
 }
 
-.event-card {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 8px;
-  margin-right: 8px;
+.event-name {
+  color:#405D87;
+}
+
+.event-details {
+  font-size: 13px;
+  color: #5B636E;
+  font-weight: 450;
+}
+
+.event-creation {
+  font-size: 11px;
+  color: #999;
+  font-weight: 250;
+}
+
+.event-picture {
+  width:75px;
+  height:80px;
+  margin-top:2px
+}
+
+.glyphicon.glyphicon-chevron-down {
+  font-size: 20px;
+  color:#829CBF;
+}
+
+.glyphicon.glyphicon-chevron-up {
+  font-size: 20px;
+  color:#829CBF;
 }

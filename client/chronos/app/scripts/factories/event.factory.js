@@ -149,7 +149,7 @@
       if (filterParams.toDate) {
         factory.dateRangeEnd = filterParams.toDate;
       }
-      return _updateEvents(filterParams);
+      return _updateEvents();
     }
 
     /**
@@ -158,17 +158,8 @@
      * @returns Promise containing list of events if succeeded or rejected promise otherwise.
      * @private
      */
-    function _updateEvents(extraParams) {
+    function _updateEvents() {
       var filterParams = _constructFilterParams();
-
-      if (StateService.getPlaceID()) {
-        filterParams.placeID = StateService.getPlaceID();
-      }
-
-      if (extraParams) {
-        // FIXME: Test why the ordering of parameters matter
-        filterParams = $.extend({}, extraParams, filterParams);
-      }
 
       return RestService.getFilteredEvents(filterParams)
         .then(function (response) {
@@ -196,23 +187,31 @@
      * @private
      */
     function _constructFilterParams() {
-      var filterParams = {};
+      var filterParams = [];
 
       if (factory.keywords.length > 0) {
-        filterParams.keywords = factory.keywords.join(',');
+        factory.keywords.forEach(function(keyword){
+          filterParams.push({name: "keyword", value: keyword});
+        });
       }
 
       if (factory.tags.length > 0) {
-        filterParams.tags = factory.tags.join(',');
+        factory.tags.forEach(function(tag){
+          filterParams.push({name: "tag", value: tag});
+        });
       }
 
       // Provide YYYY-MM-DD for Django.
       if (factory.dateRangeStart) {
-        filterParams.fromDate = factory.dateRangeStart.format('YYYY-MM-DD');
+        filterParams.push({name: "fromDate", value: factory.dateRangeStart.format('YYYY-MM-DD')});
       }
 
       if (factory.dateRangeEnd) {
-        filterParams.toDate = factory.dateRangeEnd.format('YYYY-MM-DD');
+        filterParams.push({name: "toDate", value: factory.dateRangeEnd.format('YYYY-MM-DD')});
+      }
+
+      if (StateService.getPlaceID()){
+        filterParams.push({name: "placeID", value: StateService.getPlaceID()});
       }
 
       return filterParams;

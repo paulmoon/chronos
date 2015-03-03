@@ -72,10 +72,8 @@
       }
 
       if (vm.searchError) {
-        // Should we be doing this?
         EventFactory.events = [];
       } else {
-        filterParams.placeID = StateService.getPlaceID();
         EventFactory.updateEvents(filterParams);
       }
     }
