@@ -22,12 +22,7 @@
 
     function link(scope, element, attrs) {
     		// This is grabbing the #empty div in the HTML to use as a placeholder map 
-    		angular.forEach(element[0].childNodes, function(child) {
-    			if (child.className == "empty")
-    			{
-    				scope._element = child;
-    			}
-    		});
+    		scope._element = element[0].querySelector('.empty');
     	}
     }
 })();
