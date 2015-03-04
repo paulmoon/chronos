@@ -13,9 +13,9 @@
     .module('chronosApp')
     .controller('BannerController', BannerController);
 
-  BannerController.$inject = ['AuthService', 'StateService', '$modal', 'RestService'];
+  BannerController.$inject = ['$scope', 'AuthService', 'StateService', '$modal', 'RestService'];
 
-  function BannerController(AuthService, StateService, $modal, RestService) {
+  function BannerController($scope, AuthService, StateService, $modal, RestService) {
     var vm = this;
 
     vm.title = 'BannerController';
@@ -28,7 +28,7 @@
     vm.changeLocation = changeLocation;
     vm.saveUserLocation = saveUserLocation;
     vm.openCreateEventModal = openCreateEventModal;
-
+    vm.onLogin = onLogin;
     ////////////////////////////
 
     function openSignupModal() {
@@ -41,20 +41,39 @@
           }
         }
       });
-
       modalInstance.result
-        .then(function (loginValue) {
-          if(loginValue == "login"){
-            RestService.getCurrentUserInformation().
-              success(function(data, status, headers, config) {
-                // MORE CODE NEEDS TO BE ADDED HERE WHEN BUG IS FIXED
-                //StateService.setPlaceID(data.place_id);
-              }).
-              error(function(data, status, headers, config) {
-                // TODO: add something here
-              });
+        .then(vm.onLogin);
+    }
+
+     /**
+     * @description Function called when the user just logs into the system. Currently,
+     * it only gets the user's place id, correlates it to a place, and puts that string in the autocomplete
+     * box. 
+     * @methodOf chronosApp:BannerController
+     */
+    function onLogin()
+    {
+      RestService.getCurrentUserInformation()
+      .success( function(data, status, headers, config) {
+        if (data.place_id == null) {
+          return;
+        }
+
+        var request = {
+          placeId: data.place_id
+        }
+        var service = new google.maps.places.PlacesService($scope._element);
+        service.getDetails(request, function(place, status)
+        {
+          if (status == 'OK') {
+            StateService.setPlaceID(place.place_id);
+            vm.chosenPlace = place.formatted_address;
           }
-        });
+        }); 
+      })
+      .error( function(data, status, headers, config) {
+        console.log("Couldn't get user information. Not doing any onLogin work");
+      });
     }
 
     function openLoginModal() {
@@ -67,6 +86,8 @@
           }
         }
       });
+
+      modalInstance.result.then(vm.onLogin);
     }
 
     function openCreateEventModal() {

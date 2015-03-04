@@ -69,7 +69,7 @@
      * @returns {HttpPromise}
      */
     this.getCurrentUserInformation = function () {
-      return $http.get(setting.serverUrl + '/users/profile/');
+      return $http.get(settings.serverUrl + '/users/profile/');
     };
 
     /**

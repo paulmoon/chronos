@@ -10,10 +10,19 @@
 
   angular
     .module('chronosApp')
-    .directive('banner', function () {
-      return {
-        templateUrl: 'scripts/banner/banner.html',
-        restrict: 'E'
-      };
-    });
+    .directive('banner', banner);
+
+    function banner() {
+    	var directive = {
+    		templateUrl: 'scripts/banner/banner.html',
+    		restrict: 'E',
+    		link: link
+    	};
+    	return directive;
+
+    function link(scope, element, attrs) {
+    		// This is grabbing the #empty div in the HTML to use as a placeholder map 
+    		scope._element = element[0].querySelector('.empty');
+    	}
+    }
 })();
