@@ -19,10 +19,9 @@ class SimpleEventSerializer(serializers.ModelSerializer):
         fields = ('id', 'name',)
 
 class ChronosUserSerializer(serializers.ModelSerializer):
-    saved_events = SimpleEventSerializer(many=True)
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'saved_events')
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id',)
 
 class ChronosUserRegisterSerializer(serializers.ModelSerializer):
     class Meta:

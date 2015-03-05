@@ -107,6 +107,14 @@ class GetUserInformation(generics.RetrieveAPIView):
     queryset = ChronosUser.objects.all()
     lookup_field = "username"
 
+class GetSavedEvents(generics.ListAPIView):
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
+    serializer_class = app.serializers.EventReadSerializer
+
+    def get_queryset(self):
+        return self.request.user.saved_events.all();
+
 ##############################
 # --------- Events! -------- #
 ##############################
@@ -247,3 +255,4 @@ list_create_event = EventView.as_view()
 create_tag = TagView.as_view()
 vote_event = VoteEvent.as_view()
 save_event = SaveEvent.as_view()
+get_saved_events = GetSavedEvents.as_view()
