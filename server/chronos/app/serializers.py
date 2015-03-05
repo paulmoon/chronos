@@ -6,15 +6,23 @@ import app
 ##############################
 # --------- Users! --------- #
 ##############################
-class ChronosUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = app.models.ChronosUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id')
+
 
 class ChronosPublicUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'username')
+        fields = ('id', 'username', )
+
+class SimpleEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.Events
+        fields = ('id', 'name',)
+
+class ChronosUserSerializer(serializers.ModelSerializer):
+    saved_events = SimpleEventSerializer(many=True)
+    class Meta:
+        model = app.models.ChronosUser
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'saved_events')
 
 class ChronosUserRegisterSerializer(serializers.ModelSerializer):
     class Meta:

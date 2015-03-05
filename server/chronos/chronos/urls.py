@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^users/profile/$', 'app.views.get_my_user'),
     url(r'^users/profile/(?P<username>.+)/$', 'app.views.get_user'),
 	url(r'^users/$', 'app.views.list_users'),
+    url(r'^users/save/(?P<event_id>[0-9]+)/?$', 'app.views.save_event'),
 
     url(r'^events/(?P<pk>[0-9]+)/?$', 'app.views.list_specific_event'),
     url(r'^events/$', 'app.views.list_create_event'),

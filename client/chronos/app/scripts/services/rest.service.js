@@ -144,5 +144,15 @@
         direction: direction
       });
     };
+
+    /**
+     * @desciption API call for saving for a specific event to a user
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event to save
+     * @returns {HttpPromise}
+     */
+    this.saveEvent = function(eventId) {
+        return $http.put(settings.serverUrl + '/users/save/' + eventId);
+    };
   }
 })();
