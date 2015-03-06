@@ -40,8 +40,8 @@
      * @methodOf chronosApp:EventModalController
      */
     function createEvent() {
-      vm.shouldShowEventCreateModal = true;
-      RestService.createEvent(vm.eventName, vm.description, vm.picture, vm.startDate, vm.endDate, vm.locationId, vm.locationName, vm.tags)
+      vm.shouldShowEventCreateModal = true;  
+      RestService.createEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
         .then(function (data) {
           $modalInstance.close();
         }, function () {
@@ -56,7 +56,7 @@
     function updateEvent() {
       vm.shouldShowEventCreateModal = false;
 
-      RestService.updateEvent(vm.eventName, vm.description, vm.picture, vm.startDate, vm.endDate, vm.tags)
+      RestService.updateEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.tags)
         .then(function (data) {
           $modalInstance.close();
         }, function () {

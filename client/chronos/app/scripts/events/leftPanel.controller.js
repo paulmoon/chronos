@@ -57,7 +57,7 @@
       if (vm.searchDateStart) {
         // regex for the date format 2015-01-01
         if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(vm.searchDateStart)) {
-          filterParams.fromDate = moment(vm.searchDateStart);
+          filterParams.fromDate = moment(vm.searchDateStart).utc().format();
         } else {
           vm.searchError = "Incorrect date format.";
         }
@@ -65,7 +65,7 @@
 
       if (vm.searchDateEnd) {
         if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(vm.searchDateEnd)) {
-          filterParams.toDate = moment(vm.searchDateEnd);
+          filterParams.toDate = moment(vm.searchDateEnd).utc().format();
         } else {
           vm.searchError = "Incorrect date format.";
         }
