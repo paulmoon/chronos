@@ -29,7 +29,16 @@
     vm.saveUserLocation = saveUserLocation;
     vm.openCreateEventModal = openCreateEventModal;
     vm.onLogin = onLogin;
+
+    _activate();
+
     ////////////////////////////
+
+    function _activate() {
+      if (AuthService.isLoggedIn()) {
+        onLogin();
+      }
+    }
 
     function openSignupModal() {
       var modalInstance = $modal.open({
@@ -45,35 +54,35 @@
         .then(vm.onLogin);
     }
 
-     /**
+    /**
      * @description Function called when the user just logs into the system. Currently,
      * it only gets the user's place id, correlates it to a place, and puts that string in the autocomplete
-     * box. 
+     * box.
      * @methodOf chronosApp:BannerController
      */
-    function onLogin()
-    {
+    function onLogin() {
       RestService.getCurrentUserInformation()
-      .success( function(data, status, headers, config) {
-        if (data.place_id == null) {
-          return;
-        }
-
-        var request = {
-          placeId: data.place_id
-        }
-        var service = new google.maps.places.PlacesService($scope._element);
-        service.getDetails(request, function(place, status)
-        {
-          if (status == 'OK') {
-            StateService.setPlaceID(place.place_id);
-            vm.chosenPlace = place.formatted_address;
+        .success(function (data, status, headers, config) {
+          if (data.place_id === null) {
+            return;
           }
-        }); 
-      })
-      .error( function(data, status, headers, config) {
-        console.log("Couldn't get user information. Not doing any onLogin work");
-      });
+
+          var request = {
+            placeId: data.place_id
+          };
+
+          var service = new google.maps.places.PlacesService($scope._element);
+
+          service.getDetails(request, function (place, status) {
+            if (status === 'OK') {
+              StateService.setPlaceID(place.place_id);
+              vm.chosenPlace = place.formatted_address;
+            }
+          });
+        })
+        .error(function (data, status, headers, config) {
+          console.log("Couldn't get user information. Not doing any onLogin work");
+        });
     }
 
     function openLoginModal() {
