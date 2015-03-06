@@ -34,11 +34,6 @@
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
 
-    // vm.displayStartDate = moment().calendar(vm.startDate);//._i.replace("T"," @ ");
-    // vm.displayEndDate = moment().calendar(vm.endDate); //_i.replace("T"," @ ");
-   // vm.displayStartDate = vm.displayStartDate.substring(0, vm.displayEndDate.length - 4);
-   // vm.displayEndDate = vm.displayEndDate.substring(0, vm.displayEndDate.length - 4);
-
     if (vm.eventName.length > 70){
       vm.displayName = vm.eventName.substring(0, 70) + "...";
     } else {
