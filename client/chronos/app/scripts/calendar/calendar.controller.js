@@ -74,8 +74,8 @@
         new_events.push({
           id: event.id,
           title: event.name,
-          start: event.start_date,
-          end: event.end_date
+          start: event.start_date.local(),
+          end: event.end_date.local()
         });
       });
       return new_events;
