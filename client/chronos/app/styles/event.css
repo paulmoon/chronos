@@ -106,3 +106,9 @@
 .event-button {
   outline: none;
 }
+
+.event-label {
+  margin: 0 5px;
+  padding: 5px;
+  font-size: 1em;
+}

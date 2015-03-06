@@ -17,6 +17,7 @@ angular.module('chronosApp')
     var vm = this;
     var init = EventPageFactory.updateEvent();
     vm.title = 'EventPageController';
+    vm.isLoggedIn = AuthService.isLoggedIn;
     init.then(function(data) {
       console.log(data);
       vm.placeName = data.place_name;
@@ -26,6 +27,10 @@ angular.module('chronosApp')
       vm.upvote = data.upvote;
       vm.downvote = data.downvote;
       vm.vote = data.vote;
+      vm.picture = data.picture;
+      vm.startDate = moment(data.start_date).format('MMMM Do YYYY, h:mm:ss a');
+      vm.endDate =  moment(data.end_date).format('MMMM Do YYYY, h:mm:ss a');
+      vm.tags = data.tags;
     });
 
     vm.copyUrl = $location.absUrl();

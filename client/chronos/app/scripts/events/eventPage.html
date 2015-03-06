@@ -1,18 +1,29 @@
 <banner></banner>
-<div class="container event-container" data-ng-controller="EventPageController as events">
+<div class="container event-container" data-ng-controller="EventPageController as event">
   <div class="row">
-    <div class="col-md-8" style="border: 1px solid">
-      <img src="" alt="picture" class="img-rounded event-image" />
+    <div class="col-md-8">
+      <img src="{{event.picture}}" alt="picture" class="img-rounded event-image" />
       <div class="panel panel-default">
         <ul class="list-group">
           <li class="list-group-item">
             <div class="row">
               <div class="col-md-1">
-                <div class="row">
-                  <span class="glyphicon glyphicon-chevron-up event-vote" aria-hidden="true"></span>
-                </div>
-                <div class="row">
-                  <span class="glyphicon glyphicon-chevron-down event-vote" aria-hidden="true"></span>
+                <div class="arrow-group">
+                  <!-- This section is not complete-->
+                  <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.upvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
+                    <span class="glyphicon glyphicon-chevron-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
+                  </button>
+                  <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+                    <span class="glyphicon glyphicon-chevron-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
+                  </button>
+                  <div class="vote-value"> {{vm.vote}}</div>
+                  <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.downvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
+                    <span class="glyphicon glyphicon-chevron-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
+                  </button>
+                  <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+                    <span class="glyphicon glyphicon-chevron-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
+                  </button>
+                  <!-- This section is not complete-->
                 </div>
               </div>
               <div class="col-md-2">
@@ -23,42 +34,47 @@
                 </div>
                 <div class="row user-name">
                   <a href="#" class="user-profile">
-                    {{events.username}}
+                    {{event.username}}
                   </a>
                 </div>
               </div>
-              <div class="col-md-9">
+              <div class="col-md-8">
                 <div class="row">
-                  <h2>{{events.name}}</h2>
+                  <h2>{{event.name}}</h2>
                 </div>
                 <div class="row">
-                  Event time
+                  {{event.startDate}} - {{event.endDate}}
                 </div>
+              </div>
+              <div class="col-md-1">
+                <!-- This section is not complete-->
+                <button ng-if="event.owns" class="btn btn-success">Edit</button>
+                <!-- This section is not complete-->
               </div>
             </div>
           </li>
           <li class="list-group-item">
-            <i class="fa fa-map-marker"> {{events.placeName}}</i>
+            <a href="https://www.google.ca/maps/place/{{event.placeName}}"><i class="fa fa-map-marker"> {{event.placeName}}</i></a>
           </li>
           <li class="list-group-item">
-            {{events.description}}
+            {{event.description}}
           </li>
           <li class="list-group-item event-upvote-li">
             <div class="row">
               <div class="col-md-1 event-padding">
-                <span class="label label-success event-upvote-label"><i class="fa fa-star-half-o"></i> {{events.vote}}</span>
+                <span class="label label-success event-upvote-label"><i class="fa fa-star-half-o"></i> {{event.vote}}</span>
               </div>
               <div class="col-md-3">
                 <span>The total overall votes</span>
               </div>
               <div class="col-md-1 event-padding">
-                <span class="label label-primary event-upvote-label"><i class="fa fa-arrow-circle-up"> {{events.upvote}}</i></span>
+                <span class="label label-primary event-upvote-label"><i class="fa fa-arrow-circle-up"> {{event.upvote}}</i></span>
               </div>
               <div class="col-md-3 event-padding">
                 <span>Upvotes</span>
               </div>
               <div class="col-md-1 event-padding">
-                <span class="label label-danger event-upvote-label"><i class="fa fa-arrow-circle-down"> {{events.downvote}}</i></span>
+                <span class="label label-danger event-upvote-label"><i class="fa fa-arrow-circle-down"> {{event.downvote}}</i></span>
               </div>
               <div class="col-md-3 event-padding">
                 <span>Downvotes</span>
@@ -73,16 +89,16 @@
                     <i class="fa fa-bookmark"></i>
                   </div>
                   <button type="button" data-ng-click="saveEvent()" class="btn btn-default btn" aria-label="Left Align">
-                    {{events.saveEvent}}
+                    {{event.saveEvent}}
                   </button>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="input-group event-link">
-                  <input type="text" class="form-control" placeholder="Search for..." value="{{events.copyUrl}}" disabled>
+                  <input type="text" class="form-control" placeholder="Search for..." value="{{event.copyUrl}}" disabled>
                   <span class="input-group-btn">
                     <button class="btn btn-default" type="button" clip-copy="copyText()" clip-click="copyValue()">
-                      {{events.copyButton}}
+                      {{event.copyButton}}
                     </button>
                   </span>
                 </div>
@@ -96,12 +112,19 @@
           Associated Tags
         </div>
         <div class="panel-body">
-          Panel content
+          <span class="label label-info event-label" ng-repeat="tag in event.tags">
+            {{tag.name}}
+          </span>
         </div>
       </div>
     </div>
     <div class="col-md-4">
-      MAP
+      <!-- This section is not complete-->
+      <leaflet defaults="defaults" center="center" height="480px" width="640px"></leaflet>
+      <!-- This section is not complete-->
     </div>
+  </div>
+  <div class="row">
+    COMMENTS
   </div>
 </div>
