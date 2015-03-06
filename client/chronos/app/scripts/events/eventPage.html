@@ -23,7 +23,7 @@
                 </div>
                 <div class="row user-name">
                   <a href="#" class="user-profile">
-                    username
+                    {{events.username}}
                   </a>
                 </div>
               </div>
@@ -41,21 +41,27 @@
             <i class="fa fa-map-marker"> {{events.placeName}}</i>
           </li>
           <li class="list-group-item">
-            description
+            {{events.description}}
           </li>
           <li class="list-group-item event-upvote-li">
             <div class="row">
               <div class="col-md-1 event-padding">
-                <span class="label label-success event-upvote-label">Total Upvote</span>
+                <span class="label label-success event-upvote-label"><i class="fa fa-star-half-o"></i> {{events.vote}}</span>
               </div>
               <div class="col-md-3">
-                <span>The total number of votes this event has gotten</span>
+                <span>The total overall votes</span>
               </div>
-              <div class="col-md-4 event-padding">
-                <span class="label label-primary event-upvote-label"><i class="fa fa-arrow-circle-up"> 10</i></span>
+              <div class="col-md-1 event-padding">
+                <span class="label label-primary event-upvote-label"><i class="fa fa-arrow-circle-up"> {{events.upvote}}</i></span>
               </div>
-              <div class="col-md-4 event-padding">
-                <span class="label label-danger event-upvote-label"><i class="fa fa-arrow-circle-down"> 20</i></span>
+              <div class="col-md-3 event-padding">
+                <span>Upvotes</span>
+              </div>
+              <div class="col-md-1 event-padding">
+                <span class="label label-danger event-upvote-label"><i class="fa fa-arrow-circle-down"> {{events.downvote}}</i></span>
+              </div>
+              <div class="col-md-3 event-padding">
+                <span>Downvotes</span>
               </div>
             </div>
           </li>

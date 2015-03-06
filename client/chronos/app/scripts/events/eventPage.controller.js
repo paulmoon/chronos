@@ -22,6 +22,10 @@ angular.module('chronosApp')
       vm.placeName = data.place_name;
       vm.description = data.description;
       vm.name = data.name;
+      vm.username = data.creator.username;
+      vm.upvote = data.upvote;
+      vm.downvote = data.downvote;
+      vm.vote = data.vote;
     });
 
     vm.copyUrl = $location.absUrl();

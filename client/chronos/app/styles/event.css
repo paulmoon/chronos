@@ -65,7 +65,7 @@
 .pac-container {
     z-index: 1051 !important;
 }
-<<<<<<< HEAD
+
 .event-image {
   height: auto;
   width:100%;
@@ -102,9 +102,7 @@
   width: 60%;
   float: right;
 }
-=======
 
 .event-button {
   outline: none;
 }
->>>>>>> origin/master

@@ -146,7 +146,6 @@
     };
 
     /**
-<<<<<<< HEAD
      * @description API call for getting a specific event
      * @methofOf chronosApp:RestService
      * @param eventId The id of the event
@@ -154,15 +153,6 @@
      */
     this.getEvent = function (eventId) {
       return $http.get(settings.serverUrl + '/events/' + eventId);
-=======
-     * @desciption API call for saving for a specific event to a user
-     * @methodOf chronosApp:RestService
-     * @param eventId The id of the event to save
-     * @returns {HttpPromise}
-     */
-    this.saveEvent = function(eventId) {
-        return $http.put(settings.serverUrl + '/users/save/' + eventId);
->>>>>>> origin/master
     };
   }
 })();
