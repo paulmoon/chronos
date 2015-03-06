@@ -20,16 +20,14 @@
   function AuthService($http, $q, $cookies, $log, RestService) {
     var self = this;
     self.username = '';
-    self.authToken = '';
 
-    _activate();
+    activate();
 
     //////////////////
 
-    function _activate() {
+    function activate() {
       var token = $cookies.authTokenCookie;
       if (token && token.length > 0) {
-        self.authToken = token;
         $http.defaults.headers.common.Authorization = "Token " + token;
       }
     }
@@ -46,7 +44,7 @@
     this.login = function (username, password) {
       return RestService.login(username, password)
         .then(function (response) {
-          self.setCredentials(username, response.data.token);
+          self.setCredentials(username);
           self.setHeaderToken(response.data.token);
           self.setSessionCookie(response.data.token);
           return response;
@@ -60,7 +58,7 @@
      * @methodOf chronosApp:AuthService
      */
     this.logout = function () {
-      self.setCredentials('', '');
+      self.setCredentials('');
       self.setHeaderToken('');
       self.setSessionCookie('');
     };
@@ -96,11 +94,9 @@
     /**
      * @methodOf chronosApp:AuthService
      * @param {string} username
-     * @param {string} authToken
      */
-    this.setCredentials = function (username, authToken) {
+    this.setCredentials = function (username) {
       self.username = username;
-      self.authToken = authToken;
     };
 
     /**
