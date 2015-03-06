@@ -43,7 +43,7 @@
       vm.shouldShowEventCreateModal = true;
       RestService.createEvent(vm.eventName, vm.description, vm.picture, vm.startDate, vm.endDate, vm.locationId, vm.locationName, vm.tags)
         .then(function (data) {
-          $modalInstance.close();
+          $modalInstance.close("success");
         }, function () {
           console.log("RestService.createEvent failed");
         });
@@ -58,7 +58,7 @@
 
       RestService.updateEvent(vm.eventName, vm.description, vm.picture, vm.startDate, vm.endDate, vm.tags)
         .then(function (data) {
-          $modalInstance.close();
+          $modalInstance.close("success");
         }, function () {
           console.log("RestService.updateEvent failed");
         });

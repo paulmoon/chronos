@@ -34,6 +34,7 @@
       updateDateRangeStart: updateDateRangeStart,
       updateSelectionRange: updateSelectionRange,
       updateEvents: updateEvents,
+      updateAllEvents: updateAllEvents,
     };
 
     return factory;
@@ -132,7 +133,38 @@
 
     /**
      * @description Batch update the events. New keywords, tags, fromDate and toDate, and other keys in filterParams
-     * are used to filter the events. This expects dateRangeStart and dateRangeEnd to be Moment objects.
+     * are used to filter the events. This expects dateRangeStart and dateRangeEnd to be Moment objects. If a
+     * filterParams is not specified it is set to nothing. This function should only be used by the "apply filters"
+     * button.
+     * @methodOf chronosApp:EventFactory
+     * @param filterParams Object of {key: value} filter parameters.
+     */
+    function updateAllEvents(filterParams) {
+      if (filterParams.keywords) {
+        factory.keywords = filterParams.keywords;
+      } else {
+        factory.keywords = [];
+      }
+
+      if (filterParams.fromDate) {
+        factory.dateRangeStart = filterParams.fromDate;
+      } else {
+        factory.dateRangeStart = undefined;
+      }
+
+      if (filterParams.toDate) {
+        factory.dateRangeEnd = filterParams.toDate;
+      } else {
+        factory.dateRangeEnd = undefined;
+      }
+
+      return _updateEvents();
+    }
+
+    /**
+     * @description Batch update the events. New keywords, tags, fromDate and toDate, and other keys in filterParams
+     * are used to filter the events. This expects dateRangeStart and dateRangeEnd to be Moment objects. If a
+     * filterParams is not specified it is not set.
      * @methodOf chronosApp:EventFactory
      * @param filterParams Object of {key: value} filter parameters.
      */
@@ -140,15 +172,15 @@
       if (filterParams.keywords) {
         factory.keywords = filterParams.keywords;
       }
-      if (filterParams.tags) {
-        factory.tags = filterParams.tags;
-      }
+
       if (filterParams.fromDate) {
         factory.dateRangeStart = filterParams.fromDate;
       }
+
       if (filterParams.toDate) {
         factory.dateRangeEnd = filterParams.toDate;
       }
+
       return _updateEvents();
     }
 

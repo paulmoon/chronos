@@ -69,7 +69,7 @@
      * @returns {HttpPromise}
      */
     this.getCurrentUserInformation = function () {
-      return $http.get(setting.serverUrl + '/users/profile/');
+      return $http.get(settings.serverUrl + '/users/profile/');
     };
 
     /**
@@ -81,7 +81,7 @@
     this.getFilteredEvents = function (filterParams) {
       var _url = settings.serverUrl + '/events/?';
       var _params = $.param(filterParams);
-
+      console.log(_url + _params)
       return $http.get(_url + _params);
     };
 

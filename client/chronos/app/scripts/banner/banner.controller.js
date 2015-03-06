@@ -13,9 +13,9 @@
     .module('chronosApp')
     .controller('BannerController', BannerController);
 
-  BannerController.$inject = ['AuthService', 'StateService', '$modal', 'RestService'];
+  BannerController.$inject = ['AuthService', 'StateService', '$modal', 'RestService', 'EventFactory'];
 
-  function BannerController(AuthService, StateService, $modal, RestService) {
+  function BannerController(AuthService, StateService, $modal, RestService, EventFactory) {
     var vm = this;
 
     vm.title = 'BannerController';
@@ -41,20 +41,6 @@
           }
         }
       });
-
-      modalInstance.result
-        .then(function (loginValue) {
-          if(loginValue == "login"){
-            RestService.getCurrentUserInformation().
-              success(function(data, status, headers, config) {
-                // MORE CODE NEEDS TO BE ADDED HERE WHEN BUG IS FIXED
-                //StateService.setPlaceID(data.place_id);
-              }).
-              error(function(data, status, headers, config) {
-                // TODO: add something here
-              });
-          }
-        });
     }
 
     function openLoginModal() {
@@ -67,6 +53,21 @@
           }
         }
       });
+
+      modalInstance.result
+        .then(function (loginValue) {
+          if(loginValue == "login"){
+            RestService.getCurrentUserInformation().
+              success(function(data, status, headers, config) {
+                // MORE CODE NEEDS TO BE ADDED HERE WHEN BUG IS FIXED
+                //StateService.setPlaceID(data.place_id);
+                EventFactory.updateEvents({});
+              }).
+              error(function(data, status, headers, config) {
+                // TODO: add something here
+              });
+          }
+        });
     }
 
     function openCreateEventModal() {
@@ -80,10 +81,18 @@
           }
         }
       });
+
+      modalInstance.result
+        .then(function (createValue) {
+          if(createValue == "success"){
+            EventFactory.updateEvents({});
+          }
+        });
     }
 
     function changeLocation(chosenPlaceDetails) {
       StateService.setPlaceID(chosenPlaceDetails.place_id);
+      EventFactory.updateEvents({});
 
       if (vm.isLoggedIn()) {
         vm.saveUserLocation();

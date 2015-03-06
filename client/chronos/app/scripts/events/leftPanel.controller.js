@@ -35,6 +35,7 @@
     vm.searchEvents = searchEvents;
     vm.removeTag = removeTag;
     vm.addTags = addTags;
+    vm.resetErrors = resetErrors;
 
     ////////////////////////////////
 
@@ -55,6 +56,7 @@
       }
 
       if (vm.searchDateStart) {
+        console.log(vm.searchDateStart);
         // regex for the date format 2015-01-01
         if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(vm.searchDateStart)) {
           filterParams.fromDate = moment(vm.searchDateStart);
@@ -71,11 +73,14 @@
         }
       }
 
-      if (vm.searchError) {
-        EventFactory.events = [];
-      } else {
-        EventFactory.updateEvents(filterParams);
+      if (!vm.searchError) {
+        EventFactory.updateAllEvents(filterParams);
       }
+    }
+
+    function resetErrors() {
+      vm.tagError = '';
+      vm.searchError = '';
     }
 
     function removeTag(tag) {

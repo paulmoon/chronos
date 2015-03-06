@@ -16,13 +16,15 @@
                 <span class="input-group-addon" id="startAddon"><span class="glyphicon glyphicon-time"
                                                                       aria-hidden="true"></span></span>
                 <input type="text" class="form-control search-area-input-margin" placeholder="Date (2016-01-01)"
-                       aria-describedby="startAddon" ng-model="vm.searchDateStart">
+                       aria-describedby="startAddon" ng-model="vm.searchDateStart" data-autoclose="1" 
+                              data-max-date="{{vm.searchDateEnd}}" data-date-format="yyyy-MM-dd" bs-datepicker>
               </div>
               <div class="input-group input-group-sm search-area-input-margin date-search-right">
                 <span class="input-group-addon" id="endAddon"><span class="glyphicon glyphicon-time"
                                                                     aria-hidden="true"></span></span>
                 <input type="text" class="form-control" placeholder="Date Range (2016-01-02)"
-                       aria-describedby="endAddon" ng-model="vm.searchDateEnd">
+                       aria-describedby="endAddon" ng-model="vm.searchDateEnd"  data-min-date="{{vm.searchDateStart}}"
+                              data-autoclose="1" data-date-format="yyyy-MM-dd" bs-datepicker>
               </div>
               <div class="input-group input-group-sm search-area-input-margin">
                 <span class="input-group-addon" id="tagAddon"><span class="glyphicon glyphicon-tags"
@@ -52,35 +54,33 @@
             <div ng-if="vm.tagError">
               <div class="alert alert-warning alert-dismissible" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"><span
+                <button type="button" class="close" data-dismiss="alert" ng-click="vm.resetErrors()" aria-hidden="true"><span
                   aria-hidden="true">&times;</span></button>
                 <strong>Warning! </strong> {{ vm.tagError }}
               </div>
             </div>
-            <div ng-if="!vm.searchError">
-              <eventcard ng-repeat="event in vm.getEvents()"
-                         event-name="event.name"
-                         event-id="event.id"
-                         description="event.description"
-                         creator="event.creator"
-                         creation-date="event.create_date"
-                         start-date="event.start_date"
-                         end-date="event.end_date"
-                         place-id="event.place_id"
-                         vote="event.vote"
-                         report="event.report"
-                         tags="event.tags" 
-                         edit-date="event.edit_date"
-                         picture="event.picture"></eventcard>
-            </div>
             <div ng-if="vm.searchError">
               <div class="alert alert-danger alert-dismissable" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"><span
+                <button type="button" class="close" data-dismiss="alert" ng-click="vm.resetErrors()" aria-hidden="true"><span
                   aria-hidden="true">&times;</span></button>
                 <strong>Error! </strong> {{ vm.searchError }}
               </div>
             </div>
+            <eventcard ng-repeat="event in vm.getEvents()"
+                       event-name="event.name"
+                       event-id="event.id"
+                       description="event.description"
+                       creator="event.creator"
+                       creation-date="event.create_date"
+                       start-date="event.start_date"
+                       end-date="event.end_date"
+                       place-id="event.place_id"
+                       vote="event.vote"
+                       report="event.report"
+                       tags="event.tags" 
+                       edit-date="event.edit_date"
+                       picture="event.picture"></eventcard>
           </div>
         </div>
       </div>
