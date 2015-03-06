@@ -24,6 +24,7 @@
         creator: '=',
         creationDate: '=',
         placeId: '=',
+        placeName: '=',
         startDate: '=',
         endDate: '=',
         vote: '=',

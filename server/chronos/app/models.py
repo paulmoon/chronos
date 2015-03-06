@@ -25,6 +25,7 @@ class ChronosUser(AbstractUser):
 
     place_id = models.CharField(max_length=100, null=True)
     userType = models.CharField(max_length=3, choices=USER_TYPES, default=REGULAR)
+    saved_events = models.ManyToManyField("Events", blank=True)
 
     # We have a reference to the events that were upvoted and downvoted, so that we know
     # which one to show to the user.

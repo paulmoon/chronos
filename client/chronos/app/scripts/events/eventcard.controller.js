@@ -28,9 +28,9 @@
     vm.reportEvent = reportEvent;
     vm.followEvent = followEvent;
     vm.goUser = goUser;
-    vm.isLoggedIn = AuthService.isLoggedIn();
+    vm.isLoggedIn = AuthService.isLoggedIn;
 
-    vm.displayPlace = vm.placeId;
+    vm.displayPlace = vm.placeName;
     vm.displayStartDate = vm.startDate._i.replace("T"," @ ");
     vm.displayEndDate = vm.endDate._i.replace("T"," @ ");
     vm.displayStartDate = vm.displayStartDate.substring(0, vm.displayEndDate.length - 4);
@@ -98,7 +98,15 @@
      * @memberOf chronosApp:EventCardController
      */
     function followEvent() {
-      // Future Functionality
+      RestService.saveEvent(vm.eventId)
+      .success(function() {
+        vm.saveButtonStyle = {
+          color: 'orange'
+        };
+      })
+      .error(function() {
+        console.log("Error. Couldn't save");
+      });
     }
 
     /**
