@@ -107,6 +107,14 @@ class GetUserInformation(generics.RetrieveAPIView):
     queryset = ChronosUser.objects.all()
     lookup_field = "username"
 
+class GetSavedEvents(generics.ListAPIView):
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
+    serializer_class = app.serializers.EventReadSerializer
+
+    def get_queryset(self):
+        return self.request.user.saved_events.all();
+
 ##############################
 # --------- Events! -------- #
 ##############################
@@ -216,6 +224,26 @@ class TagView(generics.ListCreateAPIView):
     serializer_class = app.serializers.TagSerializer
     queryset = app.models.Tag.objects.all()
 
+class SaveEvent(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
+    lookup_url_kwarg = "event_id"
+    serializer_class = app.serializers.SimpleEventSerializer
+
+    def put(self, request, *args, **kwargs):
+        if not kwargs.get(self.lookup_url_kwarg):
+            return Response(data={"event_id": "This field is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            event = Events.objects.get(pk=int(kwargs.get(self.lookup_url_kwarg)))
+        except Events.DoesNotExist:
+            return Response(data={"event_id": "This event id does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        user.saved_events.add(event)
+        user.save()
+        return Response(data=self.get_serializer_class()(event).data, status=status.HTTP_200_OK)
+
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()
 update_user = UpdateUser.as_view()
@@ -226,3 +254,5 @@ list_specific_event = EventOnlyView.as_view()
 list_create_event = EventView.as_view()
 create_tag = TagView.as_view()
 vote_event = VoteEvent.as_view()
+save_event = SaveEvent.as_view()
+get_saved_events = GetSavedEvents.as_view()

@@ -24,16 +24,16 @@
       <div class="event-details">{{vm.displayStartDate}} to {{vm.displayEndDate}}</div>
       <div class="event-details">{{vm.displayPlace}}</div>
       <div style="float:right">
-        <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.reportEvent()" class="btn btn-link btn-xs" style="outline:none">
+        <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.reportEvent()" class="btn btn-link btn-xs" class="event-button">
           <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
         </button>
-        <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.followEvent()" class="btn btn-link btn-xs" style="outline:none">
+        <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.followEvent()" class="btn btn-link btn-xs" class="event-button" ng-style="vm.saveButtonStyle">
           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
         </button>
-        <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+        <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs" class="event-button">
           <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
         </button>
-        <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+        <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs" class="event-button">
           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
         </button>
       </div>

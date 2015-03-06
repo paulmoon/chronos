@@ -1,0 +1,101 @@
+<banner></banner>
+<div class="container event-container" data-ng-controller="EventPageController as events">
+  <div class="row">
+    <div class="col-md-8" style="border: 1px solid">
+      <img src="" alt="picture" class="img-rounded event-image" />
+      <div class="panel panel-default">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-md-1">
+                <div class="row">
+                  <span class="glyphicon glyphicon-chevron-up event-vote" aria-hidden="true"></span>
+                </div>
+                <div class="row">
+                  <span class="glyphicon glyphicon-chevron-down event-vote" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="row">
+                  <a href="#" class="thumbnail user-profile user-thumbnail">
+                    <img src="..." alt="..." width="100%" height="75">
+                  </a>
+                </div>
+                <div class="row user-name">
+                  <a href="#" class="user-profile">
+                    username
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <div class="row">
+                  <h2>{{events.name}}</h2>
+                </div>
+                <div class="row">
+                  Event time
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <i class="fa fa-map-marker"> {{events.placeName}}</i>
+          </li>
+          <li class="list-group-item">
+            description
+          </li>
+          <li class="list-group-item event-upvote-li">
+            <div class="row">
+              <div class="col-md-1 event-padding">
+                <span class="label label-success event-upvote-label">Total Upvote</span>
+              </div>
+              <div class="col-md-3">
+                <span>The total number of votes this event has gotten</span>
+              </div>
+              <div class="col-md-4 event-padding">
+                <span class="label label-primary event-upvote-label"><i class="fa fa-arrow-circle-up"> 10</i></span>
+              </div>
+              <div class="col-md-4 event-padding">
+                <span class="label label-danger event-upvote-label"><i class="fa fa-arrow-circle-down"> 20</i></span>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="btn-group" role="group">
+                  <div class="btn btn-default event-bookmark" aria-label="Left Align">
+                    <i class="fa fa-bookmark"></i>
+                  </div>
+                  <button type="button" data-ng-click="saveEvent()" class="btn btn-default btn" aria-label="Left Align">
+                    {{events.saveEvent}}
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group event-link">
+                  <input type="text" class="form-control" placeholder="Search for..." value="{{events.copyUrl}}" disabled>
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" clip-copy="copyText()" clip-click="copyValue()">
+                      {{events.copyButton}}
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Associated Tags
+        </div>
+        <div class="panel-body">
+          Panel content
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      MAP
+    </div>
+  </div>
+</div>
