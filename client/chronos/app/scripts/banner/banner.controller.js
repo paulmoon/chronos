@@ -30,11 +30,11 @@
     vm.openCreateEventModal = openCreateEventModal;
     vm.onLogin = onLogin;
 
-    activate();
+    _activate();
 
     ////////////////////////////
 
-    function activate() {
+    function _activate() {
       if (AuthService.isLoggedIn()) {
         onLogin();
       }

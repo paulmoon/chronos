@@ -21,11 +21,11 @@
     var self = this;
     self.username = '';
 
-    activate();
+    _activate();
 
     //////////////////
 
-    function activate() {
+    function _activate() {
       var token = $cookies.authTokenCookie;
       if (token && token.length > 0) {
         $http.defaults.headers.common.Authorization = "Token " + token;
