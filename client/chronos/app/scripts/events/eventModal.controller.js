@@ -27,11 +27,12 @@
     vm.picture = null;
     vm.tags = [];
     vm.shouldShowEventCreateModal = shouldShowEventCreateModal;
+    vm.locationPicked = locationPicked;
 
     vm.createEvent = createEvent;
     vm.cancel = cancel;
 
-    vm.locationPicked = locationPicked;
+
 
     ////////////////
 

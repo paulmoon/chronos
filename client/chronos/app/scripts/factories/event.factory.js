@@ -10,7 +10,7 @@
 
   angular
     .module('chronosApp')
-    .service('EventFactory', EventFactory);
+    .factory('EventFactory', EventFactory);
 
   EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService'];
 

@@ -144,5 +144,15 @@
         direction: direction
       });
     };
+
+    /**
+     * @description API call for getting a specific event
+     * @methofOf chronosApp:RestService
+     * @param eventId The id of the event
+     * @returns {HttpPromise}
+     */
+    this.getEvent = function (eventId) {
+      return $http.get(settings.serverUrl + '/events/' + eventId);
+    };
   }
 })();
