@@ -30,7 +30,6 @@
     vm.goUser = goUser;
     vm.isLoggedIn = AuthService.isLoggedIn;
 
-    vm.displayPlace = vm.placeName;
     vm.displayStartDate = vm.startDate._i.replace("T"," @ ");
     vm.displayEndDate = vm.endDate._i.replace("T"," @ ");
     vm.displayStartDate = vm.displayStartDate.substring(0, vm.displayEndDate.length - 4);

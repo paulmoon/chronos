@@ -35,6 +35,10 @@
                                                       style="outline:none">Add
                 </button></span>
               </div>
+              <tags-input class="bootstrap" data-ng-model="vm.addedTags" display-property="name" add-on-space="true"
+                    add-on-enter="true" min-length="1" max-length="50" on-tag-added="vm.updateTags()" on-tag-removed="vm.updateTags()"
+                    id="tagField">
+              </tags-input>
               <div class="float-left" ng-repeat="tag in vm.displayTags">
                 <span class="label label-info margin-left-three">
                   {{ tag }}
@@ -52,11 +56,11 @@
         <div class="events-area panel panel-primary">
           <div class="panel-body">
             <div ng-if="vm.tagError">
-              <div class="alert alert-warning alert-dismissible" role="alert">
+              <div class="alert alert-danger alert-dismissible" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <button type="button" class="close" data-dismiss="alert" ng-click="vm.resetErrors()" aria-hidden="true"><span
                   aria-hidden="true">&times;</span></button>
-                <strong>Warning! </strong> {{ vm.tagError }}
+                <strong>Error! </strong> {{ vm.tagError }}
               </div>
             </div>
             <div ng-if="vm.searchError">
@@ -76,6 +80,7 @@
                        start-date="event.start_date"
                        end-date="event.end_date"
                        place-id="event.place_id"
+                       place-name="event.place_name"
                        vote="event.vote"
                        report="event.report"
                        tags="event.tags" 

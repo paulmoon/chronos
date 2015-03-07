@@ -26,15 +26,16 @@
     vm.searchError = '';
 
     vm.addedTags = '';
-    vm.displayTags = [];
     vm.storageTags = [];
     vm.tagError = '';
 
     vm.getEvents = EventFactory.getSelectedEvents;
 
     vm.searchEvents = searchEvents;
-    vm.removeTag = removeTag;
-    vm.addTags = addTags;
+    vm.updateTags = updateTags;
+    vm.updateKeywords = updateKeywords;
+    vm.updateStartDate = updateStartDate;
+    vm.updateEndDate = updateEndDate;
     vm.resetErrors = resetErrors;
 
     ////////////////////////////////
@@ -44,6 +45,7 @@
       vm.searchError = '';
       var tempKeywords = '';
       var filterParams = {};
+      var tempDate = '';
 
       if (vm.searchKeywords) {
         // removes punctuation, removes extra spaces, and creates an array of the words
@@ -56,9 +58,8 @@
       }
 
       if (vm.searchDateStart) {
-        console.log(vm.searchDateStart);
-        // regex for the date format 2015-01-01
-        if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(vm.searchDateStart)) {
+        tempDate = moment(vm.searchDateStart).format("YYYY-MM-DD");
+        if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(tempDate)) {
           filterParams.fromDate = moment(vm.searchDateStart);
         } else {
           vm.searchError = "Incorrect date format.";
@@ -66,7 +67,8 @@
       }
 
       if (vm.searchDateEnd) {
-        if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(vm.searchDateEnd)) {
+        tempDate = moment(vm.searchDateEnd).format("YYYY-MM-DD");
+        if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(tempDate)) {
           filterParams.toDate = moment(vm.searchDateEnd);
         } else {
           vm.searchError = "Incorrect date format.";
@@ -83,69 +85,52 @@
       vm.searchError = '';
     }
 
-    function removeTag(tag) {
-      var count = 0;
+    function updateKeywords() {
 
-      vm.displayTags.forEach(function (tag2) {
-        if (tag == tag2) {
-          vm.displayTags.splice(count, 1);
-          vm.storageTags.splice(count, 1);
-        }
-        count = count + 1;
-      });
-
-      EventFactory.updateTags(vm.storageTags);
     }
 
-    function addTags() {
+    function updateStartDate() {
+
+    }
+
+    function updateEndDate() {
+
+    }
+
+    function updateTags() {
       vm.tagError = '';
       vm.searchError = '';
-      var tempTags = '';
 
-      if (vm.addedTags) {
-        tempTags = vm.addedTags.split(" ");
+      vm.storageTags = [];
+      var tempTags = [];
 
-        tempTags.forEach(function (tag) {
-          var noMatch = true;
-          var displayTag = tag;
+      if (vm.addedTags.length > settings.maxNumberTags) {
+        vm.tagError = "Max of 5 tags.";
+        return;
+      }
+      
+      vm.addedTags.forEach(function (tag) {
+        tempTags.push(tag.name);
+      });
 
-          if (tag.length > settings.maxTagLength) {
-            vm.tagError = "Max tag length of 50 characters.";
-            return;
-          }
+      tempTags.forEach(function (tag) {
+        var noMatch = true;
 
-          if (vm.displayTags.length > settings.maxNumberTags) {
-            vm.tagError = "Max of 5 tags.";
-            return;
-          }
-
-          vm.storageTags.forEach(function (tag2) {
-            if (tag === tag2) {
-              noMatch = false;
-            }
-          });
-
-          if (noMatch) {
-            if (tag.length > settings.tagDisplayLength) {
-              displayTag = tag.substring(0, 9) + "...";
-            }
-
-            vm.displayTags.forEach(function (tag3) {
-              if (displayTag === tag3) {
-                displayTag = displayTag + ".";
-              }
-            });
-
-            vm.displayTags.push(displayTag);
-            vm.storageTags.push(tag);
-          } else {
-            noMatch = true;
+        vm.storageTags.forEach(function (tag2) {
+          if (tag === tag2) {
+            noMatch = false;
           }
         });
 
-        EventFactory.updateTags(vm.storageTags);
-        vm.addedTags = '';
-      }
+        if (noMatch) {
+          vm.storageTags.push(tag);
+        } else {
+          vm.tagError = "Identical Tag Found."
+          return;
+        }
+      });
+
+      EventFactory.updateTags(vm.storageTags);
     }
   }
 })();

@@ -29,7 +29,7 @@
     vm.saveUserLocation = saveUserLocation;
     vm.openCreateEventModal = openCreateEventModal;
     vm.onLogin = onLogin;
-    
+
     ////////////////////////////
 
     function openSignupModal() {
@@ -43,7 +43,8 @@
         }
       });
 
-      modalInstance.result.then(vm.onLogin);
+      modalInstance.result
+        .then(vm.onLogin);
     }
 
      /**
@@ -68,9 +69,9 @@
           if (status == 'OK') {
             StateService.setPlaceID(place.place_id);
             vm.chosenPlace = place.formatted_address;
+            EventFactory.updateEvents({});
           }
         }); 
-        EventFactory.updateEvents({});
       })
       .error( function(data, status, headers, config) {
         console.log("Couldn't get user information. Not doing any onLogin work");
