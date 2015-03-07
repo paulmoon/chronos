@@ -15,13 +15,22 @@
     .module('chronosApp')
     .service('AuthService', AuthService);
 
-  AuthService.$inject = ['$http', '$q', 'RestService'];
+  AuthService.$inject = ['$http', '$q', '$cookies', '$log', 'RestService'];
 
-  function AuthService($http, $q, RestService) {
+  function AuthService($http, $q, $cookies, $log, RestService) {
     var self = this;
-    self._isLoggedIn = false;
     self.username = '';
-    self.auth_token = '';
+
+    _activate();
+
+    //////////////////
+
+    function _activate() {
+      var token = $cookies.authTokenCookie;
+      if (token && token.length > 0) {
+        $http.defaults.headers.common.Authorization = "Token " + token;
+      }
+    }
 
     /**
      * @description Login with provided username and password. Sets the auth token
@@ -35,9 +44,9 @@
     this.login = function (username, password) {
       return RestService.login(username, password)
         .then(function (response) {
-          self._isLoggedIn = true;
-          self.setCredentials(username, response.data);
-          self.setHeaderToken(response.data);
+          self.setCredentials(username);
+          self.setHeaderToken(response.data.token);
+          self.setSessionCookie(response.data.token);
           return response;
         }, function (response) {
           return $q.reject(response);
@@ -49,9 +58,9 @@
      * @methodOf chronosApp:AuthService
      */
     this.logout = function () {
-      self._isLoggedIn = false;
-      self.setCredentials('', '');
-      self.setHeaderToken(null);
+      self.setCredentials('');
+      self.setHeaderToken('');
+      self.setSessionCookie('');
     };
 
     /**
@@ -79,29 +88,48 @@
      * @returns {boolean} true if current user is logged in, false if not.
      */
     this.isLoggedIn = function () {
-      return self._isLoggedIn;
+      return $cookies.authTokenCookie && $cookies.authTokenCookie !== '';
     };
 
     /**
      * @methodOf chronosApp:AuthService
      * @param {string} username
-     * @param {string} auth_token
      */
-    this.setCredentials = function (username, auth_token) {
+    this.setCredentials = function (username) {
       self.username = username;
-      self.auth_token = auth_token;
     };
 
     /**
+     * Set the auth token to every outgoing HTTP header, formatted as "Token <token>".
      * @methodOf chronosApp:AuthService
      * @param token
      */
     this.setHeaderToken = function (token) {
-      if (token) {
-        token = "Token " + token.token;
+      if (token !== 'undefined') {
+        $http.defaults.headers.common.Authorization = "Token " + token;
+      } else {
+        $log.debug('Attempted to set header token with an undefined token');
       }
+    };
 
-      $http.defaults.headers.common.Authorization = token;
+    /**
+     * Saves the user authentication token to a cookie to persist user login state.
+     * @methodOf chronosApp:AuthService
+     * @param authToken Authentication token obtained after logging in
+     */
+    this.setSessionCookie = function (authToken) {
+      // FIXME: Angular 1.4 allows setting expiration date on cookies. https://docs.angularjs.org/api/ngCookies/provider/$cookiesProvider#defaults
+      // Create cookiesProvider.config.js, and set expiry times.
+      $cookies.authTokenCookie = authToken;
+    };
+
+    /**
+     * Returns the authentication token stored in a cookie.
+     * @methodOf chronosApp:AuthService
+     * @returns {*} Authentication token
+     */
+    this.getSessionCookie = function () {
+      return $cookies.authTokenCookie;
     };
   }
 })();

@@ -59,8 +59,9 @@
 
       if (vm.searchDateStart) {
         tempDate = moment(vm.searchDateStart).format("YYYY-MM-DD");
+
         if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(tempDate)) {
-          filterParams.fromDate = moment(vm.searchDateStart);
+          filterParams.fromDate = moment(vm.searchDateStart).utc().format();
         } else {
           vm.searchError = "Incorrect date format.";
         }
@@ -68,8 +69,9 @@
 
       if (vm.searchDateEnd) {
         tempDate = moment(vm.searchDateEnd).format("YYYY-MM-DD");
+
         if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(tempDate)) {
-          filterParams.toDate = moment(vm.searchDateEnd);
+          filterParams.toDate = moment(vm.searchDateEnd).utc().format();
         } else {
           vm.searchError = "Incorrect date format.";
         }

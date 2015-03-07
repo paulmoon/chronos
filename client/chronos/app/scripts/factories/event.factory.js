@@ -10,7 +10,7 @@
 
   angular
     .module('chronosApp')
-    .service('EventFactory', EventFactory);
+    .factory('EventFactory', EventFactory);
 
   EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService'];
 
@@ -198,8 +198,9 @@
           var newEvents = response.data;
 
           for (var i = 0; i < newEvents.length; i++) {
-            newEvents[i].start_date = moment(newEvents[i].start_date).utc();
-            newEvents[i].end_date = moment(newEvents[i].end_date).utc();
+            // Note that here, we're ensuring all event dates are a moment type in UTC format. This is extremely important
+            newEvents[i].start_date = moment.utc(newEvents[i].start_date);
+            newEvents[i].end_date = moment.utc(newEvents[i].end_date);
           }
 
           factory.events = newEvents;
@@ -222,13 +223,13 @@
       var filterParams = [];
 
       if (factory.keywords.length > 0) {
-        factory.keywords.forEach(function(keyword){
+        factory.keywords.forEach(function (keyword) {
           filterParams.push({name: "keyword", value: keyword});
         });
       }
 
       if (factory.tags.length > 0) {
-        factory.tags.forEach(function(tag){
+        factory.tags.forEach(function (tag) {
           filterParams.push({name: "tag", value: tag});
         });
       }
@@ -242,7 +243,7 @@
         filterParams.push({name: "toDate", value: factory.dateRangeEnd.format('YYYY-MM-DD')});
       }
 
-      if (StateService.getPlaceID()){
+      if (StateService.getPlaceID()) {
         filterParams.push({name: "placeID", value: StateService.getPlaceID()});
       }
 
