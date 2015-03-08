@@ -3,7 +3,7 @@
  * @ngdoc service
  * @name chronosApp.EventFactory
  * @description Factory used for retrieving (filtered) events from a single place.
- */
+ */ 
 
 (function () {
   'use strict';
@@ -32,9 +32,10 @@
       updateTags: updateTags,
       updateDateRange: updateDateRange,
       updateDateRangeStart: updateDateRangeStart,
+      updateDateRangeEnd: updateDateRangeEnd,
       updateSelectionRange: updateSelectionRange,
       updateEvents: updateEvents,
-      updateAllEvents: updateAllEvents,
+      onLocationChange: onLocationChange,
     };
 
     return factory;
@@ -57,6 +58,14 @@
      */
     function getSelectedEvents() {
       return factory.selectedEvents;
+    }
+
+    /**
+     * @description Allows the user to update the events when a location has changed
+     * @methodOf chronosApp:EventFactory
+     */
+    function onLocationChange(){
+      return _updateEvents();
     }
 
     /**
@@ -88,6 +97,16 @@
      */
     function updateDateRangeStart(start) {
       factory.dateRangeStart = start;
+      return _updateEvents();
+    }
+
+    /**
+     * Update the events using the specified date range end.
+     * @param start Moment type
+     * @returns {Promise}
+     */
+    function updateDateRangeEnd(end) {
+      factory.dateRangeEnd = end;
       return _updateEvents();
     }
 
@@ -139,7 +158,7 @@
      * @methodOf chronosApp:EventFactory
      * @param filterParams Object of {key: value} filter parameters.
      */
-    function updateAllEvents(filterParams) {
+    function updateEvents(filterParams) {
       if (filterParams.keywords) {
         factory.keywords = filterParams.keywords;
       } else {
@@ -156,29 +175,6 @@
         factory.dateRangeEnd = filterParams.toDate;
       } else {
         factory.dateRangeEnd = undefined;
-      }
-
-      return _updateEvents();
-    }
-
-    /**
-     * @description Batch update the events. New keywords, tags, fromDate and toDate, and other keys in filterParams
-     * are used to filter the events. This expects dateRangeStart and dateRangeEnd to be Moment objects. If a
-     * filterParams is not specified it is not set.
-     * @methodOf chronosApp:EventFactory
-     * @param filterParams Object of {key: value} filter parameters.
-     */
-    function updateEvents(filterParams) {
-      if (filterParams.keywords) {
-        factory.keywords = filterParams.keywords;
-      }
-
-      if (filterParams.fromDate) {
-        factory.dateRangeStart = filterParams.fromDate;
-      }
-
-      if (filterParams.toDate) {
-        factory.dateRangeEnd = filterParams.toDate;
       }
 
       return _updateEvents();

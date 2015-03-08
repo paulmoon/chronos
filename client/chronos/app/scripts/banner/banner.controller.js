@@ -51,8 +51,7 @@
         }
       });
 
-      modalInstance.result
-        .then(vm.onLogin);
+      modalInstance.result.then(vm.onLogin);
     }
 
     /**
@@ -79,7 +78,7 @@
             if (status === 'OK') {
               StateService.setPlaceID(place.place_id);
               vm.chosenPlace = place.formatted_address;
-              EventFactory.updateEvents({});
+              EventFactory.onLocationChange();
             }
           });
         })
@@ -117,14 +116,14 @@
       modalInstance.result
         .then(function (createValue) {
           if(createValue == "success"){
-            EventFactory.updateEvents({});
+            EventFactory.onLocationChange();
           }
         });
     }
 
     function changeLocation(chosenPlaceDetails) {
       StateService.setPlaceID(chosenPlaceDetails.place_id);
-      EventFactory.updateEvents({});
+      EventFactory.onLocationChange();
 
       if (vm.isLoggedIn()) {
         vm.saveUserLocation();

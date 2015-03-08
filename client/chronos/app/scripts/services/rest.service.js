@@ -81,7 +81,6 @@
     this.getFilteredEvents = function (filterParams) {
       var _url = settings.serverUrl + '/events/?';
       var _params = $.param(filterParams);
-      console.log(_url + _params)
       return $http.get(_url + _params);
     };
 

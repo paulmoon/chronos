@@ -106,7 +106,6 @@
         };
       })
       .error(function() {
-        console.log("Error. Couldn't save");
       });
     }
 

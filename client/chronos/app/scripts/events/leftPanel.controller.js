@@ -1,5 +1,5 @@
 /**
- * @author Justin Guze
+ * @author Mark Roller
  * @ngdoc function
  * @name chronosApp.controller:LeftPanelController
  * @description
@@ -21,13 +21,10 @@
 
     vm.title = 'LeftPanelController';
     vm.searchKeywords = '';
-    vm.searchDateStart = '';
-    vm.searchDateEnd = '';
     vm.searchError = '';
 
     vm.addedTags = '';
     vm.storageTags = [];
-    vm.tagError = '';
 
     vm.getEvents = EventFactory.getSelectedEvents;
 
@@ -36,19 +33,43 @@
     vm.updateKeywords = updateKeywords;
     vm.updateStartDate = updateStartDate;
     vm.updateEndDate = updateEndDate;
-    vm.resetErrors = resetErrors;
+    vm.getLastSunday = getLastSunday;
+    vm.clearStartDate = clearStartDate;
+    vm.clearEndDate = clearEndDate;
+    vm.clearKeywords = clearKeywords;
+
+    vm.searchDateStart = vm.getLastSunday(moment().local().startOf('month'));
+    vm.searchDateEnd = vm.getLastSunday(moment().local().startOf('month')).add(6, 'weeks');
 
     ////////////////////////////////
 
+    /**
+     * @description Returns the date of a Sunday used for the initial dates shown
+     * @methodOf chronosApp:LeftPanelController
+     * @returns the moment for the sunday before the date provided
+     */
+    function getLastSunday(providedDate) {
+      if(providedDate.isoWeekday() == 7){
+        return providedDate;
+      }
+
+      var daystoLastSunday = providedDate.isoWeekday();
+      var lastSunday = providedDate.subtract(daystoLastSunday, 'days');
+
+      return lastSunday;
+    }
+
+    /**
+     * @description Called by the apply filters button and sets the 
+     * events according to all search parameters
+     * @methodOf chronosApp:LeftPanelController
+     */
     function searchEvents() {
-      vm.tagError = '';
       vm.searchError = '';
       var tempKeywords = '';
       var filterParams = {};
-      var tempDate = '';
 
       if (vm.searchKeywords) {
-        // removes punctuation, removes extra spaces, and creates an array of the words
         tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(" ");
         if (tempKeywords.length > settings.maxKeywords) {
           vm.searchError = "Max of 10 keywords.";
@@ -58,56 +79,105 @@
       }
 
       if (vm.searchDateStart) {
-        tempDate = moment(vm.searchDateStart).format("YYYY-MM-DD");
-
-        if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(tempDate)) {
-          filterParams.fromDate = moment(vm.searchDateStart).utc().format();
-        } else {
-          vm.searchError = "Incorrect date format.";
-        }
+        filterParams.fromDate = moment(vm.searchDateStart).utc();
       }
 
       if (vm.searchDateEnd) {
-        tempDate = moment(vm.searchDateEnd).format("YYYY-MM-DD");
-
-        if (/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.exec(tempDate)) {
-          filterParams.toDate = moment(vm.searchDateEnd).utc().format();
-        } else {
-          vm.searchError = "Incorrect date format.";
-        }
+        filterParams.toDate = moment(vm.searchDateEnd).utc();
       }
 
       if (!vm.searchError) {
-        EventFactory.updateAllEvents(filterParams);
+        EventFactory.updateEvents(filterParams);
       }
     }
 
-    function resetErrors() {
-      vm.tagError = '';
-      vm.searchError = '';
+    /**
+     * @description Clears the displayed Keywords
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function clearKeywords() {
+      vm.searchKeywords = '';
+      vm.updateKeywords();
     }
 
+    /**
+     * @description Clears the displayed start date
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function clearStartDate() {
+      vm.searchDateStart = '';
+      vm.updateStartDate();
+    }
+
+    /**
+     * @description Clears the displayed end date
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function clearEndDate() {
+      vm.searchDateEnd = '';
+      vm.updateEndDate();
+    }
+
+    /**
+     * @description Updates the keyords field and updates the events
+     * @methodOf chronosApp:LeftPanelController
+     */
     function updateKeywords() {
+      if(vm.searchKeywords){
+        vm.searchError = '';
+        var tempKeywords = '';
 
+        tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(" ");
+
+        if (tempKeywords.length > settings.maxKeywords) {
+          vm.searchError = "Max of 10 keywords.";
+        } else {
+          EventFactory.updateKeywords(tempKeywords);
+        }
+      } else{
+        vm.searchEvents();
+      }
     }
 
+    /**
+     * @description Updates the start date and updates the events
+     * @methodOf chronosApp:LeftPanelController
+     */
     function updateStartDate() {
-
+      if(vm.searchDateStart){
+        var fromDate = moment(vm.searchDateStart).utc();
+        EventFactory.updateDateRangeStart(fromDate);
+      } else{
+        vm.searchEvents();
+      }
     }
 
+    /**
+     * @description Updates the end date and updates the events
+     * @methodOf chronosApp:LeftPanelController
+     */
     function updateEndDate() {
-
+      if(vm.searchDateEnd){
+        var toDate = moment(vm.searchDateEnd).utc();
+        EventFactory.updateDateRangeEnd(toDate);
+      } else {
+        vm.searchEvents();
+      }
     }
 
+    /**
+     * @description Updates the tagsand updates the events
+     * @methodOf chronosApp:LeftPanelController
+     */
     function updateTags() {
-      vm.tagError = '';
       vm.searchError = '';
 
       vm.storageTags = [];
       var tempTags = [];
 
       if (vm.addedTags.length > settings.maxNumberTags) {
-        vm.tagError = "Max of 5 tags.";
+        vm.addedTags.splice(-1,1);
+        vm.searchError = "Max of 5 tags.";
         return;
       }
       
@@ -127,7 +197,7 @@
         if (noMatch) {
           vm.storageTags.push(tag);
         } else {
-          vm.tagError = "Identical Tag Found."
+          vm.searchError = "Identical Tag Found."
           return;
         }
       });
