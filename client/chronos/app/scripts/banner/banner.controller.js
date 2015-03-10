@@ -76,9 +76,8 @@
 
           service.getDetails(request, function (place, status) {
             if (status === 'OK') {
-              StateService.setPlaceID(place.place_id);
+              _updateLocationDetails(place.place_id);
               vm.chosenPlace = place.formatted_address;
-              EventFactory.onLocationChange();
             }
           });
         })
@@ -114,17 +113,20 @@
       });
 
       modalInstance.result
-        .then(function (createValue) {
-          if(createValue == "success"){
-            EventFactory.onLocationChange();
-          }
+        .then(function () {
+            EventFactory.refreshEvents();
         });
+    }
+
+    function _updateLocationDetails(placeID){
+      StateService.setPlaceID(placeID);
+      EventFactory.refreshEvents();
     }
 
     function changeLocation(chosenPlaceDetails) {
       StateService.setPlaceID(chosenPlaceDetails.place_id);
-      EventFactory.onLocationChange();
-
+      EventFactory.refreshEvents();
+      
       if (vm.isLoggedIn()) {
         vm.saveUserLocation();
       }

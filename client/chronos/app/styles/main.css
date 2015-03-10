@@ -90,6 +90,20 @@
   width:49.28%;
 }
 
+.clear-field {
+  margin-top:1.5px;
+}
+
+.read-only {
+  background-color: #fff !important;
+  cursor: default !important;
+}
+
+.error-style {
+  color: #CC0000;
+  float: left;
+}
+
 .float-left {
   float:left;
 }

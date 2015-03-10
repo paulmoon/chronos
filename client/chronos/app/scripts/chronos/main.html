@@ -11,28 +11,28 @@
                 <input type="text" class="form-control" aria-describedby="wordsAddon"
                        ng-model="vm.searchKeywords">
                 <span class="input-group-addon" ng-click="vm.clearKeywords()">
-                  <span class="glyphicon glyphicon-remove" style="margin-top:1.5px;" aria-hidden="true"></span>
+                  <span class="glyphicon glyphicon-remove clear-field" aria-hidden="true"></span>
                 </span>
               </div>
             </form>
             <div class="input-group input-group-sm search-area-input-margin date-search-left">
               <span class="input-group-addon" id="startAddon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
-              <input type="text" class="form-control search-area-input-margin" ng-change="vm.updateStartDate()"
+              <input type="text" class="form-control search-area-input-margin read-only" ng-change="vm.updateStartDate()"
                       aria-describedby="startAddon" ng-model="vm.searchDateStart" data-autoclose="1" 
-                        data-max-date="{{vm.searchDateEnd}}" data-date-format="yyyy-MM-dd" readonly style="background-color: #fff;cursor:default;"
+                        data-max-date="{{vm.searchDateEnd}}" data-date-format="yyyy-MM-dd" readonly
                           bs-datepicker>
               <span class="input-group-addon" ng-click="vm.clearStartDate()">
-                <span class="glyphicon glyphicon-remove" style="margin-top:1.5px;" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-remove clear-field" aria-hidden="true"></span>
               </span>
             </div>
             <div class="input-group input-group-sm search-area-input-margin date-search-right">
               <span class="input-group-addon" id="endAddon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
-              <input type="text" class="form-control search-area-input-margin" ng-change="vm.updateEndDate()"
+              <input type="text" class="form-control search-area-input-margin read-only" ng-change="vm.updateEndDate()"
                       aria-describedby="endAddon" ng-model="vm.searchDateEnd" data-autoclose="1" 
-                        data-min-date="{{vm.searchDateStart}}" data-date-format="yyyy-MM-dd" readonly style="background-color: #fff;cursor:default;"
+                        data-min-date="{{vm.searchDateStart}}" data-date-format="yyyy-MM-dd" readonly
                           bs-datepicker>
               <span class="input-group-addon" ng-click="vm.clearEndDate()">
-                <span class="glyphicon glyphicon-remove" style="margin-top:1.5px;" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-remove clear-field" aria-hidden="true"></span>
               </span>
             </div>
             <div class="input-group input-group-sm search-area-input-margin">
@@ -41,7 +41,7 @@
                   add-on-enter="true" min-length="1" max-length="50" on-tag-added="vm.updateTags()" on-tag-removed="vm.updateTags()">
               </tags-input>
             </div>
-            <div ng-if="vm.searchError" style="color:#CC0000;float:left">
+            <div ng-if="vm.searchError" class="error-style">
               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
               <strong>Error! </strong> {{ vm.searchError }}
             </div>

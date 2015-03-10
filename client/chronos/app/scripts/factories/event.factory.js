@@ -35,7 +35,7 @@
       updateDateRangeEnd: updateDateRangeEnd,
       updateSelectionRange: updateSelectionRange,
       updateEvents: updateEvents,
-      onLocationChange: onLocationChange,
+      refreshEvents: refreshEvents,
     };
 
     return factory;
@@ -64,7 +64,7 @@
      * @description Allows the user to update the events when a location has changed
      * @methodOf chronosApp:EventFactory
      */
-    function onLocationChange(){
+    function refreshEvents(){
       return _updateEvents();
     }
 

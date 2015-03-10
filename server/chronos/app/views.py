@@ -180,7 +180,7 @@ class EventView(generics.ListAPIView):
 
             queryset = queryset.filter(qset)
 
-        queryset = queryset.annotate(itemcount=Count('id')).order_by('-itemcount', 'start_date', '-upvote')
+        queryset = queryset.extra(select={'sumvote':'upvote - downvote'}).annotate(itemcount=Count('id')).order_by('-itemcount', 'start_date', '-sumvote')
         return queryset
 
     def post(self, request, *args, **kwargs):
