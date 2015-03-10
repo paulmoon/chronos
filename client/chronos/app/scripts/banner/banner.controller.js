@@ -13,9 +13,9 @@
     .module('chronosApp')
     .controller('BannerController', BannerController);
 
-  BannerController.$inject = ['$scope', 'AuthService', 'StateService', '$modal', 'RestService'];
+  BannerController.$inject = ['$scope', 'AuthService', 'StateService', '$modal', 'RestService', 'EventFactory'];
 
-  function BannerController($scope, AuthService, StateService, $modal, RestService) {
+  function BannerController($scope, AuthService, StateService, $modal, RestService, EventFactory) {
     var vm = this;
 
     vm.title = 'BannerController';
@@ -50,8 +50,8 @@
           }
         }
       });
-      modalInstance.result
-        .then(vm.onLogin);
+
+      modalInstance.result.then(vm.onLogin);
     }
 
     /**
@@ -60,6 +60,7 @@
      * box.
      * @methodOf chronosApp:BannerController
      */
+
     function onLogin() {
       RestService.getCurrentUserInformation()
         .success(function (data, status, headers, config) {
@@ -75,7 +76,7 @@
 
           service.getDetails(request, function (place, status) {
             if (status === 'OK') {
-              StateService.setPlaceID(place.place_id);
+              _updateLocationDetails(place.place_id);
               vm.chosenPlace = place.formatted_address;
             }
           });
@@ -110,11 +111,22 @@
           }
         }
       });
+
+      modalInstance.result
+        .then(function () {
+            EventFactory.refreshEvents();
+        });
+    }
+
+    function _updateLocationDetails(placeID){
+      StateService.setPlaceID(placeID);
+      EventFactory.refreshEvents();
     }
 
     function changeLocation(chosenPlaceDetails) {
       StateService.setPlaceID(chosenPlaceDetails.place_id);
-
+      EventFactory.refreshEvents();
+      
       if (vm.isLoggedIn()) {
         vm.saveUserLocation();
       }

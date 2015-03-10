@@ -30,7 +30,6 @@
     vm.goUser = goUser;
     vm.isLoggedIn = AuthService.isLoggedIn;
 
-    vm.displayPlace = vm.placeName;
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
 
@@ -107,7 +106,6 @@
         };
       })
       .error(function() {
-        console.log("Error. Couldn't save");
       });
     }
 

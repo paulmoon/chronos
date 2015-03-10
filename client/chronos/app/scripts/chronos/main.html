@@ -5,90 +5,72 @@
       <div class="panel-group panel-height">
         <div class="search-area panel panel-info">
           <div class="panel-body">
-            <form role="form">
+            <form role="form" ng-submit="vm.updateKeywords()">
               <div class="input-group input-group-sm search-area-input-margin">
-                <span class="input-group-addon" id="wordsAddon"><span class="glyphicon glyphicon-search"
-                                                                      aria-hidden="true"></span></span>
-                <input type="text" class="form-control" placeholder="Keywords" aria-describedby="wordsAddon"
+                <span class="input-group-addon" id="wordsAddon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                <input type="text" class="form-control" aria-describedby="wordsAddon"
                        ng-model="vm.searchKeywords">
-              </div>
-              <div class="input-group input-group-sm search-area-input-margin date-search-left">
-                <span class="input-group-addon" id="startAddon"><span class="glyphicon glyphicon-time"
-                                                                      aria-hidden="true"></span></span>
-                <input type="text" class="form-control search-area-input-margin" placeholder="Date (2016-01-01)"
-                       aria-describedby="startAddon" ng-model="vm.searchDateStart">
-              </div>
-              <div class="input-group input-group-sm search-area-input-margin date-search-right">
-                <span class="input-group-addon" id="endAddon"><span class="glyphicon glyphicon-time"
-                                                                    aria-hidden="true"></span></span>
-                <input type="text" class="form-control" placeholder="Date Range (2016-01-02)"
-                       aria-describedby="endAddon" ng-model="vm.searchDateEnd">
-              </div>
-              <div class="input-group input-group-sm search-area-input-margin">
-                <span class="input-group-addon" id="tagAddon"><span class="glyphicon glyphicon-tags"
-                                                                    aria-hidden="true"></span></span>
-                <input type="text" class="form-control" placeholder="Tags" aria-describedby="tagAddon"
-                       ng-model="vm.addedTags">
-                <span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="vm.addTags()"
-                                                      style="outline:none">Add
-                </button></span>
-              </div>
-              <div class="float-left" ng-repeat="tag in vm.displayTags">
-                <span class="label label-info margin-left-three">
-                  {{ tag }}
-                  <button type="button" ng-click="vm.removeTag(tag)" class="btn btn-link btn-xs" style="outline:none">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                  </button>
+                <span class="input-group-addon" ng-click="vm.clearKeywords()">
+                  <span class="glyphicon glyphicon-remove clear-field" aria-hidden="true"></span>
                 </span>
               </div>
-              <button type="button" ng-click="vm.searchEvents()" class="btn btn-primary btn-xs apply-filters"
-                      style="outline:none">Apply Filters
-              </button>
             </form>
+            <div class="input-group input-group-sm search-area-input-margin date-search-left">
+              <span class="input-group-addon" id="startAddon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
+              <input type="text" class="form-control search-area-input-margin read-only" ng-change="vm.updateStartDate()"
+                      aria-describedby="startAddon" ng-model="vm.searchDateStart" data-autoclose="1" 
+                        data-max-date="{{vm.searchDateEnd}}" data-date-format="yyyy-MM-dd" readonly
+                          bs-datepicker>
+              <span class="input-group-addon" ng-click="vm.clearStartDate()">
+                <span class="glyphicon glyphicon-remove clear-field" aria-hidden="true"></span>
+              </span>
+            </div>
+            <div class="input-group input-group-sm search-area-input-margin date-search-right">
+              <span class="input-group-addon" id="endAddon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
+              <input type="text" class="form-control search-area-input-margin read-only" ng-change="vm.updateEndDate()"
+                      aria-describedby="endAddon" ng-model="vm.searchDateEnd" data-autoclose="1" 
+                        data-min-date="{{vm.searchDateStart}}" data-date-format="yyyy-MM-dd" readonly
+                          bs-datepicker>
+              <span class="input-group-addon" ng-click="vm.clearEndDate()">
+                <span class="glyphicon glyphicon-remove clear-field" aria-hidden="true"></span>
+              </span>
+            </div>
+            <div class="input-group input-group-sm search-area-input-margin">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span></span>
+              <tags-input class="bootstrap" data-ng-model="vm.addedTags" display-property="name" add-on-space="true"
+                  add-on-enter="true" min-length="1" max-length="50" on-tag-added="vm.updateTags()" on-tag-removed="vm.updateTags()">
+              </tags-input>
+            </div>
+            <div ng-if="vm.searchError" class="error-style">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <strong>Error! </strong> {{ vm.searchError }}
+            </div>
+            <button type="button" ng-click="vm.searchEvents()" class="btn btn-primary btn-xs apply-filters"
+                    style="outline:none">Apply Filters
+            </button>
           </div>
         </div>
         <div class="events-area panel panel-primary">
           <div class="panel-body">
-            <div ng-if="vm.tagError">
-              <div class="alert alert-warning alert-dismissible" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"><span
-                  aria-hidden="true">&times;</span></button>
-                <strong>Warning! </strong> {{ vm.tagError }}
-              </div>
-            </div>
-            <div ng-if="!vm.searchError">
-              <eventcard ng-repeat="event in vm.getEvents()"
-                         event-name="event.name"
-                         event-id="event.id"
-                         description="event.description"
-                         creator="event.creator"
-                         creation-date="event.create_date"
-                         start-date="event.start_date"
-                         end-date="event.end_date"
-                         place-id="event.place_id"
-                         place-name="event.place_name"
-                         vote="event.vote"
-                         report="event.report"
-                         tags="event.tags" 
-                         edit-date="event.edit_date"
-                         picture="event.picture"></eventcard>
-            </div>
-            <div ng-if="vm.searchError">
-              <div class="alert alert-danger alert-dismissable" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"><span
-                  aria-hidden="true">&times;</span></button>
-                <strong>Error! </strong> {{ vm.searchError }}
-              </div>
-            </div>
+            <eventcard ng-repeat="event in vm.getEvents()"
+                       event-name="event.name"
+                       event-id="event.id"
+                       description="event.description"
+                       creator="event.creator"
+                       creation-date="event.create_date"
+                       start-date="event.start_date"
+                       end-date="event.end_date"
+                       place-id="event.place_id"
+                       place-name="event.place_name"
+                       vote="event.vote"
+                       report="event.report"
+                       tags="event.tags" 
+                       edit-date="event.edit_date"
+                       picture="event.picture"></eventcard>
           </div>
         </div>
       </div>
     </div>
   </div>
   <ng-include src="'scripts/calendar/calendar.html'"></ng-include>
-</div>
-<div class="footer">
-  Footer
 </div>

@@ -11,10 +11,9 @@
     .module('chronosApp')
     .constant('settings', {
       serverUrl: 'http://localhost:8000',
-      tagDisplayLength: 10,
       maxKeywords: 10,
       maxTagLength: 50,
-      maxNumberTags: 4,
+      maxNumberTags: 5,
       calendarEventLimitPerDay: 4
     });
 })();
