@@ -163,6 +163,9 @@ class EventView(generics.ListAPIView):
                     filterargs['start_date__range'] = [fromDate, toDate]
             else:
                 filterargs['start_date__range'] = [fromDate, fromDate[:10] + 'T23:59:59']
+        else:
+            if toDate is not None:
+                filterargs['start_date__range'] = [toDate + 'T00:00:00', toDate[:10] + 'T23:59:59']
         if len(tags) > 0:
             filterargs['tags__name__in'] = tags
 
@@ -177,7 +180,7 @@ class EventView(generics.ListAPIView):
 
             queryset = queryset.filter(qset)
 
-        queryset = queryset.annotate(itemcount=Count('id')).order_by('-itemcount','start_date')
+        queryset = queryset.extra(select={'sumvote':'upvote - downvote'}).annotate(itemcount=Count('id')).order_by('-itemcount', 'start_date', '-sumvote')
         return queryset
 
     def post(self, request, *args, **kwargs):

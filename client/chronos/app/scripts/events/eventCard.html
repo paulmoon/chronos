@@ -1,28 +1,28 @@
 <div class="event-card-panel panel panel-default">
   <div class="media-left event-card panel-body">
     <div class="arrow-group">
-      <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.upvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
+      <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.upvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
         <span class="glyphicon glyphicon-chevron-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
       </button>
-      <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+      <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
         <span class="glyphicon glyphicon-chevron-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
       </button>
       <div class="vote-value"> {{vm.vote}}</div>
-      <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.downvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
+      <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.downvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
         <span class="glyphicon glyphicon-chevron-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
       </button>
-      <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+      <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
         <span class="glyphicon glyphicon-chevron-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
       </button>
     </div>
     <div ng-if="vm.picture" class="picture-group">
-      <img ng-src="{{vm.picture}}" alt="Event Picture" class="event-picture">
+      <img ng-src="{{vm.picture}}" alt="Image Not Found" class="event-picture">
     </div>
     <div class="media-body">
       <div class="event-creation" style="float:right">Created by <a ng-click="vm.goUser()" style="text-decoration:none">{{vm.creator.username}}</a></div>
       <h4 class="media-heading"><a href="#/event/{{vm.eventId}}" class="event-name" style="text-decoration:none">{{ vm.displayName }}</a></h4>
       <div class="event-details">{{vm.displayStartDate}} to {{vm.displayEndDate}}</div>
-      <div class="event-details">{{vm.displayPlace}}</div>
+      <div class="event-details">{{vm.placeName}}</div>
       <div style="float:right">
         <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.reportEvent()" class="btn btn-link btn-xs" class="event-button">
           <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
