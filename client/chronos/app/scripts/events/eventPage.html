@@ -7,25 +7,6 @@
         <ul class="list-group">
           <li class="list-group-item">
             <div class="row">
-              <div class="col-md-1">
-                <div class="arrow-group">
-                  <!-- This section is not complete-->
-                  <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.upvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
-                    <span class="glyphicon glyphicon-chevron-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
-                  </button>
-                  <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
-                    <span class="glyphicon glyphicon-chevron-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
-                  </button>
-                  <div class="vote-value"> {{vm.vote}}</div>
-                  <button ng-if="vm.isLoggedIn" type="button" ng-click="vm.downvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
-                    <span class="glyphicon glyphicon-chevron-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
-                  </button>
-                  <button ng-if="!vm.isLoggedIn" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
-                    <span class="glyphicon glyphicon-chevron-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
-                  </button>
-                  <!-- This section is not complete-->
-                </div>
-              </div>
               <div class="col-md-2">
                 <div class="row">
                   <a href="#" class="thumbnail user-profile user-thumbnail">
@@ -43,7 +24,7 @@
                   <h2>{{event.name}}</h2>
                 </div>
                 <div class="row">
-                  {{event.startDate}} - {{event.endDate}}
+                  {{event.startDate}} to {{event.endDate}}
                 </div>
               </div>
               <div class="col-md-1">
@@ -88,19 +69,9 @@
                   <div class="btn btn-default event-bookmark" aria-label="Left Align">
                     <i class="fa fa-bookmark"></i>
                   </div>
-                  <button type="button" data-ng-click="saveEvent()" class="btn btn-default btn" aria-label="Left Align">
+                  <button type="button" data-ng-click="event.saveEventClick()" class="btn btn-default btn" aria-label="Left Align">
                     {{event.saveEvent}}
                   </button>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="input-group event-link">
-                  <input type="text" class="form-control" placeholder="Search for..." value="{{event.copyUrl}}" disabled>
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" clip-copy="copyText()" clip-click="copyValue()">
-                      {{event.copyButton}}
-                    </button>
-                  </span>
                 </div>
               </div>
             </div>

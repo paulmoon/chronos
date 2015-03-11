@@ -11,34 +11,16 @@
 angular.module('chronosApp')
   .controller('EventPageController', EventPageController);
 
-  EventPageController.$inject = ['AuthService', 'RestService', 'EventPageFactory', '$location', '$scope', '$route', '$q'];
+  EventPageController.$inject = ['AuthService', 'RestService', 'EventPageFactory', '$location', '$route', '$routeParams', '$q'];
 
-  function EventPageController(AuthService, RestService, EventPageFactory, $location, $scope, $route, $q) {
+  function EventPageController(AuthService, RestService, EventPageFactory, $location, $route, $routeParams, $q) {
     var vm = this;
-    var init = EventPageFactory.updateEvent();
+    _activate();
     vm.title = 'EventPageController';
     vm.isLoggedIn = AuthService.isLoggedIn;
-    init.then(function(data) {
-      console.log(data);
-      vm.placeName = data.place_name;
-      vm.description = data.description;
-      vm.name = data.name;
-      vm.username = data.creator.username;
-      vm.upvote = data.upvote;
-      vm.downvote = data.downvote;
-      vm.vote = data.vote;
-      vm.picture = data.picture;
-      vm.startDate = moment(data.start_date).format('MMMM Do YYYY, h:mm:ss a');
-      vm.endDate =  moment(data.end_date).format('MMMM Do YYYY, h:mm:ss a');
-      vm.tags = data.tags;
-    });
 
-    vm.copyUrl = $location.absUrl();
-    vm.copyButton = 'COPY';
     vm.saveEvent = 'SAVE';
-    $scope.saveEvent = saveEvent;
-    $scope.copyText = copyText;
-    $scope.copyValue = copyValue;
+    vm.saveEventClick = saveEventClick;
 
     /////////
 
@@ -46,23 +28,29 @@ angular.module('chronosApp')
      * @description Modifies the saved event button
      * @methodOf chronosApp:EventPageController
      */
-    function saveEvent() {
+    function saveEventClick() {
       vm.saveEvent = 'SAVED';
     }
 
     /**
-     * @description Returns the full url of the page
-     * @methodOf chronosApp:EventPageController
+     * @description on load page it fills in the data
+     * @methodOF chronosApp:EventPageController
+     * @private
      */
-    function copyText() {
-      return $location.absUrl();
-    }
-
-    /**
-     * @description Modifies the copy values button
-     * @methodOf chronosApp:EventPageController
-     */
-    function copyValue() {
-      vm.copyButton = 'COPIED';
+    function _activate() {
+      EventPageFactory.updateEvent($routeParams.eventId)
+        .then(function(data) {
+          vm.placeName = data.place_name;
+          vm.description = data.description;
+          vm.name = data.name;
+          vm.username = data.creator.username;
+          vm.upvote = data.upvote;
+          vm.downvote = data.downvote;
+          vm.vote = data.vote;
+          vm.picture = data.picture;
+          vm.startDate = moment(data.start_date).format('MMMM Do YYYY, h:mm:ss a');
+          vm.endDate =  moment(data.end_date).format('MMMM Do YYYY, h:mm:ss a');
+          vm.tags = data.tags;
+        });
     }
   }

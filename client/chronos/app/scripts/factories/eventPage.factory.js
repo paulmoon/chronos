@@ -16,7 +16,7 @@
 
   function EventPageFactory(RestService, $route, $q, $log) {
     var factory =  {
-      event: {},
+      eventInstance: {},
       getEvent: getEvent,
       updateEvent: updateEvent
     };
@@ -31,7 +31,7 @@
      * @returns Get event in the EventPageFactory.
      */
     function getEvent() {
-      return factory.event;
+      return factory.eventInstance;
     }
 
     /**
@@ -39,8 +39,8 @@
      * @methodOf chronosApp:EventPageFactory
      * @returns {*}
      */
-    function updateEvent() {
-      return _updateEvent();
+    function updateEvent(eventId) {
+      return _updateEvent(eventId);
     }
 
     /**
@@ -49,11 +49,11 @@
      * @returns {*}
      * @private
      */
-    function _updateEvent() {
-      return RestService.getEvent($route.current.params.eventId)
+    function _updateEvent(eventId) {
+      return RestService.getEvent(eventId)
         .then(function(response) {
           var newEvent = response.data;
-          factory.event = newEvent;
+          factory.eventInstance = newEvent;
           return response.data;
         }, function (response) {
           $log.warn('Response: ' + response);
