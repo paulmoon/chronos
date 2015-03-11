@@ -8,6 +8,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django import forms
+from dbarray import IntegerArrayField
 
 class Vote(models.Model):
 	event = models.ForeignKey('Events')
@@ -60,3 +62,27 @@ class Events(models.Model):
 	place_id = models.CharField(max_length=100, null=True)
 	place_name = models.CharField(max_length=100, null=True)
 	tags = models.ManyToManyField(Tag, blank=True)
+
+##############################
+# --------- Comments! ------ #
+##############################
+class Comment(models.Model):
+    content = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    path = IntegerArrayField(blank=True, editable=False)
+    depth = models.PositiveSmallIntegerField(default=0)
+
+    def __unicode__(self):
+        return self.content
+
+################################
+# ------ Comments Form! ------ #
+################################
+class CommentForm(forms.ModelForm):
+    #Hidden value to get a child's parent
+    parent = forms.CharField(widget=forms.HiddenInput(
+        attrs={'class': 'parent'}), required=False)
+
+    class Meta:
+        model = Comment
+        fields = ('content',)

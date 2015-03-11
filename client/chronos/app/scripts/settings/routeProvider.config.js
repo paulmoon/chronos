@@ -24,7 +24,7 @@
         // controller: 'AboutCtrl'
       })
       .when('/event/:eventId', {
-        templateUrl: 'scripts/events/eventModal.html',
+        templateUrl: 'scripts/events/eventPage.html',
         controller: 'EventPageController'
       })
       .otherwise({

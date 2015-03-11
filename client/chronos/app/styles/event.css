@@ -66,6 +66,49 @@
     z-index: 1051 !important;
 }
 
+.event-image {
+  height: auto;
+  width:100%;
+  padding: 5px;
+}
+
+.event-container {
+  width: 80% !important;
+}
+
+.event-upvote-li {
+  background: #F4F3F1;
+}
+
+.event-upvote-label {
+  padding: 10px;
+}
+
+.event-padding {
+  padding: 5px;
+}
+
+.event-vote {
+  font-size: 30px;
+  text-align: center;
+}
+
+.event-bookmark {
+  background-color: #D1D1D4;
+  color: #FFFFFF;
+}
+
+.event-link {
+  width: 60%;
+  float: right;
+}
+
 .event-button {
   outline: none;
+}
+
+.event-label {
+  margin: 0 5px;
+  padding: 5px;
+  font-size: 1em;
 }

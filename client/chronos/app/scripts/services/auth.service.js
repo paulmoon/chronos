@@ -93,6 +93,14 @@
 
     /**
      * @methodOf chronosApp:AuthService
+     * @returns {boolean} true if current user is owns event, false if not.
+     */
+    this.own = function () {
+      // fill out code later
+    }
+
+    /**
+     * @methodOf chronosApp:AuthService
      * @param {string} username
      */
     this.setCredentials = function (username) {

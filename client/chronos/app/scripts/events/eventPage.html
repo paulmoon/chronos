@@ -1,0 +1,101 @@
+<banner></banner>
+<div class="container event-container" data-ng-controller="EventPageController as event">
+  <div class="row">
+    <div class="col-md-8">
+      <img src="{{event.picture}}" alt="picture" class="img-rounded event-image" />
+      <div class="panel panel-default">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="row">
+                  <a href="#" class="thumbnail user-profile user-thumbnail">
+                    <img src="..." alt="..." width="100%" height="75">
+                  </a>
+                </div>
+                <div class="row user-name">
+                  <a href="#" class="user-profile">
+                    {{event.username}}
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="row">
+                  <h2>{{event.name}}</h2>
+                </div>
+                <div class="row">
+                  {{event.startDate}} to {{event.endDate}}
+                </div>
+              </div>
+              <div class="col-md-1">
+                <!-- This section is not complete-->
+                <button ng-if="event.owns" class="btn btn-success">Edit</button>
+                <!-- This section is not complete-->
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <a href="https://www.google.ca/maps/place/{{event.placeName}}"><i class="fa fa-map-marker"> {{event.placeName}}</i></a>
+          </li>
+          <li class="list-group-item">
+            {{event.description}}
+          </li>
+          <li class="list-group-item event-upvote-li">
+            <div class="row">
+              <div class="col-md-1 event-padding">
+                <span class="label label-success event-upvote-label"><i class="fa fa-star-half-o"></i> {{event.vote}}</span>
+              </div>
+              <div class="col-md-3">
+                <span>The total overall votes</span>
+              </div>
+              <div class="col-md-1 event-padding">
+                <span class="label label-primary event-upvote-label"><i class="fa fa-arrow-circle-up"> {{event.upvote}}</i></span>
+              </div>
+              <div class="col-md-3 event-padding">
+                <span>Upvotes</span>
+              </div>
+              <div class="col-md-1 event-padding">
+                <span class="label label-danger event-upvote-label"><i class="fa fa-arrow-circle-down"> {{event.downvote}}</i></span>
+              </div>
+              <div class="col-md-3 event-padding">
+                <span>Downvotes</span>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="btn-group" role="group">
+                  <div class="btn btn-default event-bookmark" aria-label="Left Align">
+                    <i class="fa fa-bookmark"></i>
+                  </div>
+                  <button type="button" data-ng-click="event.saveEventClick()" class="btn btn-default btn" aria-label="Left Align">
+                    {{event.saveEvent}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Associated Tags
+        </div>
+        <div class="panel-body">
+          <span class="label label-info event-label" ng-repeat="tag in event.tags">
+            {{tag.name}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <!-- This section is not complete-->
+      <leaflet defaults="defaults" center="center" height="480px" width="640px"></leaflet>
+      <!-- This section is not complete-->
+    </div>
+  </div>
+  <div class="row">
+    COMMENTS
+  </div>
+</div>
