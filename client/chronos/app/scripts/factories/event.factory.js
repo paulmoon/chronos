@@ -3,7 +3,7 @@
  * @ngdoc service
  * @name chronosApp.EventFactory
  * @description Factory used for retrieving (filtered) events from a single place.
- */ 
+ */
 
 (function () {
   'use strict';
@@ -12,10 +12,10 @@
     .module('chronosApp')
     .factory('EventFactory', EventFactory);
 
-  EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService'];
+  EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService', 'AuthService'];
 
   /* @ngInject */
-  function EventFactory($log, $q, RestService, StateService) {
+  function EventFactory($log, $q, RestService, StateService, AuthService) {
     var factory = {
       events: [],
       selectedEvents: [],
@@ -64,7 +64,7 @@
      * @description Allows the user to update the events when a location has changed
      * @methodOf chronosApp:EventFactory
      */
-    function refreshEvents(){
+    function refreshEvents() {
       return _updateEvents();
     }
 

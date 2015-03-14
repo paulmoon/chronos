@@ -10,9 +10,9 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFactory'];
+  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFactory', 'AuthService', 'StateService'];
 
-  function CalendarController($scope, $log, settings, EventFactory) {
+  function CalendarController($scope, $log, settings, EventFactory, AuthService, StateService) {
     /* jshint validthis: true */
     var vm = this;
 
@@ -53,6 +53,25 @@
      * @param callback Function to be called after events are retrieved.
      */
     function getEvents(start, end, timezone, callback) {
+      console.log(AuthService.isLoggedIn());
+      console.log(StateService.getPlaceID());
+
+      //if (AuthService.isLoggedIn() && StateService.getPlaceID()) {
+      //  var filterParams = {};
+      //  filterParams.fromDate = start;
+      //  filterParams.toDate = end;
+      //  filterParams.placeID = StateService.getPlaceID();
+      //  console.log(filterParams);
+      //
+      //  EventFactory.updateEvents(filterParams)
+      //    .then(function (response) {
+      //      console.log('plz');
+      //      callback(transformEventData(response));
+      //    }, function (response) {
+      //      $log.warn('EventFactory.getEvents: Failed to get events');
+      //      $log.warn('Response: ' + response);
+      //    });
+      //} else {
       EventFactory.updateDateRange(start, end)
         .then(function (response) {
           callback(transformEventData(response));
@@ -60,6 +79,7 @@
           $log.warn('EventFactory.getEvents: Failed to get events');
           $log.warn('Response: ' + response);
         });
+      //}
     }
 
     /**

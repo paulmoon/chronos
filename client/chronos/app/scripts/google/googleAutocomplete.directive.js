@@ -14,7 +14,7 @@ angular.module('chronosApp')
       scope: {
         ngModel: '=',
         details: '=?',
-        callback: '=',
+        callback: '='
       },
       link: function (scope, element, attrs, model) {
         var options = {

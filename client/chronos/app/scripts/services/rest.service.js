@@ -14,9 +14,9 @@
     .module('chronosApp')
     .service('RestService', RestService);
 
-  RestService.$inject = ['$http', 'settings', 'StateService'];
+  RestService.$inject = ['$http', 'settings'];
 
-  function RestService($http, settings, StateService) {
+  function RestService($http, settings) {
     /**
      * @description API call for verifying credentials.
      * @methodOf chronosApp:RestService
