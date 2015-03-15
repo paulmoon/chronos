@@ -10,9 +10,9 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFactory', 'AuthService', 'StateService'];
+  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFactory', 'StateService'];
 
-  function CalendarController($scope, $log, settings, EventFactory, AuthService, StateService) {
+  function CalendarController($scope, $log, settings, EventFactory, StateService) {
     /* jshint validthis: true */
     var vm = this;
 

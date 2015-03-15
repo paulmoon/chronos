@@ -12,10 +12,10 @@
     .module('chronosApp')
     .factory('EventFactory', EventFactory);
 
-  EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService', 'AuthService'];
+  EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService'];
 
   /* @ngInject */
-  function EventFactory($log, $q, RestService, StateService, AuthService) {
+  function EventFactory($log, $q, RestService, StateService) {
     var factory = {
       events: [],
       selectedEvents: [],
