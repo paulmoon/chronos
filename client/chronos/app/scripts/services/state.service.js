@@ -86,7 +86,6 @@
           };
 
           service.getDetails(request, function (place, status) {
-            console.log(place);
             if (status === 'OK') {
               self.setPlaceID(place.place_id);
               self.setPlaceName(place.formatted_address);
