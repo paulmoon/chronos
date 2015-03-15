@@ -12,18 +12,16 @@
     .config(RouteProviderConfigs);
 
   RouteProviderConfigs.$inject = ['$routeProvider'];
-  //RouteProviderConfigs.$inject = ['$routeProvider', 'AuthService', 'StateService'];
 
   function RouteProviderConfigs($routeProvider) {
-  //function RouteProviderConfigs($routeProvider, AuthService, StateService) {
     $routeProvider
       .when('/', {
         templateUrl: 'scripts/chronos/main.html',
 
         resolve: {
-          'userDetails': function (AuthService, StateService) {
+          userDetails: function (AuthService, StateService) {
             if (AuthService.isLoggedIn()) {
-              StateService.retrieveState();
+              return StateService.retrieveUserPlace();
             }
           }
         }

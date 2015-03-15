@@ -53,33 +53,21 @@
      * @param callback Function to be called after events are retrieved.
      */
     function getEvents(start, end, timezone, callback) {
-      console.log(AuthService.isLoggedIn());
-      console.log(StateService.getPlaceID());
+      var filterParams = {};
+      filterParams.fromDate = start;
+      filterParams.toDate = end;
 
-      //if (AuthService.isLoggedIn() && StateService.getPlaceID()) {
-      //  var filterParams = {};
-      //  filterParams.fromDate = start;
-      //  filterParams.toDate = end;
-      //  filterParams.placeID = StateService.getPlaceID();
-      //  console.log(filterParams);
-      //
-      //  EventFactory.updateEvents(filterParams)
-      //    .then(function (response) {
-      //      console.log('plz');
-      //      callback(transformEventData(response));
-      //    }, function (response) {
-      //      $log.warn('EventFactory.getEvents: Failed to get events');
-      //      $log.warn('Response: ' + response);
-      //    });
-      //} else {
-      EventFactory.updateDateRange(start, end)
+      if (StateService.getPlaceID()) {
+        filterParams.placeID = StateService.getPlaceID();
+      }
+
+      EventFactory.updateEvents(filterParams)
         .then(function (response) {
           callback(transformEventData(response));
         }, function (response) {
           $log.warn('EventFactory.getEvents: Failed to get events');
           $log.warn('Response: ' + response);
         });
-      //}
     }
 
     /**

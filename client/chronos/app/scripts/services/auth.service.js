@@ -15,9 +15,9 @@
     .module('chronosApp')
     .service('AuthService', AuthService);
 
-  AuthService.$inject = ['$http', '$q', '$cookies', '$log', 'RestService'];
+  AuthService.$inject = ['$http', '$q', '$cookies', '$log', 'RestService', 'StateService'];
 
-  function AuthService($http, $q, $cookies, $log, RestService) {
+  function AuthService($http, $q, $cookies, $log, RestService, StateService) {
     var self = this;
     self.username = '';
 
@@ -47,6 +47,17 @@
           self.setCredentials(username);
           self.setHeaderToken(response.data.token);
           self.setSessionCookie(response.data.token);
+          return response;
+        }, function (response) {
+          $log.warn('Login failed.');
+          $log.warn('Username, password:' + username + ', ' + password);
+          return $q.reject(response);
+        }).then(function (response) {
+          return StateService.retrieveUserPlace();
+        }, function (response) {
+          $log.warn('Failed to retrieve user place (AuthService.login())');
+          return $q.reject(response);
+        }).then(function (response) {
           return response;
         }, function (response) {
           return $q.reject(response);

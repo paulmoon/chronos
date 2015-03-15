@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('AuthModalController', AuthModalController);
 
-  AuthModalController.$inject = ['$modalInstance', 'AuthService', 'shouldShowSignUpModal'];
+  AuthModalController.$inject = ['$log', '$modalInstance', 'AuthService', 'shouldShowSignUpModal'];
 
-  function AuthModalController($modalInstance, AuthService, shouldShowSignUpModal) {
+  function AuthModalController($log, $modalInstance, AuthService, shouldShowSignUpModal) {
     var vm = this;
 
     vm.title = 'AuthModalController';
@@ -57,10 +57,14 @@
 
       AuthService.signUp(vm.username, vm.firstName, vm.lastName, vm.password, vm.email)
         .then(function (data) {
-          AuthService.login(vm.username, vm.password);
-          $modalInstance.close();
+          return AuthService.login(vm.username, vm.password)
+            .then(function (response) {
+              $modalInstance.close();
+            }, function (response) {
+              $modalInstance.close();
+            });
         }, function (error) {
-          console.log("AuthService.signUp failed. This shouldn't happen if our validation logic is correct! " + error);
+          $log.warn("AuthService.signUp failed. This shouldn't happen if our validation logic is correct! " + error);
         });
     }
 

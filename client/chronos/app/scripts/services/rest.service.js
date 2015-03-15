@@ -54,7 +54,7 @@
     /**
      * @description API call for updating a user location.
      * @methodOf chronosApp:RestService
-     * @param {string} location ID
+     * @param {string} placeID location ID
      * @returns {HttpPromise}
      */
     this.updateUserLocation = function (placeID) {
