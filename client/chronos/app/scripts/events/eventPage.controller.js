@@ -59,6 +59,9 @@ angular.module('chronosApp')
       CommentFactory.getComment($routeParams.eventId)
         .then(function(comments) {
           vm.comments = comments;
+          for(var i = 0, len = vm.comments.length; i < len; ++i) {
+            vm.comments[i].date = moment(vm.comments[i].date).format('MMMM Do YYYY, h:mm:ss a');
+          }
         });
     }
   }

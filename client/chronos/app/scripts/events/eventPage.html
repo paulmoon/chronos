@@ -96,8 +96,18 @@
     </div>
   </div>
   <div class="row">
-    <div data-ng-repeat="comment in event.comments" class="comments">
-        {{comment.user.username}} {{comment.content}}
+    <div class="col-md-8">
+      <div data-ng-repeat="comment in event.comments" class="comment-container">
+        <div class="comment-header">
+          <span class="comment-username">{{comment.user.username}}</span> - <span class="comment-reply">Reply</span>
+        </div>
+        <div class="comment-body">
+          {{comment.content}}
+        </div>
+        <div class="comment-date">
+          on {{comment.date}}
+        </div>
+      </div>
     </div>
   </div>
 </div>
