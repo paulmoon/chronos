@@ -97,6 +97,25 @@
   </div>
   <div class="row">
     <div class="col-md-8">
+      <div class="comment-box">
+        <div class="comment-save-header">
+          Comments
+        </div>
+        <div class="comment-save-body">
+          <form role="form">
+            <div class="form-group">
+              <textarea class="form-control" rows="8" id="description" placeholder="Comment"
+                  ng-model="event.commentData"></textarea>
+            </div>
+            <a type="submit" class="btn btn-primary comment-save-submit" data-ng-click="event.createComment()">Add Comment</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <hr>
       <div data-ng-repeat="comment in event.comments" class="comment-container">
         <div class="comment-header">
           <span class="comment-username">{{comment.user.username}}</span> - <span class="comment-reply">Reply</span>

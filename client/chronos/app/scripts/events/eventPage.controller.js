@@ -18,10 +18,13 @@ angular.module('chronosApp')
     _activate();
     _commentActivate();
     vm.title = 'EventPageController';
+    vm.commentData = '';
     vm.isLoggedIn = AuthService.isLoggedIn;
 
     vm.saveEvent = 'SAVE';
     vm.saveEventClick = saveEventClick;
+
+    vm.createComment = createComment;
 
     /////////
 
@@ -31,6 +34,13 @@ angular.module('chronosApp')
      */
     function saveEventClick() {
       vm.saveEvent = 'SAVED';
+    }
+
+    function createComment() {
+      CommentFactory.saveComment($routeParams.eventId, vm.commentData)
+        .then(function(comment) {
+          vm.createdComment = comment
+        });
     }
 
     /**
@@ -55,6 +65,11 @@ angular.module('chronosApp')
         });
     }
 
+    /**
+     * @description on load page it fills in the comment data
+     * @methodOf chronosApp:EventPageControkker
+     * @private
+     */
     function _commentActivate() {
       CommentFactory.getComment($routeParams.eventId)
         .then(function(comments) {
