@@ -13,8 +13,8 @@ angular.module('chronosApp')
       require: 'ngModel',
       scope: {
         ngModel: '=',
-        details: '=?',
-        callback: '=',
+        placeDetails: '=?',
+        callback: '='
       },
       link: function (scope, element, attrs, model) {
         var options = {
@@ -25,9 +25,9 @@ angular.module('chronosApp')
 
         google.maps.event.addListener(scope.gPlace, 'place_changed', function () {
           scope.$apply(function () {
-            scope.details = scope.gPlace.getPlace();
+            scope.placeDetails = scope.gPlace.getPlace();
             model.$setViewValue(element.val());
-            scope.callback(scope.details);
+            scope.callback(scope.placeDetails);
           });
         });
       }
