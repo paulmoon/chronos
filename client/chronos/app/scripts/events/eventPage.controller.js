@@ -11,11 +11,12 @@
 angular.module('chronosApp')
   .controller('EventPageController', EventPageController);
 
-  EventPageController.$inject = ['AuthService', 'RestService', 'EventPageFactory', '$location', '$route', '$routeParams', '$q'];
+  EventPageController.$inject = ['AuthService', 'RestService', 'EventPageFactory', 'CommentFactory', '$location', '$route', '$routeParams', '$q'];
 
-  function EventPageController(AuthService, RestService, EventPageFactory, $location, $route, $routeParams, $q) {
+  function EventPageController(AuthService, RestService, EventPageFactory, CommentFactory, $location, $route, $routeParams, $q) {
     var vm = this;
     _activate();
+    _commentActivate();
     vm.title = 'EventPageController';
     vm.isLoggedIn = AuthService.isLoggedIn;
 
@@ -51,6 +52,14 @@ angular.module('chronosApp')
           vm.startDate = moment(data.start_date).format('MMMM Do YYYY, h:mm:ss a');
           vm.endDate =  moment(data.end_date).format('MMMM Do YYYY, h:mm:ss a');
           vm.tags = data.tags;
+        });
+    }
+
+    function _commentActivate() {
+      CommentFactory.getComment($routeParams.eventId)
+        .then(function(comments) {
+          vm.comments = comments;
+          console.log(vm.comments);
         });
     }
   }

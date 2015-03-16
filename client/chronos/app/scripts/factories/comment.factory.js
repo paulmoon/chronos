@@ -31,8 +31,14 @@
      * @methodOf chronosApp:CommentFactory
      * @returns Get event in the CommentFactory.
      */
-    function getComment() {
-
+    function getComment(eventId) {
+      return RestService.getComment(eventId)
+        .then(function(response) {
+          return response.data;
+        }, function(response) {
+          $log.warn('Response: ' + response);
+          return $q.reject(response);
+        });
     }
 
     /**
@@ -40,8 +46,14 @@
      * @methodOf chronosApp:CommentFactory
      * @returns {*}
      */
-    function saveComment() {
-
+    function saveComment(eventId, commentData) {
+      return RestService.saveComment(eventId, commentData)
+        .then(function(response) {
+          return response.data;
+        }, function(response) {
+          $log.warn('Response: ' + response);
+          return $q.reject(response);
+        });
     }
 
     /**

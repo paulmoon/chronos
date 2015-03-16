@@ -172,10 +172,10 @@
      * @param userId
      * @returns {HttpPromise}
      */
-    this.saveComment = function (eventId, commentData, userId) {
+    this.saveComment = function (eventId, commentData) {
       return $http.post(settings.serverUrl + '/comments', {
         event_id: eventId,
-        comment: commentData,
+        content: commentData,
       });
     }
   }
