@@ -1,0 +1,45 @@
+.search-area {
+  float: top;
+  width: 95%;
+  margin-left: 10px;
+  border:0;
+  background:#FAFAFA;
+}
+
+.search-area-input-margin {
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.apply-filters {
+   float:right;
+   margin-right:10px;
+}
+
+.date-search-left {
+  width:49.29%;
+  float:left;
+}
+
+.date-search-right {
+  width:49.28%;
+}
+
+.clear-field {
+  margin-top:1.5px;
+}
+
+.read-only {
+  background-color: #fff !important;
+  cursor: default !important;
+}
+
+.error-style {
+  color: #CC0000;
+  float: left;
+}
+
+
+.add-opacity {
+  opacity: 0.6;
+}
