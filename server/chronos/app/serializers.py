@@ -211,8 +211,14 @@ class VoteEventSerializer(serializers.Serializer):
 # --------- Comments! ------ #
 ##############################
 
-class CommentSerializer(serializers.ModelSerializer):
+class CommentReadSerializer(serializers.ModelSerializer):
+    user = ChronosPublicUserSerializer()
+    class Meta:
+        model = app.models.Comments
+        fields = ('content', 'event', 'user', 'date')
 
+
+class CommentWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Comments
         fields = ('content', 'event', 'user')

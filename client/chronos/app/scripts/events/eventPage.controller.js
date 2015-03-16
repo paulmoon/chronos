@@ -59,7 +59,6 @@ angular.module('chronosApp')
       CommentFactory.getComment($routeParams.eventId)
         .then(function(comments) {
           vm.comments = comments;
-          console.log(vm.comments);
         });
     }
   }

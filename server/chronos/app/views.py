@@ -253,11 +253,11 @@ class SaveEvent(generics.GenericAPIView):
 class SaveCommentView(generics.ListAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    serializer_class = app.serializers.CommentSerializer
+    serializer_class = app.serializers.CommentWriteSerializer
 
     def post(self, request, *args, **kwargs):
         request.data['user'] = request.user.id
-        serializer = app.serializers.CommentSerializer(data=request.data)
+        serializer = app.serializers.CommentWriteSerializer(data=request.data)
         if serializer.is_valid():
             comment = serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
@@ -267,7 +267,7 @@ class SaveCommentView(generics.ListAPIView):
 class GetCommentView(generics.ListAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    serializer_class = app.serializers.CommentSerializer
+    serializer_class = app.serializers.CommentReadSerializer
     def get_queryset(self):
         event = self.kwargs["event"]
         queryset = app.models.Comments.objects.filter(event=event)

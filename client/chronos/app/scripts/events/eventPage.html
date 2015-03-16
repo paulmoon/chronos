@@ -83,7 +83,7 @@
           Associated Tags
         </div>
         <div class="panel-body">
-          <span class="label label-info event-label" ng-repeat="tag in event.tags">
+          <span class="label label-info event-label" data-ng-repeat="tag in event.tags">
             {{tag.name}}
           </span>
         </div>
@@ -96,8 +96,8 @@
     </div>
   </div>
   <div class="row">
-    <div class="comments">
-
+    <div data-ng-repeat="comment in event.comments" class="comments">
+        {{comment.user.username}} {{comment.content}}
     </div>
   </div>
 </div>
