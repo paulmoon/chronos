@@ -1,3 +1,37 @@
+// All shared event styling
+
+/* Event datepicker classes */
+.datepicker.dropdown-menu {
+  width: 250px;
+  height: 250px;
+}
+.datepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.datepicker.dropdown-menu tbody {
+  height: 180px;
+}
+.datepicker.dropdown-menu tbody button {
+  padding: 6px;
+}
+.datepicker.dropdown-menu.datepicker-mode-1 tbody button, .datepicker.dropdown-menu.datepicker-mode-2 tbody button {
+  height: 65px;
+}
+
+.timepicker.dropdown-menu {
+  padding: 0 4px;
+}
+.timepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.timepicker.dropdown-menu tbody button {
+  padding: 6px;
+}
+
+
+/* Tag Input Classes */
 .bootstrap {
   width: 100%;
 }
@@ -56,59 +90,3 @@
 .remove-button {
    color: #5691C4 !important;
  }
-
-.event-dates {
-  padding-right: 20px;
-}
-
-/* Models have a z-index of 1050, so we need to force google autocompelte to be higher */
-.pac-container {
-    z-index: 1051 !important;
-}
-
-.event-image {
-  height: auto;
-  width:100%;
-  padding: 5px;
-}
-
-.event-container {
-  width: 80% !important;
-}
-
-.event-upvote-li {
-  background: #F4F3F1;
-}
-
-.event-upvote-label {
-  padding: 10px;
-}
-
-.event-padding {
-  padding: 5px;
-}
-
-.event-vote {
-  font-size: 30px;
-  text-align: center;
-}
-
-.event-bookmark {
-  background-color: #D1D1D4;
-  color: #FFFFFF;
-}
-
-.event-link {
-  width: 60%;
-  float: right;
-}
-
-.event-button {
-  outline: none;
-}
-
-.event-label {
-  margin: 0 5px;
-  padding: 5px;
-  font-size: 1em;
-}
