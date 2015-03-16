@@ -44,9 +44,6 @@
     function onLogin() {
       if (StateService.getPlaceName() !== null) {
         vm.chosenPlace = StateService.getPlaceName();
-        console.log('Changing chosen place');
-        console.log(vm.chosenPlace);
-
       }
       vm.refreshEvents();
     }
