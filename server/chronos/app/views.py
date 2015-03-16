@@ -247,6 +247,36 @@ class SaveEvent(generics.GenericAPIView):
         user.save()
         return Response(data=self.get_serializer_class()(event).data, status=status.HTTP_200_OK)
 
+##############################
+# --------- Comments! ------ #
+##############################
+class SaveCommentView(generics.ListAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = app.serializers.CommentSerializer
+
+    def post(self, request, *args, **kwargs):
+        request.data['user'] = request.user.id
+        serializer = app.serializers.CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            comment = serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetCommentView(generics.ListAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = app.serializers.CommentSerializer
+    def get_queryset(self):
+        event = self.kwargs["event"]
+        queryset = app.models.Comments.objects.filter(event=event)
+        return queryset
+
+
+
+
+
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()
 update_user = UpdateUser.as_view()
@@ -259,3 +289,5 @@ create_tag = TagView.as_view()
 vote_event = VoteEvent.as_view()
 save_event = SaveEvent.as_view()
 get_saved_events = GetSavedEvents.as_view()
+save_comment = SaveCommentView.as_view()
+get_comments = GetCommentView.as_view()

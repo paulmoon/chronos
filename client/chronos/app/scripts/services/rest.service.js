@@ -146,12 +146,37 @@
 
     /**
      * @description API call for getting a specific event
-     * @methofOf chronosApp:RestService
+     * @methodOf chronosApp:RestService
      * @param eventId The id of the event
      * @returns {HttpPromise}
      */
     this.getEvent = function (eventId) {
       return $http.get(settings.serverUrl + '/events/' + eventId);
     };
+
+    /**
+     * @descrption API call for getting comments for a specific event
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event
+     * @returns {HttpPromise}
+     */
+    this.getComment = function (eventId) {
+      return $http.get(settings.serverUrl + '/comments/' + eventId);
+    }
+
+    /**
+     * @description API call for saving a comment for a specific event
+     * @methodOf chronosApp:RestService
+     * @param eventId
+     * @param commentData
+     * @param userId
+     * @returns {HttpPromise}
+     */
+    this.saveComment = function (eventId, commentData, userId) {
+      return $http.post(settings.serverUrl + '/comments', {
+        event_id: eventId,
+        comment: commentData,
+      });
+    }
   }
 })();
