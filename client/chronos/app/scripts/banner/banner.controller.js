@@ -24,6 +24,7 @@
     vm.logout = AuthService.logout;
     vm.refreshEvents = EventFactory.refreshEvents;
 
+    vm.onLogin = onLogin;
     vm.openSignupModal = openSignupModal;
     vm.openLoginModal = openLoginModal;
     vm.changeLocation = changeLocation;
@@ -38,6 +39,16 @@
       if (AuthService.isLoggedIn()) {
         vm.chosenPlace = StateService.getPlaceName();
       }
+    }
+
+    function onLogin() {
+      if (StateService.getPlaceName() !== null) {
+        vm.chosenPlace = StateService.getPlaceName();
+        console.log('Changing chosen place');
+        console.log(vm.chosenPlace);
+
+      }
+      vm.refreshEvents();
     }
 
     function openSignupModal() {
@@ -63,7 +74,7 @@
         }
       });
 
-      modalInstance.result.then(vm.refreshEvents);
+      modalInstance.result.then(vm.onLogin);
     }
 
     function openCreateEventModal() {
@@ -104,7 +115,9 @@
 
     function saveUserLocation() {
       var _chosenPlaceID = StateService.getPlaceID();
-      RestService.updateUserLocation(_chosenPlaceID).
+      var _chosenPlaceName = StateService.getPlaceName();
+
+      RestService.updateUserLocation(_chosenPlaceID, _chosenPlaceName).
         success(function (data, status, headers, config) {
           // Fill in at later date
         }).

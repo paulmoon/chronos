@@ -53,7 +53,7 @@
           $log.warn('Username, password:' + username + ', ' + password);
           return $q.reject(response);
         }).then(function (response) {
-          return StateService.retrieveUserPlace();
+          return StateService.retriveUserProfile();
         }, function (response) {
           $log.warn('Failed to retrieve user place (AuthService.login())');
           return $q.reject(response);

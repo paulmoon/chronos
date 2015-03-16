@@ -69,31 +69,19 @@
      * @methodOf chronosApp.stateService
      * @returns {*} Promise object which will always be resolved
      */
-    this.retrieveUserPlace = function () {
+    this.retriveUserProfile = function () {
       var deferred = $q.defer();
       RestService.getCurrentUserInformation()
         .success(function (data, status, headers, config) {
-          if (data.place_id === null) {
-            deferred.resolve();
-            return;
+          if (data.place_id !== null) {
+            self.setPlaceID(data.place_id);
           }
 
-          // jQuery element
-          var element = angular.element('<div class="empty"></div>');
-          var service = new google.maps.places.PlacesService(element[0]);
-          var request = {
-            placeId: data.place_id
-          };
+          if (data.place_name !== null) {
+            self.setPlaceName(data.place_name);
+          }
 
-          service.getDetails(request, function (place, status) {
-            if (status === 'OK') {
-              self.setPlaceID(place.place_id);
-              self.setPlaceName(place.formatted_address);
-            } else {
-              $log.warn('Failed to retrieve user information.');
-            }
-            deferred.resolve();
-          });
+          deferred.resolve();
         })
         .error(function (data, status, headers, config) {
           $log.warn('Failed to retrieve user information.');

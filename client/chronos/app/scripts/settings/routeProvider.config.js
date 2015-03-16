@@ -21,7 +21,7 @@
         resolve: {
           userDetails: function (AuthService, StateService) {
             if (AuthService.isLoggedIn()) {
-              return StateService.retrieveUserPlace();
+              return StateService.retriveUserProfile();
             }
           }
         }
