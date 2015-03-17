@@ -107,7 +107,7 @@
         place_name: place_name,
         tags: tags
       }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnEventCreate, 0);
+        PubSubService.publish(settings.pubSubOnEventCreate);
         return response;
       });
     };
@@ -132,7 +132,7 @@
         end_date: endDate,
         tags: tags
       }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnEventUpdate, 0);
+        PubSubService.publish(settings.pubSubOnEventUpdate);
         return response;
       });
     };
@@ -184,7 +184,7 @@
         event: eventId,
         content: commentData
       }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnCommentCreate, 0);
+        PubSubService.publish(settings.pubSubOnCommentCreate);
         return response;
       });
     };

@@ -53,7 +53,7 @@
         }).then(function (response) {
           // Publish here rather than in RestService because it's likely that the subscribers will be
           // using data which were changing throughout the app after logging in
-          PubSubService.publish(settings.pubSubOnLogin, 0);
+          PubSubService.publish(settings.pubSubOnLogin);
           return response;
         }, function (response) {
           return $q.reject(response);
@@ -87,7 +87,7 @@
           // Currently there is no post-processing after the REST call, but there may be
           // in the future. Publish here rather than at the REST level since the subscribers
           // may depend on the post-processed data.
-          PubSubService.publish(settings.pubSubOnSignUp, 0);
+          PubSubService.publish(settings.pubSubOnSignUp);
           return response;
         }, function (response) {
           return $q.reject(response);
