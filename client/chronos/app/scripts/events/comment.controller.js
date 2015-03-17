@@ -43,40 +43,6 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
         }
       }
     });
-
-    modalInstance.result.then(vm.onLogin);
-  }
-
-  /**
-   * @description Function called when the user just logs into the system. Currently,
-   * it only gets the user's place id, correlates it to a place, and puts that string in the autocomplete
-   * box.
-   * @methodOf chronosApp:CommentController
-   */
-
-  function onLogin() {
-    RestService.getCurrentUserInformation()
-      .success(function (data, status, headers, config) {
-        if (data.place_id === null) {
-          return;
-        }
-
-        var request = {
-          placeId: data.place_id
-        };
-
-        var service = new google.maps.places.PlacesService($scope._element);
-
-        service.getDetails(request, function (place, status) {
-          if (status === 'OK') {
-            _updateLocationDetails(place.place_id);
-            vm.chosenPlace = place.formatted_address;
-          }
-        });
-      })
-      .error(function (data, status, headers, config) {
-        console.log("Couldn't get user information. Not doing any onLogin work");
-      });
   }
 
   /**
@@ -85,7 +51,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    */
   function createComment() {
     CommentFactory.saveComment($routeParams.eventId, vm.commentData)
-      .then(function(comment) {
+      .then(function (comment) {
         vm.comment.content = comment.content;
         vm.comment.user = {id: comment.user, username: comment.username};
         vm.comment.date = moment(comment.date).format('MMMM Do YYYY, h:mm:ss a');
@@ -101,9 +67,9 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    */
   function _commentActivate() {
     CommentFactory.getComment($routeParams.eventId)
-      .then(function(comments) {
+      .then(function (comments) {
         vm.comments = comments;
-        for(var i = 0, len = vm.comments.length; i < len; ++i) {
+        for (var i = 0, len = vm.comments.length; i < len; ++i) {
           vm.comments[i].date = moment(vm.comments[i].date).format('MMMM Do YYYY, h:mm:ss a');
         }
       });

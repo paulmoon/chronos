@@ -14,9 +14,9 @@
     .module('chronosApp')
     .service('RestService', RestService);
 
-  RestService.$inject = ['$http', 'settings'];
+  RestService.$inject = ['$http', 'settings', 'PubSubService'];
 
-  function RestService($http, settings) {
+  function RestService($http, settings, PubSubService) {
     /**
      * @description API call for verifying credentials.
      * @methodOf chronosApp:RestService
@@ -96,7 +96,7 @@
      * @param tags
      * @returns {HttpPromise}
      */
-    this.createEvent = function(eventName, description, picture, startDate, endDate, place_id, place_name, tags) {
+    this.createEvent = function (eventName, description, picture, startDate, endDate, place_id, place_name, tags) {
       return $http.post(settings.serverUrl + '/events/', {
         name: eventName,
         description: description,
@@ -106,6 +106,9 @@
         place_id: place_id,
         place_name: place_name,
         tags: tags
+      }).then(function (response) {
+        PubSubService.publish(settings.pubSubOnEventCreate);
+        return response;
       });
     };
 
@@ -128,6 +131,9 @@
         start_date: startDate,
         end_date: endDate,
         tags: tags
+      }).then(function (response) {
+        PubSubService.publish(settings.pubSubOnEventUpdate);
+        return response;
       });
     };
 
@@ -163,7 +169,7 @@
      */
     this.getComment = function (eventId) {
       return $http.get(settings.serverUrl + '/comments/' + eventId);
-    }
+    };
 
     /**
      * @description API call for saving a comment for a specific event
@@ -177,7 +183,10 @@
       return $http.post(settings.serverUrl + '/comments/create/', {
         event: eventId,
         content: commentData
+      }).then(function (response) {
+        PubSubService.publish(settings.pubSubOnCommentCreate);
+        return response;
       });
-    }
+    };
   }
 })();

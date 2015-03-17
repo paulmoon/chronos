@@ -32,8 +32,6 @@
     vm.createEvent = createEvent;
     vm.cancel = cancel;
 
-
-
     ////////////////
 
     /**
@@ -41,7 +39,7 @@
      * @methodOf chronosApp:EventModalController
      */
     function createEvent() {
-      vm.shouldShowEventCreateModal = true;  
+      vm.shouldShowEventCreateModal = true;
       RestService.createEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
         .then(function (data) {
           $modalInstance.close();
