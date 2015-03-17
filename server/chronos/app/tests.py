@@ -315,3 +315,45 @@ class EventTests(APITestCase):
 		event_id = self.setup_event()
 		self.vote(event_id, 1, 1)
 		self.vote(event_id, -1, -1)
+
+class ImageUploadTests(APITestCase):
+
+	def helper_user_create(self):
+		data = {
+			'username': 'test_user',
+			'password': 'test_password',
+			'email': 'test_user@test.com',
+			'first_name': 'test_name',
+			'last_name': 'test_lastname',
+		}
+		return data
+
+	def setup_user(self):
+		data = self.helper_user_create()
+		url = reverse('app.views.create_user')
+		response = self.client.post(url, data, format='json')
+
+		verify_url = reverse('rest_framework.authtoken.views.obtain_auth_token')
+		data.pop('first_name')
+		data.pop('last_name')
+		data.pop('email')
+
+		response = self.client.post(verify_url, data)
+		self.assertIsNotNone(response.data.get('token'))
+
+		self.client.credentials(HTTP_AUTHORIZATION='Token ' + response.data.get('token'))
+
+	def _create_test_file(self, path):
+		# f = open(path, 'w')
+		# f.write('testfile123\n')
+		# f.close()
+		f = open(path, 'rb')
+		return {'image': f}
+
+	def test_upload_image(self):
+		self.setup_user()
+		url = reverse('app.views.upload_image')
+		data = self._create_test_file('/tmp/test_upload.png')
+		response = self.client.post(url, data, format='multipart')
+		print(response)
+		self.assertEqual(response.status_code, status.HTTP_201_CREATED)

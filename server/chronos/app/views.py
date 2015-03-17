@@ -10,10 +10,11 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser, FileUploadParser
+from rest_framework.parsers import JSONParser, FileUploadParser, MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework import generics, status, viewsets, mixins
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from django.conf import settings
 import datetime
@@ -247,13 +248,15 @@ class SaveEvent(generics.GenericAPIView):
         user.save()
         return Response(data=self.get_serializer_class()(event).data, status=status.HTTP_200_OK)
 
-class PhotoUploadView(APIView):
-    parser_classes = (FileUploadParser,)
+class ImageUploadView(generics.CreateAPIView):
+    parser_classes = (MultiPartParser, FormParser, )
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    queryset = app.models.Image.objects.all()
+    serializer_class = app.serializers.ImageWriteSerializer
 
-    def post(self, request):
-        file_obj = request.data['file']
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user, image=self.request.data.get('image'))
 
 
 create_user = CreateUser.as_view()
@@ -268,3 +271,4 @@ create_tag = TagView.as_view()
 vote_event = VoteEvent.as_view()
 save_event = SaveEvent.as_view()
 get_saved_events = GetSavedEvents.as_view()
+upload_image = ImageUploadView.as_view()

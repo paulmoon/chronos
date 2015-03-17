@@ -215,7 +215,9 @@ class VoteEventSerializer(serializers.Serializer):
 
         return instance
 
-class ImageWriteSerializer(serializers.ModelSerializer):
+#https://medium.com/@jxstanford/django-rest-framework-file-upload-e4bc8de669c0
+class ImageWriteSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field='id')
     class Meta:
         model = app.models.Image
-        fields = ('id', 'image', 'owner',)
+        fields = ('id', 'created', 'image', 'owner',)
