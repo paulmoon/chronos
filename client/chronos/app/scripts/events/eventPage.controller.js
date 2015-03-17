@@ -11,20 +11,17 @@
 angular.module('chronosApp')
   .controller('EventPageController', EventPageController);
 
-  EventPageController.$inject = ['AuthService', 'RestService', 'EventPageFactory', 'CommentFactory', '$location', '$route', '$routeParams', '$q'];
+  EventPageController.$inject = ['AuthService', 'EventPageFactory', '$routeParams'];
 
-  function EventPageController(AuthService, RestService, EventPageFactory, CommentFactory, $location, $route, $routeParams, $q) {
+  function EventPageController(AuthService, EventPageFactory, $routeParams) {
     var vm = this;
     _activate();
-    _commentActivate();
     vm.title = 'EventPageController';
-    vm.commentData = '';
     vm.isLoggedIn = AuthService.isLoggedIn;
 
     vm.saveEvent = 'SAVE';
     vm.saveEventClick = saveEventClick;
 
-    vm.createComment = createComment;
 
     /////////
 
@@ -34,13 +31,6 @@ angular.module('chronosApp')
      */
     function saveEventClick() {
       vm.saveEvent = 'SAVED';
-    }
-
-    function createComment() {
-      CommentFactory.saveComment($routeParams.eventId, vm.commentData)
-        .then(function(comment) {
-          vm.createdComment = comment
-        });
     }
 
     /**
@@ -65,18 +55,4 @@ angular.module('chronosApp')
         });
     }
 
-    /**
-     * @description on load page it fills in the comment data
-     * @methodOf chronosApp:EventPageControkker
-     * @private
-     */
-    function _commentActivate() {
-      CommentFactory.getComment($routeParams.eventId)
-        .then(function(comments) {
-          vm.comments = comments;
-          for(var i = 0, len = vm.comments.length; i < len; ++i) {
-            vm.comments[i].date = moment(vm.comments[i].date).format('MMMM Do YYYY, h:mm:ss a');
-          }
-        });
-    }
   }
