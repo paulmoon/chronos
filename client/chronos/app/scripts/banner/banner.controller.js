@@ -13,9 +13,9 @@
     .module('chronosApp')
     .controller('BannerController', BannerController);
 
-  BannerController.$inject = ['$scope', 'AuthService', 'StateService', '$modal', 'RestService', 'EventFactory'];
+  BannerController.$inject = ['AuthService', 'StateService', '$modal', 'RestService', 'EventFactory', 'PubSubService', 'settings'];
 
-  function BannerController($scope, AuthService, StateService, $modal, RestService, EventFactory) {
+  function BannerController(AuthService, StateService, $modal, RestService, EventFactory, PubSubService, settings) {
     var vm = this;
 
     vm.title = 'BannerController';
@@ -39,6 +39,8 @@
       if (AuthService.isLoggedIn()) {
         vm.chosenPlace = StateService.getPlaceName();
       }
+
+      PubSubService.subscribe(settings.pubSubOnLogin, onLogin);
     }
 
     function onLogin() {
@@ -70,8 +72,6 @@
           }
         }
       });
-
-      modalInstance.result.then(vm.onLogin);
     }
 
     function openCreateEventModal() {

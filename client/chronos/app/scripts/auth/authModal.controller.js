@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('AuthModalController', AuthModalController);
 
-  AuthModalController.$inject = ['$log', '$modalInstance', 'AuthService', 'shouldShowSignUpModal'];
+  AuthModalController.$inject = ['$log', '$modalInstance', 'AuthService', 'shouldShowSignUpModal', 'settings', 'PubSubService'];
 
-  function AuthModalController($log, $modalInstance, AuthService, shouldShowSignUpModal) {
+  function AuthModalController($log, $modalInstance, AuthService, shouldShowSignUpModal, settings, PubSubService) {
     var vm = this;
 
     vm.title = 'AuthModalController';
@@ -42,6 +42,7 @@
 
       AuthService.login(vm.username, vm.password)
         .then(function (response) {
+          PubSubService.publish(settings.pubSubOnLogin, 0);
           $modalInstance.close("login");
         }, function (response) {
           vm.loginFailed = true;
@@ -59,6 +60,7 @@
         .then(function (data) {
           return AuthService.login(vm.username, vm.password)
             .then(function (response) {
+              PubSubService.publish(settings.pubSubOnSignUp, 0);
               $modalInstance.close();
             }, function (response) {
               $modalInstance.close();
