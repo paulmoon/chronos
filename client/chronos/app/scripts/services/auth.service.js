@@ -15,9 +15,9 @@
     .module('chronosApp')
     .service('AuthService', AuthService);
 
-  AuthService.$inject = ['$http', '$q', '$cookies', '$log', 'RestService', 'StateService'];
+  AuthService.$inject = ['$http', '$q', '$cookies', '$log', 'RestService', 'StateService', 'settings', 'PubSubService'];
 
-  function AuthService($http, $q, $cookies, $log, RestService, StateService) {
+  function AuthService($http, $q, $cookies, $log, RestService, StateService, settings, PubSubService) {
     var self = this;
     self.username = '';
 
@@ -51,6 +51,9 @@
         }).then(function (response) {
           return StateService.retriveUserProfile();
         }).then(function (response) {
+          // Publish here rather than in RestService because it's likely that the subscribers will be
+          // using data which were changing throughout the app after logging in
+          PubSubService.publish(settings.pubSubOnLogin, 0);
           return response;
         }, function (response) {
           return $q.reject(response);
@@ -81,6 +84,10 @@
     this.signUp = function (username, firstName, lastName, password, email) {
       return RestService.createUser(username, firstName, lastName, password, email)
         .then(function (response) {
+          // Currently there is no post-processing after the REST call, but there may be
+          // in the future. Publish here rather than at the REST level since the subscribers
+          // may depend on the post-processed data.
+          PubSubService.publish(settings.pubSubOnSignUp, 0);
           return response;
         }, function (response) {
           return $q.reject(response);
@@ -101,7 +108,7 @@
      */
     this.own = function () {
       // fill out code later
-    }
+    };
 
     /**
      * @methodOf chronosApp:AuthService
