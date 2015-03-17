@@ -27,6 +27,10 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
 
   /////////
 
+  /**
+   * @description This function opens the modal for Login
+   * @methodOf chronosApp:CommentController
+   */
   function openLoginModal() {
     var modalInstance = $modal.open({
       templateUrl: 'scripts/auth/authModal.html',
