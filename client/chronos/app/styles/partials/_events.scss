@@ -90,3 +90,95 @@
 .remove-button {
    color: #5691C4 !important;
  }
+
+.event-dates {
+  padding-right: 20px;
+}
+
+/* Models have a z-index of 1050, so we need to force google autocompelte to be higher */
+.pac-container {
+  z-index: 1051 !important;
+}
+
+.event-image {
+  height: auto;
+  width:100%;
+  padding: 5px;
+}
+
+.event-container {
+  width: 80% !important;
+}
+
+.event-upvote-li {
+  background: #F4F3F1;
+}
+
+.event-upvote-label {
+  padding: 10px;
+}
+
+.event-padding {
+  padding: 5px;
+}
+
+.event-vote {
+  font-size: 30px;
+  text-align: center;
+}
+
+.event-bookmark {
+  background-color: #D1D1D4;
+  color: #FFFFFF;
+}
+
+.event-link {
+  width: 60%;
+  float: right;
+}
+
+.event-button {
+  outline: none;
+}
+
+.event-label {
+  margin: 0 5px;
+  padding: 5px;
+  font-size: 1em;
+}
+
+.comment-container {
+  margin: 5px 0;
+}
+
+.comment-username {
+  font-style: italic;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.comment-reply {
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.comment-body {
+  font-family: 'trebuchet ms', verdana, arial;
+  padding: 5px;
+}
+
+.comment-date {
+  color:#aaa;
+  font-family:verdana;
+  font-size:11px;
+  padding: 0 5px;
+}
+
+.comment-save-header {
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: larger;
+}
+
+.comment-save-submit {
+  float: right;
+}

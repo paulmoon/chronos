@@ -208,3 +208,34 @@ class VoteEventSerializer(serializers.Serializer):
             instance.save()
 
         return instance
+
+##############################
+# --------- Comments! ------ #
+##############################
+
+class CommentReadSerializer(serializers.ModelSerializer):
+    user = ChronosPublicUserSerializer()
+    class Meta:
+        model = app.models.Comments
+        fields = ('content', 'event', 'user', 'date')
+
+
+class CommentWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.Comments
+        fields = ('content', 'event', 'user', 'date')
+
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', None)
+        super(serializers.ModelSerializer, self).__init__(*args, **kwargs)
+        if fields:
+            allowed = set(fields)
+            existing = set(self.fields.keys())
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+
+
+    def create(self, validated_data):
+        comment = app.models.Comments.objects.create(**validated_data)
+        comment.save()
+        return comment

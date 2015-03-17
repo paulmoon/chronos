@@ -69,24 +69,9 @@ class Events(models.Model):
 ##############################
 # --------- Comments! ------ #
 ##############################
-class Comment(models.Model):
+class Comments(models.Model):
     content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    path = IntegerArrayField(blank=True, editable=False)
-    depth = models.PositiveSmallIntegerField(default=0)
+    event = models.ForeignKey(Events)
+    user = models.ForeignKey(ChronosUser)
 
-    def __unicode__(self):
-        return self.content
-
-
-################################
-# ------ Comments Form! ------ #
-################################
-class CommentForm(forms.ModelForm):
-    #Hidden value to get a child's parent
-    parent = forms.CharField(widget=forms.HiddenInput(
-        attrs={'class': 'parent'}), required=False)
-
-    class Meta:
-        model = Comment
-        fields = ('content',)
