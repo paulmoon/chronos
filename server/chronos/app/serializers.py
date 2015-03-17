@@ -19,10 +19,28 @@ class SimpleEventSerializer(serializers.ModelSerializer):
         model = app.models.Events
         fields = ('id', 'name',)
 
+class EventIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.Events
+        fields = ('id',)
+
+class SimpleVoteSerializer(serializers.ModelSerializer):
+    #event = EventIdSerializer()
+    direction = serializers.IntegerField(min_value=-1, max_value=1)
+    class Meta:
+        model = app.models.Vote
+        fields = ('direction',)# 'event')
+
 class ChronosUserSerializer(serializers.ModelSerializer):
+    saved_events = SimpleEventSerializer(many=True)
+    voted_events = serializers.SerializerMethodField()
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'place_name')
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'place_name', 'saved_events', 'voted_events')
+
+    def get_voted_events(self, obj):
+        votes = [SimpleVoteSerializer(app.models.Vote(v)) for v in app.models.Vote.objects.filter(user=obj.id)]
+        return votes
 
 class ChronosUserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
