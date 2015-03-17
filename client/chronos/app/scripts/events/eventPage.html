@@ -104,7 +104,7 @@
           <div class="comment-save-header">
             Comments
           </div>
-          <div class="comment-save-body">
+          <div data-ng-show="comment.isLoggedIn()" class="comment-save-body">
             <form role="form">
               <div class="form-group">
                 <textarea class="form-control" rows="8" id="description" placeholder="Comment"
@@ -112,6 +112,9 @@
               </div>
               <a type="submit" class="btn btn-primary comment-save-submit" data-ng-click="comment.createComment()">Add Comment</a>
             </form>
+          </div>
+          <div data-ng-hide="comment.isLoggedIn()" class="comment-save-body">
+            Please <a href="" data-ng-click="comment.openLoginModal()">login</a> to comment
           </div>
         </div>
       </div>

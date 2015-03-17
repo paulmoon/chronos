@@ -221,7 +221,7 @@ class CommentReadSerializer(serializers.ModelSerializer):
 class CommentWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Comments
-        fields = ('content', 'event', 'user')
+        fields = ('content', 'event', 'user', 'date')
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
@@ -231,6 +231,7 @@ class CommentWriteSerializer(serializers.ModelSerializer):
             existing = set(self.fields.keys())
             for field_name in existing - allowed:
                 self.fields.pop(field_name)
+
 
     def create(self, validated_data):
         comment = app.models.Comments.objects.create(**validated_data)

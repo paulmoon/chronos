@@ -173,9 +173,9 @@
      * @returns {HttpPromise}
      */
     this.saveComment = function (eventId, commentData) {
-      return $http.post(settings.serverUrl + '/comments', {
-        event_id: eventId,
-        content: commentData,
+      return $http.post(settings.serverUrl + '/comments/create/', {
+        event: eventId,
+        content: commentData
       });
     }
   }
