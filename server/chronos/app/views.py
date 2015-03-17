@@ -250,9 +250,9 @@ class SaveEvent(generics.GenericAPIView):
 ##############################
 # --------- Comments! ------ #
 ##############################
-class SaveCommentView(generics.ListAPIView):
+class SaveCommentView(generics.CreateAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = app.serializers.CommentWriteSerializer
 
     """
@@ -274,14 +274,11 @@ class GetCommentView(generics.ListAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = app.serializers.CommentReadSerializer
+
     def get_queryset(self):
         event = self.kwargs['event']
         queryset = app.models.Comments.objects.filter(event=event).order_by('-date')
         return queryset
-
-
-
-
 
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()

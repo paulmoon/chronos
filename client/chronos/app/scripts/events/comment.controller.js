@@ -15,7 +15,7 @@ CommentController.$inject = ['AuthService', 'RestService', 'CommentFactory', '$m
 
 function CommentController(AuthService, RestService, CommentFactory, $modal, $routeParams) {
   var vm = this;
-  _commentActivate();
+
   vm.title = 'CommentController';
   vm.comments = [];
   vm.comment = {};
@@ -24,6 +24,8 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
 
   vm.createComment = createComment;
   vm.openLoginModal = openLoginModal;
+
+  _commentActivate();
 
   /////////
 
