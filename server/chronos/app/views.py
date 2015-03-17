@@ -10,7 +10,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, FileUploadParser
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework import generics, status, viewsets, mixins
 from rest_framework.views import APIView
@@ -246,6 +246,15 @@ class SaveEvent(generics.GenericAPIView):
         user.saved_events.add(event)
         user.save()
         return Response(data=self.get_serializer_class()(event).data, status=status.HTTP_200_OK)
+
+class PhotoUploadView(APIView):
+    parser_classes = (FileUploadParser,)
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        file_obj = request.data['file']
+
 
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()

@@ -97,11 +97,17 @@ class TagSerializer(serializers.ModelSerializer):
 class TagEventSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
 
+class PictureEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.Image
+        fields = ('image',)
+
 ##############################
 # --------- Events! -------- #
 ##############################
 class EventWriteSerializer(serializers.ModelSerializer):
     tags = TagEventSerializer(many=True, required=False)
+    picture = PictureEventSerializer()
     class Meta: 
         model = app.models.Events
         fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "place_name", "tags")
@@ -208,3 +214,8 @@ class VoteEventSerializer(serializers.Serializer):
             instance.save()
 
         return instance
+
+class ImageWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.Image
+        fields = ('id', 'image', 'owner',)
