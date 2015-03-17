@@ -10,9 +10,9 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFactory'];
+  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFactory', 'StateService'];
 
-  function CalendarController($scope, $log, settings, EventFactory) {
+  function CalendarController($scope, $log, settings, EventFactory, StateService) {
     /* jshint validthis: true */
     var vm = this;
 
@@ -53,7 +53,15 @@
      * @param callback Function to be called after events are retrieved.
      */
     function getEvents(start, end, timezone, callback) {
-      EventFactory.updateDateRange(start, end)
+      var filterParams = {};
+      filterParams.fromDate = start;
+      filterParams.toDate = end;
+
+      if (StateService.getPlaceID()) {
+        filterParams.placeID = StateService.getPlaceID();
+      }
+
+      EventFactory.updateEvents(filterParams)
         .then(function (response) {
           callback(transformEventData(response));
         }, function (response) {

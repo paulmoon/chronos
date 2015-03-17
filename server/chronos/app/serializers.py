@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from django.core.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
+
 import app
+
 
 ##############################
 # --------- Users! --------- #
@@ -11,7 +12,7 @@ import app
 class ChronosPublicUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'username', )
+        fields = ('id', 'username',)
 
 class SimpleEventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,12 +22,12 @@ class SimpleEventSerializer(serializers.ModelSerializer):
 class ChronosUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id',)
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'place_name')
 
 class ChronosUserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'userType', 'place_id')
+        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'userType', 'place_id', 'place_name')
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
@@ -64,7 +65,7 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=128, required=False)
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'password', 'email', 'first_name', 'last_name', 'place_id')
+        fields = ('id', 'password', 'email', 'first_name', 'last_name', 'place_id', 'place_name')
 
     def validate_email(self, value):
         """
@@ -81,6 +82,7 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.place_id = validated_data.get('place_id', instance.place_id)
+        instance.place_name = validated_data.get('place_name', instance.place_name)
         instance.save()
         return instance
 
