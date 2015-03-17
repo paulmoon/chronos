@@ -87,7 +87,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
         vm.comment.content = comment.content;
         vm.comment.user = {id: comment.user, username: comment.username};
         vm.comment.date = moment(comment.date).format('MMMM Do YYYY, h:mm:ss a');
-        vm.comments.push(vm.comment);
+        vm.comments.unshift(vm.comment);
         vm.commentData = '';
       });
   }

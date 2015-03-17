@@ -230,7 +230,7 @@ class TagView(generics.ListCreateAPIView):
 class SaveEvent(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
-    lookup_url_kwarg = "event_id"
+    lookup_url_kwarg = 'event_id'
     serializer_class = app.serializers.SimpleEventSerializer
 
     def put(self, request, *args, **kwargs):
@@ -275,8 +275,8 @@ class GetCommentView(generics.ListAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = app.serializers.CommentReadSerializer
     def get_queryset(self):
-        event = self.kwargs["event"]
-        queryset = app.models.Comments.objects.filter(event=event)
+        event = self.kwargs['event']
+        queryset = app.models.Comments.objects.filter(event=event).order_by('-date')
         return queryset
 
 
