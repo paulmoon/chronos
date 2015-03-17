@@ -25,11 +25,11 @@ class EventIdSerializer(serializers.ModelSerializer):
         fields = ('id',)
 
 class SimpleVoteSerializer(serializers.ModelSerializer):
-    #event = EventIdSerializer()
+    event = EventIdSerializer()
     direction = serializers.IntegerField(min_value=-1, max_value=1)
     class Meta:
         model = app.models.Vote
-        fields = ('direction',)# 'event')
+        fields = ('direction', 'event')
 
 class ChronosUserSerializer(serializers.ModelSerializer):
     saved_events = SimpleEventSerializer(many=True)
