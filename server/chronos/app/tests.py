@@ -355,5 +355,5 @@ class ImageUploadTests(APITestCase):
 		url = reverse('app.views.upload_image')
 		data = self._create_test_file('/tmp/test_upload.png')
 		response = self.client.post(url, data, format='multipart')
-		print(response)
+		data['image'].close()
 		self.assertEqual(response.status_code, status.HTTP_201_CREATED)

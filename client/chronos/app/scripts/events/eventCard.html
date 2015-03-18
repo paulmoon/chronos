@@ -16,7 +16,7 @@
       </button>
     </div>
     <div ng-if="vm.picture" class="picture-group">
-      <img ng-src="{{vm.picture['image']}}" alt="Image Not Found" class="event-picture">
+      <img ng-src="{{vm.picture.image}}" alt="Image Not Found" class="event-picture">
     </div>
     <div class="media-body">
       <div class="event-creation" style="float:right">Created by <a ng-click="vm.goUser()" style="text-decoration:none">{{vm.creator.username}}</a></div>

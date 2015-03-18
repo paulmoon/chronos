@@ -199,7 +199,7 @@ class EventReadSerializer(serializers.ModelSerializer):
     picture = ImageReadSeralizer()
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "upvote", "downvote", "report", "is_deleted", "picture", "place_id", "place_name", "tags")
+        fields = ('id', 'name', 'description', 'creator', "create_date", "edit_date" , "start_date", "end_date", "vote", "upvote", "downvote", "report", "is_deleted", "picture", "place_id", "place_name", "tags")
 
     def get_vote(self, obj):
         return obj.upvote - obj.downvote
