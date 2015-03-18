@@ -26,7 +26,11 @@ urlpatterns = patterns('',
     url(r'^events/$', 'app.views.list_create_event'),
     url(r'events/vote/$', 'app.views.vote_event'),
     url(r'^tags/$', 'app.views.create_tag'),
+
     url(r'^images/$', 'app.views.upload_image'),
+
+    url(r'^comments/(?P<event>[0-9]+)/?$', 'app.views.get_comments'),
+    url(r'^comments/create/$', 'app.views.save_comment'),
 )
 
 if settings.DEBUG:
@@ -37,4 +41,4 @@ if settings.DEBUG:
         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.STATIC_ROOT,
         }),
-)
+    )

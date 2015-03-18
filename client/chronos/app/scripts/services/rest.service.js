@@ -14,9 +14,9 @@
     .module('chronosApp')
     .service('RestService', RestService);
 
-  RestService.$inject = ['$http', 'settings', '$upload'];
+  RestService.$inject = ['$http', 'settings', '$upload', 'PubSubService'];
 
-  function RestService($http, settings, $upload) {
+  function RestService($http, settings, $upload, PubSubService) {
     /**
      * @description API call for verifying credentials.
      * @methodOf chronosApp:RestService
@@ -96,7 +96,7 @@
      * @param tags
      * @returns {HttpPromise}
      */
-    this.createEvent = function(eventName, description, picture, startDate, endDate, place_id, place_name, tags) {
+    this.createEvent = function (eventName, description, picture, startDate, endDate, place_id, place_name, tags) {
       return $http.post(settings.serverUrl + '/events/', {
         name: eventName,
         description: description,
@@ -106,6 +106,9 @@
         place_id: place_id,
         place_name: place_name,
         tags: tags
+      }).then(function (response) {
+        PubSubService.publish(settings.pubSubOnEventCreate);
+        return response;
       });
     };
 
@@ -128,6 +131,9 @@
         start_date: startDate,
         end_date: endDate,
         tags: tags
+      }).then(function (response) {
+        PubSubService.publish(settings.pubSubOnEventUpdate);
+        return response;
       });
     };
 
@@ -147,7 +153,7 @@
 
     /**
      * @description API call for getting a specific event
-     * @methofOf chronosApp:RestService
+     * @methodOf chronosApp:RestService
      * @param eventId The id of the event
      * @returns {HttpPromise}
      */
@@ -155,6 +161,12 @@
       return $http.get(settings.serverUrl + '/events/' + eventId);
     };
 
+    /**
+     * @description API call for uploading an image
+     * @methodOf chronosApp:RestService
+     * @param image An image to upload
+     * @returns {HttpPromise}
+     */
     this.uploadImage = function(image) {
         return $upload.upload({
             url: settings.serverUrl + '/images/',
@@ -164,5 +176,33 @@
             fileFormDataName: "image",
         });
     };
-  };
+
+    /**
+     * @descrption API call for getting comments for a specific event
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event
+     * @returns {HttpPromise}
+     */
+    this.getComment = function (eventId) {
+      return $http.get(settings.serverUrl + '/comments/' + eventId);
+    };
+
+    /**
+     * @description API call for saving a comment for a specific event
+     * @methodOf chronosApp:RestService
+     * @param eventId
+     * @param commentData
+     * @param userId
+     * @returns {HttpPromise}
+     */
+    this.saveComment = function (eventId, commentData) {
+      return $http.post(settings.serverUrl + '/comments/create/', {
+        event: eventId,
+        content: commentData
+      }).then(function (response) {
+        PubSubService.publish(settings.pubSubOnCommentCreate);
+        return response;
+      });
+    };
+  }
 })();
