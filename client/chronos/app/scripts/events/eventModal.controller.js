@@ -28,6 +28,7 @@
     vm.files = undefined;
     vm.imageId = null;
     vm.imageUrl = undefined;
+    vm.imageProgress = 0;
     vm.shouldShowEventCreateModal = shouldShowEventCreateModal;
     vm.locationPicked = locationPicked;
     vm.uploadImage = uploadImage;
@@ -85,8 +86,10 @@
 
     function uploadImage(files) {
       if (files && files.length) {
+        vm.imageProgress = 0;
         RestService.uploadImage(files[0])
         .progress(function(evt) {
+          vm.imageProgress = parseInt(100.0 * evt.loaded / evt.total);
           console.log('progress' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.file.name);
         }).success(function (data, status, headers, config) {
           vm.imageId = data['id'];
