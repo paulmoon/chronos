@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('EventModalController', EventModalController);
 
-  EventModalController.$inject = ['$scope', '$modalInstance', 'RestService', 'shouldShowEventCreateModal'];
+  EventModalController.$inject = ['$modalInstance', 'RestService', 'shouldShowEventCreateModal'];
 
-  function EventModalController($scope, $modalInstance, RestService, shouldShowEventCreateModal) {
+  function EventModalController($modalInstance, RestService, shouldShowEventCreateModal) {
     var vm = this;
 
     vm.title = 'EventModalController';
@@ -24,19 +24,16 @@
     vm.locationName = '';
     vm.startDate = '';
     vm.endDate = '';
-    vm.picture = null;
     vm.tags = [];
     vm.files = undefined;
+    vm.imageId = null;
+    vm.imageUrl = undefined;
     vm.shouldShowEventCreateModal = shouldShowEventCreateModal;
     vm.locationPicked = locationPicked;
-    vm.uploadFile = uploadFile;
+    vm.uploadImage = uploadImage;
 
     vm.createEvent = createEvent;
     vm.cancel = cancel;
-
-    $scope.$watch('files', function() {
-      vm.uploadFile($scope.files);
-    });
 
     ////////////////
 
@@ -46,7 +43,7 @@
      */
     function createEvent() {
       vm.shouldShowEventCreateModal = true;  
-      RestService.createEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
+      RestService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
         .then(function (data) {
           $modalInstance.close();
         }, function () {
@@ -86,14 +83,14 @@
       vm.locationId = details.place_id;
     };
 
-    function uploadFile(files) {
-      console.log(files);
+    function uploadImage(files) {
       if (files && files.length) {
         RestService.uploadImage(files[0])
         .progress(function(evt) {
           console.log('progress' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.file.name);
         }).success(function (data, status, headers, config) {
-          console.log('file ' + config.file.name);
+          vm.imageId = data['id'];
+          vm.imageUrl = data['image'];
         }).error(function() {
           console.log("Error uploading file");
         });
