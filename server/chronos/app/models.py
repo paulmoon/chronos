@@ -78,4 +78,5 @@ class Comments(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     event = models.ForeignKey(Events)
     user = models.ForeignKey(ChronosUser)
-
+    depth = models.IntegerField(default=0);
+    respond_to = models.IntegerField(null=True);

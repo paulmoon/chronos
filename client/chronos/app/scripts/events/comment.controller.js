@@ -20,14 +20,44 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
   vm.comments = [];
   vm.comment = {};
   vm.commentData = '';
+  vm.replyOpen = null;
   vm.isLoggedIn = AuthService.isLoggedIn;
 
   vm.createComment = createComment;
   vm.openLoginModal = openLoginModal;
+  vm.isReplyOpen = isReplyOpen;
+  vm.isReplyShow = isReplyShow;
+  vm.replyCancel = replyCancel;
 
   _commentActivate();
 
   /////////
+
+  /**
+   * @description This function sets the click to open
+   * @methodOf chronosApp:CommentController
+   * @param num
+   */
+  function isReplyOpen(num) {
+    vm.replyOpen = num;
+  }
+
+  /**
+   * @description This function determines to show which form
+   * @methodOf chronosApp:CommentController
+   * @param num
+   */
+  function isReplyShow(num) {
+    return vm.replyOpen == num ? true : false;
+  }
+
+  /**
+   * @description This function cancels the reply form
+   * @methodOf chronosApp:CommentController
+   */
+  function replyCancel() {
+    vm.replyOpen = null;
+  }
 
   /**
    * @description This function opens the modal for Login
@@ -58,6 +88,14 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
         vm.comments.unshift(vm.comment);
         vm.commentData = '';
       });
+  }
+
+  /**
+   * @description reply to comment
+   * @methodOf chronosApp:CommentController
+   */
+  function replyComment() {
+
   }
 
   /**

@@ -252,13 +252,13 @@ class CommentReadSerializer(serializers.ModelSerializer):
     user = ChronosPublicUserSerializer()
     class Meta:
         model = app.models.Comments
-        fields = ('content', 'event', 'user', 'date')
+        fields = ('id', 'content', 'event', 'user', 'date')
 
 
 class CommentWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Comments
-        fields = ('content', 'event', 'user', 'date')
+        fields = ('id', 'content', 'event', 'user', 'date')
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
