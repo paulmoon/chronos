@@ -19,6 +19,8 @@
     var factory = {
       events: [],
       selectedEvents: [],
+      savedEvents: [],
+      votedEvents: [],
       keywords: [],
       tags: [],
       selectedEventsStartRange: undefined,
@@ -28,6 +30,11 @@
 
       getEvents: getEvents,
       getSelectedEvents: getSelectedEvents,
+      getSavedEvents: getSavedEvents,
+      setSavedEvents: setSavedEvents,
+      getVotedEvents: getVotedEvents,
+      setVotedEvents: setVotedEvents,
+
       updateKeywords: updateKeywords,
       updateTags: updateTags,
       updateDateRange: updateDateRange,
@@ -58,6 +65,42 @@
      */
     function getSelectedEvents() {
       return factory.selectedEvents;
+    }
+
+    /**
+     * @description Get all events that user saved.
+     * @methodOf chronosApp:EventFactory
+     * @returns savedEvents Saved events
+     */
+    function getSavedEvents() {
+      return factory.savedEvents;
+    }
+
+    /**
+     * @description Set all events that user saved.
+     * @methodOf chronosApp:EventFactory
+     * @param savedEvents Saved events
+     */
+    function setSavedEvents(savedEvents) {
+      factory.savedEvents = savedEvents;
+    }
+
+    /**
+     * @description Get all events that user has voted on.
+     * @methodOf chronosApp:EventFactory
+     * @returns votedEvents Voted events
+     */
+    function getVotedEvents() {
+      return factory.votedEvents;
+    }
+
+    /**
+     * @description Set all events that user has voted on.
+     * @methodOf chronosApp:EventFactory
+     * @param votedEvents
+     */
+    function setVotedEvents(votedEvents) {
+      factory.votedEvents = votedEvents;
     }
 
     /**

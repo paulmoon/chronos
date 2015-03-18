@@ -15,9 +15,9 @@
     .module('chronosApp')
     .service('AuthService', AuthService);
 
-  AuthService.$inject = ['$http', '$q', '$cookies', '$log', 'RestService', 'StateService', 'settings', 'PubSubService'];
+  AuthService.$inject = ['$http', '$q', '$cookies', '$log', 'RestService', 'StateService', 'EventFactory', 'settings', 'PubSubService'];
 
-  function AuthService($http, $q, $cookies, $log, RestService, StateService, settings, PubSubService) {
+  function AuthService($http, $q, $cookies, $log, RestService, StateService, EventFactory, settings, PubSubService) {
     var self = this;
     self.username = '';
 
@@ -47,15 +47,14 @@
           self.setCredentials(username);
           self.setHeaderToken(response.data.token);
           self.setSessionCookie(response.data.token);
-          return response;
-        }).then(function (response) {
-          return StateService.retriveUserProfile();
+          return self.retriveUserProfile();
         }).then(function (response) {
           // Publish here rather than in RestService because it's likely that the subscribers will be
           // using data which were changing throughout the app after logging in
           PubSubService.publish(settings.pubSubOnLogin);
           return response;
         }, function (response) {
+          $log.warn('AuthService.login() failed. Respone: ' + response);
           return $q.reject(response);
         });
     };
@@ -69,6 +68,8 @@
       self.setHeaderToken('');
       self.setSessionCookie('');
     };
+
+
 
     /**
      * @description Create a new user account. firstName, lastName, and email are required.
