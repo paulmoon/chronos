@@ -21,10 +21,12 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
   vm.comment = {};
   vm.commentData = '';
   vm.replyData ='';
-  vm.replyOpen = null;
+  vm.depth = 0;
+  vm.respondTo = null;
   vm.isLoggedIn = AuthService.isLoggedIn;
 
   vm.createComment = createComment;
+  vm.replyComment = replyComment;
   vm.openLoginModal = openLoginModal;
   vm.isReplyOpen = isReplyOpen;
   vm.isReplyShow = isReplyShow;
@@ -38,9 +40,11 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @description This function sets the click to open
    * @methodOf chronosApp:CommentController
    * @param num
+   * @param depth
    */
-  function isReplyOpen(num) {
-    vm.replyOpen = num;
+  function isReplyOpen(num, depth) {
+    vm.respondTo = num;
+    vm.depth = depth;
   }
 
   /**
@@ -49,7 +53,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @param num
    */
   function isReplyShow(num) {
-    return vm.replyOpen == num ? true : false;
+    return vm.respondTo == num ? true : false;
   }
 
   /**
@@ -57,7 +61,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @methodOf chronosApp:CommentController
    */
   function replyCancel() {
-    vm.replyOpen = null;
+    vm.respondTo = null;
   }
 
   /**
@@ -97,7 +101,10 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @methodOf chronosApp:CommentController
    */
   function replyComment() {
-      CommentFactory
+      CommentFactory.replyComment($routeParams.eventId, vm.replyData, vm.depth, vm.respondTo)
+        .then(function (comments) {
+          console.log(comments);
+        });
   }
 
   /**

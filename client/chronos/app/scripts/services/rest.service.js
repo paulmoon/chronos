@@ -209,7 +209,7 @@
      * @methodOf chronosApp:RestService
      * @param eventId
      * @param replyData
-     * @param depth
+     * @param depth + 1
      * @param respondTo
      * @returns {HttpPromise}
      */
@@ -217,7 +217,7 @@
       return $http.post(settings.serverUrl + '/comments/create/', {
         event: eventId,
         content: replyData,
-        depth: depth,
+        depth: depth + 1,
         respond_to: respondTo
       }).then(function (response) {
         PubSubService.publish(settings.pubSubOnCommentCreate);
