@@ -14,9 +14,9 @@
     .module('chronosApp')
     .service('RestService', RestService);
 
-  RestService.$inject = ['$http', 'settings', 'PubSubService'];
+  RestService.$inject = ['$http', 'settings', '$upload', 'PubSubService'];
 
-  function RestService($http, settings, PubSubService) {
+  function RestService($http, settings, $upload, PubSubService) {
     /**
      * @description API call for verifying credentials.
      * @methodOf chronosApp:RestService
@@ -159,6 +159,21 @@
      */
     this.getEvent = function (eventId) {
       return $http.get(settings.serverUrl + '/events/' + eventId);
+    };
+
+    /**
+     * @description API call for uploading an image
+     * @methodOf chronosApp:RestService
+     * @param image An image to upload
+     * @returns {HttpPromise}
+     */
+    this.uploadImage = function(image) {
+        return $upload.upload({
+            url: settings.serverUrl + '/images/',
+            method: 'POST',
+            file: image,
+            fileFormDataName: "image",
+        });
     };
 
     /**
