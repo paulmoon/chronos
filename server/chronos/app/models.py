@@ -64,7 +64,7 @@ class Events(models.Model):
     downvote = models.IntegerField(default=0)
     report = models.IntegerField(default=0)
     is_deleted = models.BooleanField(default=False)
-    picture = models.ForeignKey(Image, null=True);
+    picture = models.ForeignKey(Image, null=True)
     place_id = models.CharField(max_length=100, null=True)
     place_name = models.CharField(max_length=100, null=True)
     tags = models.ManyToManyField(Tag, blank=True)
@@ -78,5 +78,6 @@ class Comments(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     event = models.ForeignKey(Events)
     user = models.ForeignKey(ChronosUser)
-    depth = models.IntegerField(default=0);
-    respond_to = models.IntegerField(null=True);
+    depth = models.IntegerField(default=0)
+    path = models.CharField(max_length=255, null=True)
+    respond_to = models.IntegerField(null=True)

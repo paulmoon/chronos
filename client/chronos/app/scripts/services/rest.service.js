@@ -213,11 +213,12 @@
      * @param respondTo
      * @returns {HttpPromise}
      */
-    this.saveReply = function (eventId, replyData, depth, respondTo) {
+    this.saveReply = function (eventId, replyData, depth, path, respondTo) {
       return $http.post(settings.serverUrl + '/comments/create/', {
         event: eventId,
         content: replyData,
         depth: depth + 1,
+        path: path,
         respond_to: respondTo
       }).then(function (response) {
         PubSubService.publish(settings.pubSubOnCommentCreate);

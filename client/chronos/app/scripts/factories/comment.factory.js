@@ -66,11 +66,11 @@
      * @param eventId
      * @param replyData
      * @param depth
-     * @param respondTo
+     * @param path
      * @returns {*}
      */
-    function replyComment(eventId, replyData, depth, respondTo) {
-      return RestService.saveReply(eventId, replyData, depth, respondTo)
+    function replyComment(eventId, replyData, depth, path, respondTo) {
+      return RestService.saveReply(eventId, replyData, depth, path, respondTo)
         .then(function(response) {
           return response.data;
         }, function(response) {

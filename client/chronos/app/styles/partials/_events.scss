@@ -186,3 +186,14 @@
 .comment-cancel {
   margin: 0 5px;
 }
+
+.comment-depth {
+  margin-left: 20px;
+  border-left: 1px dotted #CCCCCC;
+  padding-left: 10px;
+}
+
+.comment-no-depth {
+  border-left: 1px dotted #CCCCCC;
+  padding-left: 10px;
+}
