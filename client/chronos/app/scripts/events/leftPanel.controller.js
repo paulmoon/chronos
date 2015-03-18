@@ -14,9 +14,9 @@
     .module('chronosApp')
     .controller('LeftPanelController', LeftPanelController);
 
-  LeftPanelController.$inject = ['EventFactory', 'StateService', 'settings'];
+  LeftPanelController.$inject = ['EventFacadeService', 'settings'];
 
-  function LeftPanelController(EventFactory, StateService, settings) {
+  function LeftPanelController(EventFacadeService, settings) {
     var vm = this;
 
     vm.title = 'LeftPanelController';
@@ -26,7 +26,7 @@
     vm.addedTags = '';
     vm.storageTags = [];
 
-    vm.getEvents = EventFactory.getSelectedEvents;
+    vm.getEvents = EventFacadeService.getSelectedEvents;
 
     vm.searchEvents = searchEvents;
     vm.updateTags = updateTags;
@@ -87,7 +87,7 @@
       }
 
       if (!vm.searchError) {
-        EventFactory.updateEvents(filterParams);
+        EventFacadeService.updateEvents(filterParams);
       }
     }
 
@@ -130,7 +130,7 @@
         if (tempKeywords.length > settings.maxKeywords) {
           vm.searchError = "Max of 10 keywords.";
         } else {
-          EventFactory.updateKeywords(tempKeywords);
+          EventFacadeService.updateKeywords(tempKeywords);
         }
       } else {
         vm.searchEvents();
@@ -144,7 +144,7 @@
     function updateStartDate() {
       if (vm.searchDateStart) {
         var fromDate = moment(vm.searchDateStart).utc();
-        EventFactory.updateDateRangeStart(fromDate);
+        EventFacadeService.updateDateRangeStart(fromDate);
       } else {
         vm.searchEvents();
       }
@@ -157,7 +157,7 @@
     function updateEndDate() {
       if (vm.searchDateEnd) {
         var toDate = moment(vm.searchDateEnd).utc();
-        EventFactory.updateDateRangeEnd(toDate);
+        EventFacadeService.updateDateRangeEnd(toDate);
       } else {
         vm.searchEvents();
       }
@@ -199,7 +199,7 @@
         }
       });
 
-      EventFactory.updateTags(vm.storageTags);
+      EventFacadeService.updateTags(vm.storageTags);
     }
   }
 })();

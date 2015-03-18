@@ -12,9 +12,9 @@
     .module('chronosApp')
     .factory('CommentFactory', CommentFactory);
 
-  CommentFactory.$inject = ['RestService', '$route', '$q', '$log'];
+  CommentFactory.$inject = ['RestService', '$q', '$log'];
 
-  function CommentFactory(RestService, $route, $q, $log) {
+  function CommentFactory(RestService, $q, $log) {
     var comment =  {
       getComment: getComment,
       saveComment: saveComment,

@@ -11,16 +11,16 @@
 angular.module('chronosApp')
   .controller('CommentController', CommentController);
 
-CommentController.$inject = ['AuthService', 'RestService', 'CommentFactory', '$modal', '$routeParams'];
+CommentController.$inject = ['AuthFacadeService', 'EventFacadeService', '$modal', '$routeParams'];
 
-function CommentController(AuthService, RestService, CommentFactory, $modal, $routeParams) {
+function CommentController(AuthFacadeService, EventFacadeService, $modal, $routeParams) {
   var vm = this;
 
   vm.title = 'CommentController';
   vm.comments = [];
   vm.comment = {};
   vm.commentData = '';
-  vm.isLoggedIn = AuthService.isLoggedIn;
+  vm.isLoggedIn = AuthFacadeService.isLoggedIn;
 
   vm.createComment = createComment;
   vm.openLoginModal = openLoginModal;
@@ -50,7 +50,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @methodOf chronosApp:CommentController
    */
   function createComment() {
-    CommentFactory.saveComment($routeParams.eventId, vm.commentData)
+    EventFacadeService.saveComment($routeParams.eventId, vm.commentData)
       .then(function (comment) {
         vm.comment.content = comment.content;
         vm.comment.user = {id: comment.user, username: comment.username};
@@ -66,7 +66,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @private
    */
   function _commentActivate() {
-    CommentFactory.getComment($routeParams.eventId)
+    EventFacadeService.getComment($routeParams.eventId)
       .then(function (comments) {
         vm.comments = comments;
         for (var i = 0, len = vm.comments.length; i < len; ++i) {

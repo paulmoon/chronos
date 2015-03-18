@@ -162,6 +162,17 @@
     };
 
     /**
+     * @desciption API call for saving for a specific event to a user
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event to save
+     */
+    this.saveEvent = function (eventId) {
+      console.log('saving event');
+      console.log(eventId);
+      return $http.put(settings.serverUrl + '/users/save/' + eventId);
+    };
+
+    /**
      * @descrption API call for getting comments for a specific event
      * @methodOf chronosApp:RestService
      * @param eventId The id of the event

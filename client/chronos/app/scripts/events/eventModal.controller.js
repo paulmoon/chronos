@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('EventModalController', EventModalController);
 
-  EventModalController.$inject = ['$modalInstance', 'RestService', 'shouldShowEventCreateModal'];
+  EventModalController.$inject = ['$modalInstance', 'EventFacadeService', 'shouldShowEventCreateModal'];
 
-  function EventModalController($modalInstance, RestService, shouldShowEventCreateModal) {
+  function EventModalController($modalInstance, EventFacadeService, shouldShowEventCreateModal) {
     var vm = this;
 
     vm.title = 'EventModalController';
@@ -35,31 +35,31 @@
     ////////////////
 
     /**
-     * @description Calls {@link chronosApp:RestService#createEvent}|RestService.createEvent} to create event.
+     * @description Calls {@link chronosApp:EventFacadeService#createEvent}|EventFacadeService.createEvent} to create event.
      * @methodOf chronosApp:EventModalController
      */
     function createEvent() {
       vm.shouldShowEventCreateModal = true;
-      RestService.createEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
+      EventFacadeService.createEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
         .then(function (data) {
           $modalInstance.close();
         }, function () {
-          console.log("RestService.createEvent failed");
+          console.log("EventFacadeService.createEvent failed");
         });
     }
 
     /**
-     * @description Calls {@link chronosApp:RestService#updateEvent}|RestService.updateEvent} to create event.
+     * @description Calls {@link chronosApp:EventFacadeService#updateEvent}|EventFacadeService.updateEvent} to create event.
      * @methodOf chronosApp:EventModalController
      */
     function updateEvent() {
       vm.shouldShowEventCreateModal = false;
 
-      RestService.updateEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.tags)
+      EventFacadeService.updateEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.tags)
         .then(function (data) {
           $modalInstance.close();
         }, function () {
-          console.log("RestService.updateEvent failed");
+          console.log("EventFacadeService.updateEvent failed");
         });
     }
 

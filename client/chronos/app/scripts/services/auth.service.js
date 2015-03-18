@@ -15,9 +15,9 @@
     .module('chronosApp')
     .service('AuthService', AuthService);
 
-  AuthService.$inject = ['$http', '$q', '$cookies', '$log', 'RestService', 'StateService', 'EventFactory', 'settings', 'PubSubService'];
+  AuthService.$inject = ['$http', '$q', '$cookies', '$log', 'RestService'];
 
-  function AuthService($http, $q, $cookies, $log, RestService, StateService, EventFactory, settings, PubSubService) {
+  function AuthService($http, $q, $cookies, $log, RestService) {
     var self = this;
     self.username = '';
 
@@ -47,11 +47,6 @@
           self.setCredentials(username);
           self.setHeaderToken(response.data.token);
           self.setSessionCookie(response.data.token);
-          return self.retriveUserProfile();
-        }).then(function (response) {
-          // Publish here rather than in RestService because it's likely that the subscribers will be
-          // using data which were changing throughout the app after logging in
-          PubSubService.publish(settings.pubSubOnLogin);
           return response;
         }, function (response) {
           $log.warn('AuthService.login() failed. Respone: ' + response);
@@ -69,8 +64,6 @@
       self.setSessionCookie('');
     };
 
-
-
     /**
      * @description Create a new user account. firstName, lastName, and email are required.
      * @methodOf chronosApp:AuthService
@@ -85,10 +78,6 @@
     this.signUp = function (username, firstName, lastName, password, email) {
       return RestService.createUser(username, firstName, lastName, password, email)
         .then(function (response) {
-          // Currently there is no post-processing after the REST call, but there may be
-          // in the future. Publish here rather than at the REST level since the subscribers
-          // may depend on the post-processed data.
-          PubSubService.publish(settings.pubSubOnSignUp);
           return response;
         }, function (response) {
           return $q.reject(response);
