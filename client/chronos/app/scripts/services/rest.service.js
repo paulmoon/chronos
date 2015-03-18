@@ -170,7 +170,6 @@
     this.uploadImage = function(image) {
         return $upload.upload({
             url: settings.serverUrl + '/images/',
-            // headers: $http.defaults.headers,
             method: 'POST',
             file: image,
             fileFormDataName: "image",

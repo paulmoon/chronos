@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('EventModalController', EventModalController);
 
-  EventModalController.$inject = ['$modalInstance', 'RestService', 'shouldShowEventCreateModal'];
+  EventModalController.$inject = ['$modalInstance', 'RestService', 'shouldShowEventCreateModal', '$log'];
 
-  function EventModalController($modalInstance, RestService, shouldShowEventCreateModal) {
+  function EventModalController($modalInstance, RestService, shouldShowEventCreateModal, $log) {
     var vm = this;
 
     vm.title = 'EventModalController';
@@ -48,7 +48,7 @@
         .then(function (data) {
           $modalInstance.close();
         }, function () {
-          console.log("RestService.createEvent failed");
+          $log.debug("RestService.createEvent failed");
         });
     }
 
@@ -63,7 +63,7 @@
         .then(function (data) {
           $modalInstance.close();
         }, function () {
-          console.log("RestService.updateEvent failed");
+          $log.debug("RestService.updateEvent failed");
         });
     };
 
@@ -90,12 +90,11 @@
         RestService.uploadImage(files[0])
         .progress(function(evt) {
           vm.imageProgress = parseInt(100.0 * evt.loaded / evt.total);
-          console.log('progress' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.file.name);
         }).success(function (data, status, headers, config) {
           vm.imageId = data['id'];
           vm.imageUrl = data['image'];
         }).error(function() {
-          console.log("Error uploading file");
+          $log.debug("Error uploading file");
         });
       }
     }
