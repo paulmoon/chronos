@@ -1,3 +1,37 @@
+// All shared event styling
+
+/* Event datepicker classes */
+.datepicker.dropdown-menu {
+  width: 250px;
+  height: 250px;
+}
+.datepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.datepicker.dropdown-menu tbody {
+  height: 180px;
+}
+.datepicker.dropdown-menu tbody button {
+  padding: 6px;
+}
+.datepicker.dropdown-menu.datepicker-mode-1 tbody button, .datepicker.dropdown-menu.datepicker-mode-2 tbody button {
+  height: 65px;
+}
+
+.timepicker.dropdown-menu {
+  padding: 0 4px;
+}
+.timepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.timepicker.dropdown-menu tbody button {
+  padding: 6px;
+}
+
+
+/* Tag Input Classes */
 .bootstrap {
   width: 100%;
 }
@@ -63,7 +97,7 @@
 
 /* Models have a z-index of 1050, so we need to force google autocompelte to be higher */
 .pac-container {
-    z-index: 1051 !important;
+  z-index: 1051 !important;
 }
 
 .event-image {
@@ -111,4 +145,40 @@
   margin: 0 5px;
   padding: 5px;
   font-size: 1em;
+}
+
+.comment-container {
+  margin: 5px 0;
+}
+
+.comment-username {
+  font-style: italic;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.comment-reply {
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.comment-body {
+  font-family: 'trebuchet ms', verdana, arial;
+  padding: 5px;
+}
+
+.comment-date {
+  color:#aaa;
+  font-family:verdana;
+  font-size:11px;
+  padding: 0 5px;
+}
+
+.comment-save-header {
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: larger;
+}
+
+.comment-save-submit {
+  float: right;
 }

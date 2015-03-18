@@ -1,8 +1,7 @@
-from django.test import TestCase
 from django.core.urlresolvers import reverse
 from rest_framework import status
-from rest_framework.test import APIClient, APITestCase
-from rest_framework.authtoken.models import Token
+from rest_framework.test import APITestCase
+
 
 class UserTests(APITestCase):
 
@@ -13,18 +12,18 @@ class UserTests(APITestCase):
 			'email': 'test_user@test.com',
 			'first_name': 'test_name',
 			'last_name': 'test_lastname',
-		} 
+		}
 		return data
 
 	def create_user(self, data):
-		url = reverse('app.views.create_user')	
+		url = reverse('app.views.create_user')
 		response = self.client.post(url, data, format='json')
 		self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 		self.assertIsNotNone(response.data.get('token'))
 
 	def setup_user(self):
 		data = self.helper_user_create()
-		url = reverse('app.views.create_user')	
+		url = reverse('app.views.create_user')
 		response = self.client.post(url, data, format='json')
 
 		verify_url = reverse('rest_framework.authtoken.views.obtain_auth_token')
@@ -57,7 +56,7 @@ class UserTests(APITestCase):
 		"""
 		Ensure that users cannot be created without an email
 		"""
-		url = reverse('app.views.create_user')	
+		url = reverse('app.views.create_user')
 		data = self.helper_user_create()
 		data.pop('email')
 		response = self.client.post(url, data, format='json')
@@ -88,6 +87,23 @@ class UserTests(APITestCase):
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertEqual(response.data.get('last_name'), data['last_name'])
 
+	def test_get_user_profile(self):
+		"""
+		Test that /user/profile endpoint returns expected fields
+		"""
+		self.setup_user()
+		url = reverse('app.views.get_my_user')
+
+		response = self.client.get(url)
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertIsNotNone(response.data)
+
+		data = response.data
+		expected_fields = ['id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'place_name']
+
+		self.assertEqual(set(data.keys()), set(expected_fields))
+
+
 class EventTests(APITestCase):
 
 	def helper_user_create(self):
@@ -97,12 +113,12 @@ class EventTests(APITestCase):
 			'email': 'test_user@test.com',
 			'first_name': 'test_name',
 			'last_name': 'test_lastname',
-		} 
+		}
 		return data
 
 	def setup_user(self):
 		data = self.helper_user_create()
-		url = reverse('app.views.create_user')	
+		url = reverse('app.views.create_user')
 		response = self.client.post(url, data, format='json')
 
 		verify_url = reverse('rest_framework.authtoken.views.obtain_auth_token')
@@ -116,7 +132,7 @@ class EventTests(APITestCase):
 		self.client.credentials(HTTP_AUTHORIZATION='Token ' + response.data.get('token'))
 
 	def setup_event(self):
-		data = self.helper_create_event()		
+		data = self.helper_create_event()
 		response = self.create_event(data)
 		self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 		return response.data.get('id')
@@ -160,7 +176,7 @@ class EventTests(APITestCase):
 	def validate_event(self, response_data, expected):
 		for key, value in expected.viewitems():
 			if not isinstance(response_data.get(key), list):
-				response_data[key] = response_data.get(key).encode('utf-8')	
+				response_data[key] = response_data.get(key).encode('utf-8')
 			self.assertEqual(response_data.get(key), value)
 
 	def test_create_event(self):
@@ -251,7 +267,7 @@ class EventTests(APITestCase):
 
 		for response_data, expected_data in zip(response.data, data_list):
 			self.validate_event(response_data, expected_data)
-			
+
 	def test_get_events_filter(self):
 		"""
 		TODO: Test the filters we have in place when we do ranked events
@@ -299,3 +315,45 @@ class EventTests(APITestCase):
 		event_id = self.setup_event()
 		self.vote(event_id, 1, 1)
 		self.vote(event_id, -1, -1)
+
+class ImageUploadTests(APITestCase):
+
+	def helper_user_create(self):
+		data = {
+			'username': 'test_user',
+			'password': 'test_password',
+			'email': 'test_user@test.com',
+			'first_name': 'test_name',
+			'last_name': 'test_lastname',
+		}
+		return data
+
+	def setup_user(self):
+		data = self.helper_user_create()
+		url = reverse('app.views.create_user')
+		response = self.client.post(url, data, format='json')
+
+		verify_url = reverse('rest_framework.authtoken.views.obtain_auth_token')
+		data.pop('first_name')
+		data.pop('last_name')
+		data.pop('email')
+
+		response = self.client.post(verify_url, data)
+		self.assertIsNotNone(response.data.get('token'))
+
+		self.client.credentials(HTTP_AUTHORIZATION='Token ' + response.data.get('token'))
+
+	def _create_test_file(self, path):
+		# f = open(path, 'w')
+		# f.write('testfile123\n')
+		# f.close()
+		f = open(path, 'rb')
+		return {'image': f}
+
+	def test_upload_image(self):
+		self.setup_user()
+		url = reverse('app.views.upload_image')
+		data = self._create_test_file('/tmp/test_upload.png')
+		response = self.client.post(url, data, format='multipart')
+		data['image'].close()
+		self.assertEqual(response.status_code, status.HTTP_201_CREATED)

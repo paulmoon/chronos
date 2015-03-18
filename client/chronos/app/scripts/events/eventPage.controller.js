@@ -11,16 +11,18 @@
 angular.module('chronosApp')
   .controller('EventPageController', EventPageController);
 
-  EventPageController.$inject = ['AuthService', 'RestService', 'EventPageFactory', '$location', '$route', '$routeParams', '$q'];
+  EventPageController.$inject = ['AuthService', 'EventPageFactory', '$routeParams'];
 
-  function EventPageController(AuthService, RestService, EventPageFactory, $location, $route, $routeParams, $q) {
+  function EventPageController(AuthService, EventPageFactory, $routeParams) {
     var vm = this;
-    _activate();
+
     vm.title = 'EventPageController';
     vm.isLoggedIn = AuthService.isLoggedIn;
 
     vm.saveEvent = 'SAVE';
     vm.saveEventClick = saveEventClick;
+
+    _activate();
 
     /////////
 
@@ -53,4 +55,5 @@ angular.module('chronosApp')
           vm.tags = data.tags;
         });
     }
+
   }

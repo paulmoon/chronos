@@ -3,7 +3,7 @@
  * @ngdoc service
  * @name chronosApp.EventFactory
  * @description Factory used for retrieving (filtered) events from a single place.
- */ 
+ */
 
 (function () {
   'use strict';
@@ -75,7 +75,7 @@
      * @description Allows the user to update the events when a location has changed
      * @methodOf chronosApp:EventFactory
      */
-    function refreshEvents(){
+    function refreshEvents() {
       return _updateEvents();
     }
 

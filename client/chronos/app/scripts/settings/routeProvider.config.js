@@ -16,12 +16,18 @@
   function RouteProviderConfigs($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'scripts/chronos/main.html'
-        // controller: 'MainCtrl'
+        templateUrl: 'scripts/chronos/main.html',
+
+        resolve: {
+          userDetails: function (AuthService, StateService) {
+            if (AuthService.isLoggedIn()) {
+              return StateService.retriveUserProfile();
+            }
+          }
+        }
       })
       .when('/about', {
         templateUrl: 'scripts/chronos/about.html'
-        // controller: 'AboutCtrl'
       })
       .when('/event/:eventId', {
         templateUrl: 'scripts/events/eventPage.html',

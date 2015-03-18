@@ -1,7 +1,10 @@
 from rest_framework import serializers
-from django.core.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
+from chronos.settings import MEDIA_URL
+
+from urlparse import urlparse
 import app
+
 
 ##############################
 # --------- Users! --------- #
@@ -11,7 +14,7 @@ import app
 class ChronosPublicUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'username', )
+        fields = ('id', 'username',)
 
 class SimpleEventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,12 +24,12 @@ class SimpleEventSerializer(serializers.ModelSerializer):
 class ChronosUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id',)
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'place_name')
 
 class ChronosUserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'userType', 'place_id')
+        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'userType', 'place_id', 'place_name')
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
@@ -64,7 +67,7 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=128, required=False)
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'password', 'email', 'first_name', 'last_name', 'place_id')
+        fields = ('id', 'password', 'email', 'first_name', 'last_name', 'place_id', 'place_name')
 
     def validate_email(self, value):
         """
@@ -81,6 +84,7 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.place_id = validated_data.get('place_id', instance.place_id)
+        instance.place_name = validated_data.get('place_name', instance.place_name)
         instance.save()
         return instance
 
@@ -94,6 +98,38 @@ class TagSerializer(serializers.ModelSerializer):
 
 class TagEventSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
+
+class ImageUrlField(serializers.ImageField):
+    """
+    Django Rest Framework returns the url to the image, but it assumes that
+    the called url is the top level url. So, it will append the MEDIA_URL to the
+    caller url rather than the top level domain as expected. This is due to the way
+    that request.build_absolute_uri works in Django at the moment.
+
+    To fix this, we need to rip out the top level domain, and rebuild the url the way
+    we want. To rip out the top level domain, I found the following code on
+    stack overflow: http://stackoverflow.com/questions/9626535/get-domain-name-from-url
+    """
+
+    def to_representation(self, value):
+        invalid_url = super(serializers.ImageField, self).to_representation(value)
+        parsed_uri = urlparse(invalid_url)
+        domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+        return domain + MEDIA_URL + str(value)
+
+class ImageReadSeralizer(serializers.ModelSerializer):
+    image = ImageUrlField()
+    class Meta:
+        model = app.models.Image
+        fields = ('image', )
+
+#https://medium.com/@jxstanford/django-rest-framework-file-upload-e4bc8de669c0
+class ImageWriteSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    image = ImageUrlField()
+    class Meta:
+        model = app.models.Image
+        fields = ('id', 'created', 'image', 'owner',)
 
 ##############################
 # --------- Events! -------- #
@@ -160,9 +196,10 @@ class EventReadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     vote = serializers.SerializerMethodField()
     creator = ChronosPublicUserSerializer()
+    picture = ImageReadSeralizer()
     class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "upvote", "downvote", "report", "is_deleted", "place_id", "place_name", "tags")
+        fields = ('id', 'name', 'description', 'creator', "create_date", "edit_date" , "start_date", "end_date", "vote", "upvote", "downvote", "report", "is_deleted", "picture", "place_id", "place_name", "tags")
 
     def get_vote(self, obj):
         return obj.upvote - obj.downvote
@@ -227,3 +264,34 @@ class ReportEventSerializer(serializers.Serializer):
             instance.save()
 
         return instance
+
+##############################
+# --------- Comments! ------ #
+##############################
+
+class CommentReadSerializer(serializers.ModelSerializer):
+    user = ChronosPublicUserSerializer()
+    class Meta:
+        model = app.models.Comments
+        fields = ('content', 'event', 'user', 'date')
+
+
+class CommentWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.Comments
+        fields = ('content', 'event', 'user', 'date')
+
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', None)
+        super(serializers.ModelSerializer, self).__init__(*args, **kwargs)
+        if fields:
+            allowed = set(fields)
+            existing = set(self.fields.keys())
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+
+
+    def create(self, validated_data):
+        comment = app.models.Comments.objects.create(**validated_data)
+        comment.save()
+        return comment

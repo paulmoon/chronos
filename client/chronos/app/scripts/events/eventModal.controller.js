@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('EventModalController', EventModalController);
 
-  EventModalController.$inject = ['$modalInstance', 'RestService', 'shouldShowEventCreateModal'];
+  EventModalController.$inject = ['$modalInstance', 'RestService', 'shouldShowEventCreateModal', '$log'];
 
-  function EventModalController($modalInstance, RestService, shouldShowEventCreateModal) {
+  function EventModalController($modalInstance, RestService, shouldShowEventCreateModal, $log) {
     var vm = this;
 
     vm.title = 'EventModalController';
@@ -24,15 +24,17 @@
     vm.locationName = '';
     vm.startDate = '';
     vm.endDate = '';
-    vm.picture = null;
     vm.tags = [];
+    vm.files = undefined;
+    vm.imageId = null;
+    vm.imageUrl = undefined;
+    vm.imageProgress = 0;
     vm.shouldShowEventCreateModal = shouldShowEventCreateModal;
     vm.locationPicked = locationPicked;
+    vm.uploadImage = uploadImage;
 
     vm.createEvent = createEvent;
     vm.cancel = cancel;
-
-
 
     ////////////////
 
@@ -42,11 +44,11 @@
      */
     function createEvent() {
       vm.shouldShowEventCreateModal = true;  
-      RestService.createEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
+      RestService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
         .then(function (data) {
           $modalInstance.close();
         }, function () {
-          console.log("RestService.createEvent failed");
+          $log.debug("RestService.createEvent failed");
         });
     }
 
@@ -61,9 +63,9 @@
         .then(function (data) {
           $modalInstance.close();
         }, function () {
-          console.log("RestService.updateEvent failed");
+          $log.debug("RestService.updateEvent failed");
         });
-    }
+    };
 
     /**
      * @description Closes the modal window.
@@ -71,7 +73,7 @@
      */
     function cancel() {
       $modalInstance.dismiss('cancel');
-    }
+    };
 
     /**
      * @description Callback function when a location is chosen
@@ -80,6 +82,22 @@
      */
     function locationPicked(details) {
       vm.locationId = details.place_id;
+    };
+
+    function uploadImage(files) {
+      if (files && files.length) {
+        vm.imageProgress = 0;
+        RestService.uploadImage(files[0])
+        .progress(function(evt) {
+          vm.imageProgress = parseInt(100.0 * evt.loaded / evt.total);
+        }).success(function (data, status, headers, config) {
+          vm.imageId = data['id'];
+          vm.imageUrl = data['image'];
+        }).error(function() {
+          $log.debug("Error uploading file");
+        });
+      }
     }
+
   }
 })();

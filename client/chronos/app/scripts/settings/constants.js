@@ -14,6 +14,13 @@
       maxKeywords: 10,
       maxTagLength: 50,
       maxNumberTags: 5,
-      calendarEventLimitPerDay: 4
+      calendarEventLimitPerDay: 4,
+
+      pubSubOnLogin: 'pubSubOnLogin',
+      pubSubOnLogout: 'pubSubOnLogout',
+      pubSubOnSignUp: 'pubSubOnSignUp',
+      pubSubOnEventCreate: 'pubSubOnEventCreate',
+      pubSubOnEventUpdate: 'pubSubOnEventUpdate',
+      pubSubOnCommentCreate: 'pubSubOnCommentCreate'
     });
 })();

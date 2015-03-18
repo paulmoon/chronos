@@ -1,0 +1,91 @@
+.events-area {
+  width: 95%;
+  min-height: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin-left: 10px;
+  overflow-y: scroll;
+  border:0;
+  background:#FAFAFA;
+}
+
+.event-card-panel{
+  float: top;
+  background:inherit;
+}
+
+.event-card-panel:hover{
+  float: top;
+  background:#FBFBFB;
+}
+
+.event-card-color-alternate {
+  background-color:#FEFEFE;
+}
+
+.event-card-color {
+  background-color:#FFF;
+}
+
+.event-card{
+  margin-top:5px;
+}
+
+.float-left {
+  float:left;
+}
+
+.margin-right-two {
+  margin-right:2px;
+}
+
+.arrow-group {
+  float: left;
+  margin-right: 20px;
+}
+
+.picture-group {
+  float: left;
+  margin-right: 20px;
+}
+
+.vote-value {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 15px;
+  color:#9BA5B3;
+}
+
+.event-name {
+  color:#405D87;
+}
+
+.event-details {
+  font-size: 13px;
+  color: #5B636E;
+  font-weight: 450;
+}
+
+.event-creation {
+  font-size: 11px;
+  color: #999;
+  font-weight: 250;
+}
+
+.event-picture {
+  width:75px;
+  height:80px;
+  margin-top:2px
+}
+
+.glyphicon.glyphicon-chevron-down {
+  font-size: 20px;
+  color:#829CBF;
+}
+
+.glyphicon.glyphicon-chevron-up {
+  font-size: 20px;
+  color:#829CBF;
+}

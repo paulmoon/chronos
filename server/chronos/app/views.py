@@ -10,10 +10,11 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, FileUploadParser, MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework import generics, status, viewsets, mixins
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from django.conf import settings
 import datetime
@@ -235,7 +236,7 @@ class TagView(generics.ListCreateAPIView):
 class SaveEvent(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
-    lookup_url_kwarg = "event_id"
+    lookup_url_kwarg = 'event_id'
     serializer_class = app.serializers.SimpleEventSerializer
 
     def put(self, request, *args, **kwargs):
@@ -281,6 +282,49 @@ class ReportEvent(generics.GenericAPIView):
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ImageUploadView(generics.CreateAPIView):
+    parser_classes = (MultiPartParser, FormParser, )
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = app.models.Image.objects.all()
+    serializer_class = app.serializers.ImageWriteSerializer
+
+    def perform_create(self, serializer):
+        image = serializer.save(owner=self.request.user, image=self.request.data.get('image'))
+
+##############################
+# --------- Comments! ------ #
+##############################
+class SaveCommentView(generics.CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = app.serializers.CommentWriteSerializer
+
+    """
+    Create new Comment, backend should handle a lot if not all of the authentication/validation with frontend having
+    another layer of security
+    """
+    def post(self, request, *args, **kwargs):
+        request.data['user'] = request.user.id
+        serializer = app.serializers.CommentWriteSerializer(data=request.data)
+        if serializer.is_valid():
+            comment = serializer.save()
+            send_data = serializer.data
+            send_data['username'] = request.user.username
+            return Response(data=send_data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetCommentView(generics.ListAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = app.serializers.CommentReadSerializer
+
+    def get_queryset(self):
+        event = self.kwargs['event']
+        queryset = app.models.Comments.objects.filter(event=event).order_by('-date')
+        return queryset
+
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()
 update_user = UpdateUser.as_view()
@@ -294,3 +338,6 @@ vote_event = VoteEvent.as_view()
 save_event = SaveEvent.as_view()
 report_event = ReportEvent.as_view()
 get_saved_events = GetSavedEvents.as_view()
+upload_image = ImageUploadView.as_view()
+save_comment = SaveCommentView.as_view()
+get_comments = GetCommentView.as_view()
