@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('EventModalController', EventModalController);
 
-  EventModalController.$inject = ['$modalInstance', 'RestService', 'shouldShowEventCreateModal'];
+  EventModalController.$inject = ['$scope', '$modalInstance', 'RestService', 'shouldShowEventCreateModal'];
 
-  function EventModalController($modalInstance, RestService, shouldShowEventCreateModal) {
+  function EventModalController($scope, $modalInstance, RestService, shouldShowEventCreateModal) {
     var vm = this;
 
     vm.title = 'EventModalController';
@@ -26,13 +26,17 @@
     vm.endDate = '';
     vm.picture = null;
     vm.tags = [];
+    vm.files = undefined;
     vm.shouldShowEventCreateModal = shouldShowEventCreateModal;
     vm.locationPicked = locationPicked;
+    vm.uploadFile = uploadFile;
 
     vm.createEvent = createEvent;
     vm.cancel = cancel;
 
-
+    $scope.$watch('files', function() {
+      vm.uploadFile($scope.files);
+    });
 
     ////////////////
 
@@ -63,7 +67,7 @@
         }, function () {
           console.log("RestService.updateEvent failed");
         });
-    }
+    };
 
     /**
      * @description Closes the modal window.
@@ -71,7 +75,7 @@
      */
     function cancel() {
       $modalInstance.dismiss('cancel');
-    }
+    };
 
     /**
      * @description Callback function when a location is chosen
@@ -80,6 +84,21 @@
      */
     function locationPicked(details) {
       vm.locationId = details.place_id;
+    };
+
+    function uploadFile(files) {
+      console.log(files);
+      if (files && files.length) {
+        RestService.uploadImage(files[0])
+        .progress(function(evt) {
+          console.log('progress' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.file.name);
+        }).success(function (data, status, headers, config) {
+          console.log('file ' + config.file.name);
+        }).error(function() {
+          console.log("Error uploading file");
+        });
+      }
     }
+
   }
 })();

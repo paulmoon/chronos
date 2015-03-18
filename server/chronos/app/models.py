@@ -40,7 +40,7 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 class Image(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='images')
+    image = models.ImageField(upload_to='images/%Y/%m/%d')
     owner = models.ForeignKey(ChronosUser, blank=False)
 
 ##############################

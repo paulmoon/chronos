@@ -24,6 +24,7 @@
       'mgcrea.ngStrap.timepicker',
       'ui.calendar',
       'ngTagsInput',
-      'leaflet-directive'
+      'leaflet-directive',
+      'angularFileUpload',
     ]);
 })();

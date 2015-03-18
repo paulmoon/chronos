@@ -348,7 +348,7 @@ class ImageUploadTests(APITestCase):
 		# f.write('testfile123\n')
 		# f.close()
 		f = open(path, 'rb')
-		return {'image': f}
+		return {'file': f}
 
 	def test_upload_image(self):
 		self.setup_user()
