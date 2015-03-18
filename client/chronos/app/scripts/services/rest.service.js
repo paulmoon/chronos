@@ -145,6 +145,30 @@
     };
 
     /**
+     * @desciption API call for reporting a specific event
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event to report
+     * @param reason The reason the event is being reported for
+     * @returns {HttpPromise}
+     */
+    this.reportEvent = function (eventId, reason) {
+      return $http.post(settings.serverUrl + '/events/report/', {
+        event_id: eventId,
+        reason: reason
+      });
+    };
+
+    /**
+     * @desciption API call for saving for a specific event to a user
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event to save
+     * @returns {HttpPromise}
+     */
+    this.saveEvent = function(eventId) {
+      return $http.put(settings.serverUrl + '/users/save/' + eventId);
+    };
+
+    /**
      * @description API call for getting a specific event
      * @methofOf chronosApp:RestService
      * @param eventId The id of the event

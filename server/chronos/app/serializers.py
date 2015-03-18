@@ -206,3 +206,24 @@ class VoteEventSerializer(serializers.Serializer):
             instance.save()
 
         return instance
+
+class ReportEventSerializer(serializers.Serializer):
+    reason = serializers.CharField(max_length=20, required=True)
+
+    class Meta:
+        model = app.models.Reports
+        fields = ('reason', 'event', 'user',)
+
+    def create(self, validated_data):
+        report = app.models.Reports.objects.create(**validated_data)
+        report.save()
+        
+        return report
+
+    def update(self, instance, validated_data):
+        reason = validated_data.get('reason')
+        if reason is not None and instance.reason != reason:
+            instance.reason = reason
+            instance.save()
+
+        return instance

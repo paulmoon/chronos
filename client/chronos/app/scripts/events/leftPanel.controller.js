@@ -22,11 +22,11 @@
     vm.title = 'LeftPanelController';
     vm.searchKeywords = '';
     vm.searchError = '';
-
-    vm.addedTags = '';
     vm.storageTags = [];
+    vm.addedTags = '';
 
     vm.getEvents = EventFactory.getSelectedEvents;
+    //vm.addedTags = EventFactory.getTags;
 
     vm.searchEvents = searchEvents;
     vm.updateTags = updateTags;

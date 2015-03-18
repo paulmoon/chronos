@@ -1,9 +1,4 @@
-.footer {
-  min-height: 10px;
-  background-color: white;
-}
- 
-.pane {
+ .pane {
   top: 60px;
   bottom: 10px;
   position: absolute;
@@ -51,7 +46,7 @@
 
 .event-card-panel{
   float: top;
-  background:#FFF;
+  background:inherit;
 }
 
 .event-card-panel:hover{
@@ -165,6 +160,14 @@
   width:75px;
   height:80px;
   margin-top:2px
+}
+
+.event-card-color-alternate {
+  background-color:#FEFEFE;
+}
+
+.event-card-color {
+  background-color:#FFF;
 }
 
 .glyphicon.glyphicon-chevron-down {

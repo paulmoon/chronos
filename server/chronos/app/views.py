@@ -166,17 +166,22 @@ class EventView(generics.ListAPIView):
         else:
             if toDate is not None:
                 filterargs['start_date__range'] = [toDate + 'T00:00:00', toDate[:10] + 'T23:59:59']
-        if len(tags) > 0:
-            filterargs['tags__name__in'] = tags
 
         queryset = queryset.filter(**filterargs)
 
+        if len(tags) > 0:
+            qset = Q()
+
+            for tag in tags:
+                qset |= Q(tags__name__iexact=tag)
+
+            queryset = queryset.filter(qset)
         if len(keywords) > 0:
             qset = Q()
 
             for word in keywords:
-                qset |= Q(name__contains=word)
-                qset |= Q(description__contains=word)
+                qset |= Q(name__icontains=word)
+                qset |= Q(description__icontains=word)
 
             queryset = queryset.filter(qset)
 
@@ -247,6 +252,35 @@ class SaveEvent(generics.GenericAPIView):
         user.save()
         return Response(data=self.get_serializer_class()(event).data, status=status.HTTP_200_OK)
 
+class ReportEvent(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_clases = (IsAuthenticated,)
+    serializer_class = app.serializers.ReportEventSerializer
+
+    def post(self, request, *args, **kwargs):
+        if not request.data.get("event_id"):
+            return Response(data={"event_id": "This field is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            event = Events.objects.get(pk=int(request.data.get("event_id")))
+        except Events.DoesNotExist:
+            return Response(data={"event_id": "This event id does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            report = app.models.Reports.objects.get(event=event, user=request.user)
+            serializer = self.get_serializer_class()(report, data=request.data)
+        except app.models.Reports.DoesNotExist:
+            serializer = self.get_serializer_class()(data=request.data)
+
+        if serializer.is_valid():
+            report = serializer.save(event=event, user=request.user)
+            event.report.add(report)
+            event.save()
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()
 update_user = UpdateUser.as_view()
@@ -258,4 +292,5 @@ list_create_event = EventView.as_view()
 create_tag = TagView.as_view()
 vote_event = VoteEvent.as_view()
 save_event = SaveEvent.as_view()
+report_event = ReportEvent.as_view()
 get_saved_events = GetSavedEvents.as_view()

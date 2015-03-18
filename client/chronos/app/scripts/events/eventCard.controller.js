@@ -13,12 +13,12 @@
     .module('chronosApp')
     .controller('EventCardController', EventCardController);
 
-  EventCardController.$inject = ['$scope', 'RestService', 'AuthService'];
+  EventCardController.$inject = ['$scope', 'RestService', 'AuthService', 'EventFactory'];
 
   /**
    * @desc Controller for the event card directives
    */
-  function EventCardController($scope, RestService, AuthService) {
+  function EventCardController($scope, RestService, AuthService, EventFactory) {
     var vm = this;
 
     vm.voteEvent = voteEvent;
@@ -29,6 +29,7 @@
     vm.followEvent = followEvent;
     vm.goUser = goUser;
     vm.isLoggedIn = AuthService.isLoggedIn;
+    vm.addTag = addTag;
 
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
@@ -70,6 +71,7 @@
           color: 'orange'
         };
         vm.downArrowStyle = {};
+        vm.vote++;
       });
     }
 
@@ -80,18 +82,28 @@
     function downvoteEvent() {
       vm.voteEvent(-1, function () {
         vm.downArrowStyle = {
-          color: 'orange'
+          color: 'crimson'
         };
         vm.upArrowStyle = {};
+        vm.vote--;
       });
     }
 
     /**
      * @description Reports the event
      * @memberOf chronosApp:EventCardController
+     * @param reason: a string containing the reason the event was reported
      */
-    function reportEvent() {
-      // Future Functionality
+    function reportEvent(reason) {
+      RestService.reportEvent(vm.eventId, reason)
+        .success(function () {
+          vm.reportButtonStyle = {
+            color: 'crimson'
+          };
+        })
+        .error(function () {
+          //TODO: Add something here
+        });
     }
 
     /**
@@ -115,6 +127,15 @@
      */
     function goUser() {
       // Future Functionality
+    }
+
+    /**
+     * @description Updates the tags and updates the events
+     * @methodOf chronosApp:EventCardFunctionality
+     * @param addedTag: a string containing the tag to be added
+     */
+    function addTag(addedTag) {
+      EventFactory.addTag(addedTag);
     }
   }
 })();
