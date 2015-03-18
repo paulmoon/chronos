@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
+from chronos.settings import MEDIA_URL
 
+from urlparse import urlparse
 import app
 
 
@@ -215,9 +217,30 @@ class VoteEventSerializer(serializers.Serializer):
 
         return instance
 
+class ImageUrlField(serializers.ImageField):
+    """
+    Django Rest Framework returns the url to the image, but it assumes that
+    the called url is the top level url. So, it will append the MEDIA_URL to the
+    caller url rather than the top level domain as expected. This is due to the way
+    that request.build_absolute_uri works in Django at the moment.
+
+    To fix this, we need to rip out the top level domain, and rebuild the url the way
+    we want. To rip out the top level domain, I found the following code on
+    stack overflow: http://stackoverflow.com/questions/9626535/get-domain-name-from-url
+    """
+
+    def to_representation(self, value):
+        invalid_url = super(serializers.ImageField, self).to_representation(value)
+        parsed_uri = urlparse(invalid_url)
+        domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+        return domain + MEDIA_URL + str(value)
+
 #https://medium.com/@jxstanford/django-rest-framework-file-upload-e4bc8de669c0
 class ImageWriteSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    image = ImageUrlField()
     class Meta:
         model = app.models.Image
         fields = ('id', 'created', 'image', 'owner',)
+
+

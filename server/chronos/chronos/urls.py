@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rest_framework import routers
@@ -26,4 +27,14 @@ urlpatterns = patterns('',
     url(r'events/vote/$', 'app.views.vote_event'),
     url(r'^tags/$', 'app.views.create_tag'),
     url(r'^images/$', 'app.views.upload_image'),
+)
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+        url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.STATIC_ROOT,
+        }),
 )

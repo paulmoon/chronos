@@ -256,8 +256,8 @@ class ImageUploadView(generics.CreateAPIView):
     serializer_class = app.serializers.ImageWriteSerializer
 
     def perform_create(self, serializer):
-        print(self.request.data)
-        serializer.save(owner=self.request.user, image=self.request.data.get('file'))
+        image = serializer.save(owner=self.request.user, image=self.request.data.get('image'))
+
 
 
 create_user = CreateUser.as_view()

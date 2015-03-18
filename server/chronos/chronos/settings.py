@@ -26,7 +26,8 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+MEDIA_ROOT = '/media/'
+MEDIA_URL = 'media/'
 # Application definition
 
 INSTALLED_APPS = (
@@ -100,8 +101,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT = '/tmp/'
+STATIC_URL = 'static/'
 
 SWAGGER_SETTINGS = {
-    'api_key': 'c640a14639157348348c9ea19d2b03567f545633',
+    'api_key': '8513d558de1558c15d58a072f2934d2c0011e7aa',
 }
