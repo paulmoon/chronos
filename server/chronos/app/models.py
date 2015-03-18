@@ -62,13 +62,20 @@ class Events(models.Model):
     end_date = models.DateTimeField()
     upvote = models.IntegerField(default=0)
     downvote = models.IntegerField(default=0)
-    report = models.IntegerField(default=0)
+    report = models.ManyToManyField("Reports", null=True)
     is_deleted = models.BooleanField(default=False)
     picture = models.ForeignKey(Image, null=True)
     place_id = models.CharField(max_length=100, null=True)
     place_name = models.CharField(max_length=100, null=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
+##############################
+# --------- Reports -------- #
+##############################
+class Reports(models.Model):
+    reason = models.CharField(max_length=20)
+    user = models.ForeignKey(ChronosUser)
+    event = models.ForeignKey(Events)
 
 ##############################
 # --------- Comments! ------ #

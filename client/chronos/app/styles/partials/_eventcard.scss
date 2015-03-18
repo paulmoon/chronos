@@ -11,12 +11,20 @@
 
 .event-card-panel{
   float: top;
-  background:#FFF;
+  background:inherit;
 }
 
 .event-card-panel:hover{
   float: top;
   background:#FBFBFB;
+}
+
+.event-card-color-alternate {
+  background-color:#FEFEFE;
+}
+
+.event-card-color {
+  background-color:#FFF;
 }
 
 .event-card{
