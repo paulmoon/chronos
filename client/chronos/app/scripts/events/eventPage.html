@@ -124,12 +124,12 @@
         <hr>
         <div data-ng-repeat="commentItem in comment.comments" class="comment-container">
           <div class="comment-header">
-            <span class="comment-username">{{commentItem.user.username}}</span> - <span class="comment-reply"><a ng-click="comment.isReplyOpen(commentItem.id)" href="">Reply</a></span>
+            <span class="comment-username">{{commentItem.user.username}}</span> - <span class="comment-reply"><a data-ng-click="comment.isReplyOpen(commentItem.id)" href="">Reply</a></span>
             <div data-ng-show="comment.isReplyShow(commentItem.id)" class="comment-save-body">
               <form role="form">
                 <div class="form-group">
                   <textarea class="form-control" rows="8" id="reply-description" placeholder="Comment"
-                            ng-model="comment.replyData"></textarea>
+                            data-ng-model="comment.replyData"></textarea>
                 </div>
                 <a type="submit" class="btn btn-primary comment-save-submit" data-ng-click="comment.replyComment()">Reply</a>
                 <a type="submit" class="btn btn-warning comment-save-submit comment-cancel" data-ng-click="comment.replyCancel()">Cancel</a>

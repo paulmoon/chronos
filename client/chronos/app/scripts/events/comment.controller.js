@@ -20,6 +20,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
   vm.comments = [];
   vm.comment = {};
   vm.commentData = '';
+  vm.replyData ='';
   vm.replyOpen = null;
   vm.isLoggedIn = AuthService.isLoggedIn;
 
@@ -82,6 +83,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
   function createComment() {
     CommentFactory.saveComment($routeParams.eventId, vm.commentData)
       .then(function (comment) {
+        vm.comment.id = comment.id;
         vm.comment.content = comment.content;
         vm.comment.user = {id: comment.user, username: comment.username};
         vm.comment.date = moment(comment.date).format('MMMM Do YYYY, h:mm:ss a');
@@ -95,7 +97,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @methodOf chronosApp:CommentController
    */
   function replyComment() {
-
+      CommentFactory
   }
 
   /**

@@ -203,5 +203,26 @@
         return response;
       });
     };
+
+    /**
+     * @description API call for saving a reply comment for a specific event
+     * @methodOf chronosApp:RestService
+     * @param eventId
+     * @param replyData
+     * @param depth
+     * @param respondTo
+     * @returns {HttpPromise}
+     */
+    this.saveReply = function (eventId, replyData, depth, respondTo) {
+      return $http.post(settings.serverUrl + '/comments/create/', {
+        event: eventId,
+        content: replyData,
+        depth: depth,
+        respond_to: respondTo
+      }).then(function (response) {
+        PubSubService.publish(settings.pubSubOnCommentCreate);
+        return response;
+      });
+    };
   }
 })();

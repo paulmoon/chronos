@@ -18,6 +18,7 @@
     var comment =  {
       getComment: getComment,
       saveComment: saveComment,
+      replyComment: replyComment,
       updateComment: updateComment,
       deleteComment: deleteComment
     };
@@ -29,7 +30,8 @@
     /**
      * @description Returns comments that the factory holds.
      * @methodOf chronosApp:CommentFactory
-     * @returns Get event in the CommentFactory.
+     * @param eventId
+     * @returns {*}
      */
     function getComment(eventId) {
       return RestService.getComment(eventId)
@@ -44,10 +46,31 @@
     /**
      * @description saves comments that the factory holds.
      * @methodOf chronosApp:CommentFactory
+     * @param eventId
+     * @param commentData
      * @returns {*}
      */
     function saveComment(eventId, commentData) {
       return RestService.saveComment(eventId, commentData)
+        .then(function(response) {
+          return response.data;
+        }, function(response) {
+          $log.warn('Response: ' + response);
+          return $q.reject(response);
+        });
+    }
+
+    /**
+     * @description saves replies to comments
+     * @methodOf chronosApp:CommentFactory
+     * @param eventId
+     * @param replyData
+     * @param depth
+     * @param respondTo
+     * @returns {*}
+     */
+    function replyComment(eventId, replyData, depth, respondTo) {
+      return RestService.saveReply(eventId, replyData, depth, respondTo)
         .then(function(response) {
           return response.data;
         }, function(response) {
