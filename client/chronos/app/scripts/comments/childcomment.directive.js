@@ -33,7 +33,7 @@
       "{{childcomment.content}}" +
       "</div>" +
       "<div class='comment-date'>" +
-      "{{childcomment.date}}" +
+      "{{vm.setCommentDateFormat(childcomment.date)}}" +
       "</div>" +
       "</li>";
 
@@ -52,8 +52,8 @@
     return directive;
 
     function link(scope, element, attrs) {
-      var commentStatement = "<comment comment='childcomment.replies'></comment>";
-      if (angular.isArray(scope.childcomment.replies)) {
+      var commentStatement = "<comment comment='childcomment.children'></comment>";
+      if (angular.isArray(scope.childcomment.children)) {
         $compile(commentStatement)(scope, elementAppend);
 
         function elementAppend(cloned, scope) {

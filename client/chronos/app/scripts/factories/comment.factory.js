@@ -18,7 +18,6 @@
     var comment =  {
       getComment: getComment,
       saveComment: saveComment,
-      replyComment: replyComment,
       updateComment: updateComment,
       deleteComment: deleteComment
     };
@@ -50,27 +49,8 @@
      * @param commentData
      * @returns {*}
      */
-    function saveComment(eventId, commentData) {
-      return RestService.saveComment(eventId, commentData)
-        .then(function(response) {
-          return response.data;
-        }, function(response) {
-          $log.warn('Response: ' + response);
-          return $q.reject(response);
-        });
-    }
-
-    /**
-     * @description saves replies to comments
-     * @methodOf chronosApp:CommentFactory
-     * @param eventId
-     * @param replyData
-     * @param depth
-     * @param path
-     * @returns {*}
-     */
-    function replyComment(eventId, replyData, depth, path, respondTo) {
-      return RestService.saveReply(eventId, replyData, depth, path, respondTo)
+    function saveComment(eventId, commentData, depth, path, parent) {
+      return RestService.saveComment(eventId, commentData, depth, path, parent)
         .then(function(response) {
           return response.data;
         }, function(response) {

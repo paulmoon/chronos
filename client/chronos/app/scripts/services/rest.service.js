@@ -218,36 +218,18 @@
      * @param userId
      * @returns {HttpPromise}
      */
-    this.saveComment = function (eventId, commentData) {
+    this.saveComment = function (eventId, commentData, depth, path, parent) {
       return $http.post(settings.serverUrl + '/comments/create/', {
         event: eventId,
-        content: commentData
+        content: commentData,
+        depth: depth,
+        path: path,
+        parent: parent
       }).then(function (response) {
         PubSubService.publish(settings.pubSubOnCommentCreate);
         return response;
       });
     };
 
-    /**
-     * @description API call for saving a reply comment for a specific event
-     * @methodOf chronosApp:RestService
-     * @param eventId
-     * @param replyData
-     * @param depth + 1
-     * @param respondTo
-     * @returns {HttpPromise}
-     */
-    this.saveReply = function (eventId, replyData, depth, path, respondTo) {
-      return $http.post(settings.serverUrl + '/comments/create/', {
-        event: eventId,
-        content: replyData,
-        depth: depth + 1,
-        path: path,
-        respond_to: respondTo
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnCommentCreate);
-        return response;
-      });
-    };
   }
 })();

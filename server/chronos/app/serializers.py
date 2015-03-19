@@ -289,7 +289,7 @@ class CommentWriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = app.models.Comments
-        fields = ('id', 'content', 'event', 'user', 'date', 'depth', 'path', 'children')
+        fields = ('id', 'content', 'event', 'user', 'date', 'depth', 'path', 'parent')
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
