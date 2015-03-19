@@ -26,6 +26,7 @@
     vm.addedTags = '';
 
     vm.getEvents = EventFactory.getSelectedEvents;
+    vm.loading = EventFactory.isLoading;
     //vm.addedTags = EventFactory.getTags;
 
     vm.searchEvents = searchEvents;
