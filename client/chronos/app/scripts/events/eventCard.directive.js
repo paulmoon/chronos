@@ -29,15 +29,16 @@
         endDate: '=',
         vote: '=',
         report: '=',
-        tags:'=',
-        editDate:'=',
-        picture:'=',
+        tags: '=',
+        editDate: '=',
+        picture: '=',
+        voteDirectionByUser: '@',
+        eventSaved: '@'
       },
       controller: 'EventCardController',
       controllerAs: 'vm',
       bindToController: true
     };
-    return directive
-  };
-
+    return directive;
+  }
 })();

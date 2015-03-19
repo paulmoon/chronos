@@ -19,7 +19,7 @@
       <img ng-src="{{vm.picture}}" alt="Image Not Found" class="event-picture">
     </div>
     <div class="media-body">
-      <div class="event-creation" style="float:right">Created by <a ng-click="vm.goUser()" style="text-decoration:none">{{vm.creator.username}}</a></div>
+      <div class="event-creation" style="float:right">Created by <a ng-click="vm.goToUser()" style="text-decoration:none">{{vm.creator.username}}</a></div>
       <h4 class="media-heading"><a href="#/event/{{vm.eventId}}" class="event-name" style="text-decoration:none">{{ vm.displayName }}</a></h4>
       <div class="event-details">{{vm.displayStartDate}} to {{vm.displayEndDate}}</div>
       <div class="event-details">{{vm.placeName}}</div>
@@ -27,11 +27,11 @@
         <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.reportEvent()" class="btn btn-link btn-xs" class="event-button">
           <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
         </button>
-        <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.followEvent()" class="btn btn-link btn-xs" class="event-button" ng-style="vm.saveButtonStyle">
-          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-        </button>
         <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs" class="event-button">
           <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+        </button>
+        <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.saveEvent()" class="btn btn-link btn-xs" class="event-button" ng-style="vm.saveButtonStyle">
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
         </button>
         <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs" class="event-button">
           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>

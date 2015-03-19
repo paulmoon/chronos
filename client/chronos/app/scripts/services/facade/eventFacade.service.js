@@ -37,16 +37,24 @@
       return RestService.getEvent(eventID);
     };
 
+    this.getSavedEvents = function () {
+      return EventFactory.savedEvents;
+    };
+
+    this.getVotedEvents = function () {
+      return EventFactory.votedEvents;
+    };
+
+    this.getSelectedEvents = function () {
+      return EventFactory.selectedEvents;
+    };
+
     this.voteEvent = function (eventID, direction) {
       return RestService.voteEvent(eventID, direction);
     };
 
     this.saveEvent = function (eventID) {
       return RestService.saveEvent(eventID);
-    };
-
-    this.getSelectedEvents = function () {
-      return EventFactory.selectedEvents;
     };
 
     this.updateEvents = function (filterParams) {

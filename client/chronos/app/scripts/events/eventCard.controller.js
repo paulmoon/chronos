@@ -33,21 +33,37 @@
     vm.downvoteEvent = downvoteEvent;
 
     vm.reportEvent = reportEvent;
-    vm.followEvent = followEvent;
-    vm.goUser = goUser;
+    vm.saveEvent = saveEvent;
+    vm.goToUser = goToUser;
+
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
 
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
 
-    if (vm.eventName.length > 70) {
-      vm.displayName = vm.eventName.substring(0, 70) + "...";
-    } else {
-      vm.displayName = vm.eventName;
-    }
+    _activate();
 
-    function _displayDate(date) {
-      return date.local().format('ddd, MMMM Do [at] h:mma');
+    /////////////////////////////////
+
+    function _activate() {
+      if (vm.eventName.length > 70) {
+        vm.displayName = vm.eventName.substring(0, 70) + "...";
+      } else {
+        vm.displayName = vm.eventName;
+      }
+
+      // vm.voteDirectionByUser and vm.eventSaved will be strings because they were interpolated using @.
+      if (vm.voteDirectionByUser === "1") {
+        vm.upArrowStyle = {color: "orange"};
+        vm.downArrowStyle = {};
+      } else if (vm.voteDirectionByUser === "-1") {
+        vm.upArrowStyle = {};
+        vm.downArrowStyle = {color: "blue"};
+      }
+
+      if (vm.eventSaved === "true") {
+        vm.saveButtonStyle = {color: "orange"};
+      }
     }
 
     /**
@@ -90,7 +106,7 @@
      * @description Saves the event to the user
      * @memberOf chronosApp:EventCardController
      */
-    function followEvent() {
+    function saveEvent() {
       EventFacadeService.saveEvent(vm.eventId)
         .success(function () {
           vm.saveButtonStyle = {
@@ -105,8 +121,12 @@
      * @description Handles when a user clicks a username
      * @memberOf chronosApp:EventCardController
      */
-    function goUser() {
+    function goToUser() {
       // Future Functionality
+    }
+
+    function _displayDate(date) {
+      return date.local().format('ddd, MMMM Do [at] h:mma');
     }
   }
 })();

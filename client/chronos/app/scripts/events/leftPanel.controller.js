@@ -27,6 +27,8 @@
     vm.storageTags = [];
 
     vm.getEvents = EventFacadeService.getSelectedEvents;
+    vm.getVotedEvents = EventFacadeService.getVotedEvents;
+    vm.getSavedEvents = EventFacadeService.getSavedEvents;
 
     vm.searchEvents = searchEvents;
     vm.updateTags = updateTags;
@@ -37,6 +39,9 @@
     vm.clearStartDate = clearStartDate;
     vm.clearEndDate = clearEndDate;
     vm.clearKeywords = clearKeywords;
+
+    vm.getVoteDirection = getVoteDirection;
+    vm.savedByUser = savedByUser;
 
     vm.searchDateStart = vm.getLastSunday(moment().local().startOf('month'));
     vm.searchDateEnd = vm.getLastSunday(moment().local().startOf('month')).add(6, 'weeks');
@@ -200,6 +205,40 @@
       });
 
       EventFacadeService.updateTags(vm.storageTags);
+    }
+
+    /**
+     * @description Calculates the direction (one of +1, 0, and -1} that the user previously voted on the event
+     * @methodOf chronosApp:LeftPanelController
+     * @param event Event to check
+     * @returns {Number} direction +1 if user upvoted it, -1 if user downvoted it, and 0 for neither.
+     */
+    function getVoteDirection(chosenEvent) {
+      var votedEvents = vm.getVotedEvents();
+
+      for (var i = 0; i < votedEvents.length; i++) {
+        if (votedEvents[i].event.id === chosenEvent.id) {
+          return votedEvents[i].direction;
+        }
+      }
+      return 0;
+    }
+
+    /**
+     * @description Checks whether a given event was previously saved by the user
+     * @methodOf chronosApp:LeftPanelController
+     * @param event Event to check
+     * @returns {Boolean} True if user previously saved the event
+     */
+    function savedByUser(chosenEvent) {
+      var savedEvents = vm.getSavedEvents();
+      for (var i = 0; i < savedEvents.length; i++) {
+        if (savedEvents[i].id === chosenEvent.id) {
+          console.log('FOUND ONE');
+          return true;
+        }
+      }
+      return false;
     }
   }
 })();
