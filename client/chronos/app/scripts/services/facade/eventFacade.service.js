@@ -100,7 +100,10 @@
     };
 
     this.saveComment = function (eventID, commentText) {
-      return CommentFactory.saveComment(eventID, commentText);
+      return CommentFactory.saveComment(eventID, commentText)
+        .then(function (response) {
+          PubSubService.publish(settings.pubSubOnCommentCreate);
+        });
     };
 
     this.addTag = function (tag) {

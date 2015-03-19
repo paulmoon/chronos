@@ -106,9 +106,6 @@
         place_id: place_id,
         place_name: place_name,
         tags: tags
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnEventCreate);
-        return response;
       });
     };
 
@@ -131,9 +128,6 @@
         start_date: startDate,
         end_date: endDate,
         tags: tags
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnEventUpdate);
-        return response;
       });
     };
 
@@ -222,9 +216,6 @@
       return $http.post(settings.serverUrl + '/comments/create/', {
         event: eventId,
         content: commentData
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnCommentCreate);
-        return response;
       });
     };
   }
