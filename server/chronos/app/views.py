@@ -19,6 +19,7 @@ from rest_framework.generics import GenericAPIView
 from django.conf import settings
 import datetime
 from django.db.models import Q, Count
+from mptt.templatetags.mptt_tags import cache_tree_children
 
 ##############################
 # --------- Users! --------- #
@@ -320,10 +321,10 @@ class GetCommentView(generics.ListAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = app.serializers.CommentReadSerializer
 
-    def get_queryset(self):
-        event = self.kwargs['event']
-        queryset = app.models.Comments.objects.filter(event=event).order_by('-date')
-        return queryset
+    def list(self, request, event):
+        tree = cache_tree_children(app.models.Comments.objects.all())
+        serializer = app.serializers.CommentReadSerializer(tree, many=True)
+        return Response(serializer.data)
 
 create_user = CreateUser.as_view()
 delete_user = DeleteUser.as_view()
