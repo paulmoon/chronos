@@ -322,7 +322,7 @@ class GetCommentView(generics.ListAPIView):
     serializer_class = app.serializers.CommentReadSerializer
 
     def list(self, request, event):
-        tree = cache_tree_children(app.models.Comments.objects.filter(event=event).reverse())
+        tree = cache_tree_children(app.models.Comments.objects.filter(event=event))
         serializer = app.serializers.CommentReadSerializer(tree, many=True)
         return Response(serializer.data)
 

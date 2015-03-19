@@ -88,3 +88,6 @@ class Comments(MPTTModel):
     path = models.CharField(max_length=255, null=True)
     parent = TreeForeignKey('self', related_name='children', null=True, blank=True, db_index=True)
 
+    class MPTTMeta:
+        order_insertion_by = ['-date']
+
