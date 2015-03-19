@@ -218,14 +218,18 @@
      * @param userId
      * @returns {HttpPromise}
      */
-    this.saveComment = function (eventId, commentData) {
+    this.saveComment = function (eventId, commentData, depth, path, parent) {
       return $http.post(settings.serverUrl + '/comments/create/', {
         event: eventId,
-        content: commentData
+        content: commentData,
+        depth: depth,
+        path: path,
+        parent: parent
       }).then(function (response) {
         PubSubService.publish(settings.pubSubOnCommentCreate);
         return response;
       });
     };
+
   }
 })();
