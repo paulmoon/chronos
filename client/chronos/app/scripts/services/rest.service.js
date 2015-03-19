@@ -14,9 +14,9 @@
     .module('chronosApp')
     .service('RestService', RestService);
 
-  RestService.$inject = ['$http', 'settings', 'PubSubService'];
+  RestService.$inject = ['$http', 'settings', '$upload', 'PubSubService'];
 
-  function RestService($http, settings, PubSubService) {
+  function RestService($http, settings, $upload, PubSubService) {
     /**
      * @description API call for verifying credentials.
      * @methodOf chronosApp:RestService
@@ -152,6 +152,30 @@
     };
 
     /**
+     * @desciption API call for reporting a specific event
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event to report
+     * @param reason The reason the event is being reported for
+     * @returns {HttpPromise}
+     */
+    this.reportEvent = function (eventId, reason) {
+      return $http.post(settings.serverUrl + '/events/report/', {
+        event_id: eventId,
+        reason: reason
+      });
+    };
+
+    /**
+     * @desciption API call for saving for a specific event to a user
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event to save
+     * @returns {HttpPromise}
+     */
+    this.saveEvent = function(eventId) {
+      return $http.put(settings.serverUrl + '/users/save/' + eventId);
+    };
+
+    /**
      * @description API call for getting a specific event
      * @methodOf chronosApp:RestService
      * @param eventId The id of the event
@@ -162,14 +186,18 @@
     };
 
     /**
-     * @desciption API call for saving for a specific event to a user
+     * @description API call for uploading an image
      * @methodOf chronosApp:RestService
-     * @param eventId The id of the event to save
+     * @param image An image to upload
+     * @returns {HttpPromise}
      */
-    this.saveEvent = function (eventId) {
-      console.log('saving event');
-      console.log(eventId);
-      return $http.put(settings.serverUrl + '/users/save/' + eventId);
+    this.uploadImage = function(image) {
+        return $upload.upload({
+            url: settings.serverUrl + '/images/',
+            method: 'POST',
+            file: image,
+            fileFormDataName: "image",
+        });
     };
 
     /**

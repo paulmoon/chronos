@@ -38,12 +38,16 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 
+class Image(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='images/%Y/%m/%d')
+    owner = models.ForeignKey(ChronosUser, blank=False)
+
 ##############################
 # --------- Tag System! ---- #
 ##############################
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)
-
 
 ##############################
 # --------- Events! -------- #
@@ -58,13 +62,20 @@ class Events(models.Model):
     end_date = models.DateTimeField()
     upvote = models.IntegerField(default=0)
     downvote = models.IntegerField(default=0)
-    report = models.IntegerField(default=0)
+    report = models.ManyToManyField("Reports", null=True)
     is_deleted = models.BooleanField(default=False)
-    picture = models.CharField(max_length=255, null=True)
+    picture = models.ForeignKey(Image, null=True)
     place_id = models.CharField(max_length=100, null=True)
     place_name = models.CharField(max_length=100, null=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
+##############################
+# --------- Reports -------- #
+##############################
+class Reports(models.Model):
+    reason = models.CharField(max_length=20)
+    user = models.ForeignKey(ChronosUser)
+    event = models.ForeignKey(Events)
 
 ##############################
 # --------- Comments! ------ #

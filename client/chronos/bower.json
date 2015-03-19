@@ -22,6 +22,8 @@
     "fullcalendar": "~2.3.0",
     "ng-tags-input": "~2.1.1",
     "angular-leaflet-directive": "~0.7.11",
+    "ng-file-upload": "~3.2.4",
+    "ng-file-upload-shim": "~3.2.4",
     "bootstrap-sass-official": "~3.3.3"
   },
   "devDependencies": {

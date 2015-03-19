@@ -53,6 +53,10 @@
       return RestService.voteEvent(eventID, direction);
     };
 
+    this.reportEvent = function (eventID, reason) {
+      return RestService.reportEvent(eventID, reason);
+    };
+
     this.saveEvent = function (eventID) {
       return RestService.saveEvent(eventID);
     };
@@ -97,6 +101,18 @@
 
     this.saveComment = function (eventID, commentText) {
       return CommentFactory.saveComment(eventID, commentText);
+    };
+
+    this.addTag = function (tag) {
+      return EventFactory.addTag(tag);
+    };
+
+    this.getTags = function () {
+      return EventFactory.getTags();
+    };
+
+    this.uploadImage = function (image) {
+      return RestService.uploadImage(image);
     };
   }
 })();

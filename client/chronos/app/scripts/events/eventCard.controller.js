@@ -37,6 +37,7 @@
     vm.goToUser = goToUser;
 
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
+    vm.addTag = addTag;
 
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
@@ -97,9 +98,18 @@
     /**
      * @description Reports the event
      * @memberOf chronosApp:EventCardController
+     * @param reason: a string containing the reason the event was reported
      */
-    function reportEvent() {
-      // Future Functionality
+    function reportEvent(reason) {
+      EventFacadeService.reportEvent(vm.eventId, reason)
+        .success(function () {
+          vm.reportButtonStyle = {
+            color: 'crimson'
+          };
+        })
+        .error(function () {
+          //TODO: Add something here
+        });
     }
 
     /**
@@ -127,6 +137,15 @@
 
     function _displayDate(date) {
       return date.local().format('ddd, MMMM Do [at] h:mma');
+    }
+
+    /**
+     * @description Updates the tags and updates the events
+     * @methodOf chronosApp:EventCardFunctionality
+     * @param addedTag: a string containing the tag to be added
+     */
+    function addTag(addedTag) {
+      EventFacadeService.addTag(addedTag);
     }
   }
 })();

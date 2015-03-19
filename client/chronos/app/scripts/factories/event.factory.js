@@ -12,10 +12,10 @@
     .module('chronosApp')
     .factory('EventFactory', EventFactory);
 
-  EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService'];
+  EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService', 'settings'];
 
   /* @ngInject */
-  function EventFactory($log, $q, RestService, StateService) {
+  function EventFactory($log, $q, RestService, StateService, settings) {
     var factory = {
       events: [],
       selectedEvents: [],
@@ -34,9 +34,11 @@
       setSavedEvents: setSavedEvents,
       getVotedEvents: getVotedEvents,
       setVotedEvents: setVotedEvents,
+      getTags: getTags,
 
       updateKeywords: updateKeywords,
       updateTags: updateTags,
+      addTag: addTag,
       updateDateRange: updateDateRange,
       updateDateRangeStart: updateDateRangeStart,
       updateDateRangeEnd: updateDateRangeEnd,
@@ -56,6 +58,15 @@
      */
     function getEvents() {
       return factory.events;
+    }
+
+    /**
+     * @description Returns the tags that the event factory holds
+     * @methodOf chronosApp:EventFactory
+     * @returns Joined string of events in the event factory
+     */
+    function getTags() {
+      return factory.tags.join(" ");
     }
 
     /**
@@ -108,6 +119,33 @@
      * @methodOf chronosApp:EventFactory
      */
     function refreshEvents() {
+      return _updateEvents();
+    }
+
+    /**
+     * @description add a single tag and update events
+     * @methodOf chronosApp:EventFactory
+     * @param tag a single new tag to add
+     * @returns {*}
+     */
+    function addTag(tag) {
+      var match = false;
+
+      if (factory.tags.length > settings.maxNumberTags) {
+        return;
+      }
+
+      factory.tags.forEach(function (tag2) {
+        if (tag === tag2) {
+          match = true;
+        }
+      });
+
+      if (match) {
+        return;
+      }
+
+      factory.tags.push(tag);
       return _updateEvents();
     }
 
@@ -247,7 +285,7 @@
           return response.data;
         }, function (response) {
           $log.warn('Failed to retrieve filtered events: ' + filterParams);
-          $log.warn('Response: ' + response);
+          $log.warn(response);
           return $q.reject(response);
         });
     }

@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
+from chronos.settings import MEDIA_URL
 
+from urlparse import urlparse
 import app
 
 
@@ -116,6 +118,38 @@ class TagSerializer(serializers.ModelSerializer):
 class TagEventSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
 
+class ImageUrlField(serializers.ImageField):
+    """
+    Django Rest Framework returns the url to the image, but it assumes that
+    the called url is the top level url. So, it will append the MEDIA_URL to the
+    caller url rather than the top level domain as expected. This is due to the way
+    that request.build_absolute_uri works in Django at the moment.
+
+    To fix this, we need to rip out the top level domain, and rebuild the url the way
+    we want. To rip out the top level domain, I found the following code on
+    stack overflow: http://stackoverflow.com/questions/9626535/get-domain-name-from-url
+    """
+
+    def to_representation(self, value):
+        invalid_url = super(serializers.ImageField, self).to_representation(value)
+        parsed_uri = urlparse(invalid_url)
+        domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+        return domain + MEDIA_URL + str(value)
+
+class ImageReadSeralizer(serializers.ModelSerializer):
+    image = ImageUrlField()
+    class Meta:
+        model = app.models.Image
+        fields = ('image', )
+
+#https://medium.com/@jxstanford/django-rest-framework-file-upload-e4bc8de669c0
+class ImageWriteSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    image = ImageUrlField()
+    class Meta:
+        model = app.models.Image
+        fields = ('id', 'created', 'image', 'owner',)
+
 ##############################
 # --------- Events! -------- #
 ##############################
@@ -181,9 +215,10 @@ class EventReadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     vote = serializers.SerializerMethodField()
     creator = ChronosPublicUserSerializer()
-    class Meta:
+    picture = ImageReadSeralizer()
+    class Meta: 
         model = app.models.Events
-        fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "vote", "upvote", "downvote", "report", "is_deleted", "place_id", "place_name", "tags")
+        fields = ('id', 'name', 'description', 'creator', "create_date", "edit_date" , "start_date", "end_date", "vote", "upvote", "downvote", "report", "is_deleted", "picture", "place_id", "place_name", "tags")
 
     def get_vote(self, obj):
         return obj.upvote - obj.downvote
@@ -224,6 +259,27 @@ class VoteEventSerializer(serializers.Serializer):
 
             event.save()
             instance.direction = direction
+            instance.save()
+
+        return instance
+
+class ReportEventSerializer(serializers.Serializer):
+    reason = serializers.CharField(max_length=20, required=True)
+
+    class Meta:
+        model = app.models.Reports
+        fields = ('reason', 'event', 'user',)
+
+    def create(self, validated_data):
+        report = app.models.Reports.objects.create(**validated_data)
+        report.save()
+        
+        return report
+
+    def update(self, instance, validated_data):
+        reason = validated_data.get('reason')
+        if reason is not None and instance.reason != reason:
+            instance.reason = reason
             instance.save()
 
         return instance

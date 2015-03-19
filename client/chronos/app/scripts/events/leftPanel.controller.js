@@ -22,9 +22,8 @@
     vm.title = 'LeftPanelController';
     vm.searchKeywords = '';
     vm.searchError = '';
-
-    vm.addedTags = '';
     vm.storageTags = [];
+    vm.addedTags = [];
 
     vm.getEvents = EventFacadeService.getSelectedEvents;
     vm.getVotedEvents = EventFacadeService.getVotedEvents;
@@ -169,7 +168,7 @@
     }
 
     /**
-     * @description Updates the tagsand updates the events
+     * @description Updates the tags and updates the events
      * @methodOf chronosApp:LeftPanelController
      */
     function updateTags() {
@@ -234,7 +233,6 @@
       var savedEvents = vm.getSavedEvents();
       for (var i = 0; i < savedEvents.length; i++) {
         if (savedEvents[i].id === chosenEvent.id) {
-          console.log('FOUND ONE');
           return true;
         }
       }

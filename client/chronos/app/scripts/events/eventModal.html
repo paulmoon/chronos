@@ -20,8 +20,17 @@
       </div>
       <hr>
       <div class="form-group">
-        <input type="text" class="form-control" id="picture" placeholder="Picture"
-               data-ng-model="eventModal.picture">
+        <label class="control-label"><h3>Image</h3></label>
+        <div class="btn btn-default" ng-file-select ng-file-change="eventModal.uploadImage($files)" >Select File</div>
+          <div ng-if="eventModal.imageUrl" class="picture-group">
+            <img ng-src="{{eventModal.imageUrl}}" alt="Image Not Found" class="event-picture">
+          </div>
+          <div class="progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="eventModal.imageProgress"
+            aria-valuemin="0" aria-valuemax="100" style="width:{{eventModal.imageProgress}}%">
+             {{eventModal.imageProgress}} %
+            </div>
+          </div>
       </div>
       <hr>
       <div class="form-group">
