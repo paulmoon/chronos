@@ -89,7 +89,7 @@
       vm.voteEvent(vm.eventId, -1)
         .then(function () {
           vm.downArrowStyle = {
-            color: 'orange'
+            color: 'blue'
           };
           vm.upArrowStyle = {};
         });
