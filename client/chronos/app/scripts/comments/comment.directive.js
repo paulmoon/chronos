@@ -20,7 +20,7 @@
       scope: {
         comment: '='
       },
-      template: "<ul class='comment-list'><childcomment data-ng-repeat='childcomment in comment' childcomment='childcomment'></childcomment></ul>"
+      templateUrl: 'scripts/comments/rootcomment.html'
     };
     return directive
   };
