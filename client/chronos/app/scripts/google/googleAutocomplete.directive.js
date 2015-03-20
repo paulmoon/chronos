@@ -15,11 +15,16 @@
         scope: {
           ngModel: '=',
           placeDetails: '=?',
-          callback: '='
+          callback: '=',
+          filter: '='
         },
         link: function (scope, element, attrs, model) {
+          var filters = [];
+          if (scope.filter) {
+            filters = scope.filter;
+          }
           var options = {
-            types: [],
+            types: filters,
             componentRestrictions: {}
           };
           scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
