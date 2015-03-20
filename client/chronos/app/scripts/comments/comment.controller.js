@@ -11,23 +11,23 @@
 angular.module('chronosApp')
   .controller('CommentController', CommentController);
 
-CommentController.$inject = ['AuthService', 'RestService', 'CommentFactory', '$modal', '$routeParams'];
+CommentController.$inject = ['AuthFacadeService', 'EventFacadeService', '$modal', '$routeParams'];
 
-function CommentController(AuthService, RestService, CommentFactory, $modal, $routeParams) {
+function CommentController(AuthFacadeService, EventFacadeService, $modal, $routeParams) {
   var vm = this;
 
   vm.title = 'CommentController';
   vm.comments = [];
   vm.comment = {};
   vm.commentData = '';
-  vm.replyData ='';
+  vm.replyData = '';
   vm.depth = 0;
   vm.childOf = null;
   vm.path = null;
-  vm.isLoggedIn = AuthService.isLoggedIn;
+  vm.isLoggedIn = AuthFacadeService.isLoggedIn;
 
   vm.createComment = createComment;
-  vm.setCommentDateFormat = setCommentDateFormat
+  vm.setCommentDateFormat = setCommentDateFormat;
   vm.replyComment = replyComment;
   vm.openLoginModal = openLoginModal;
   vm.isReplyOpen = isReplyOpen;
@@ -45,7 +45,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @param depth
    */
   function isReplyOpen(num, depth, path) {
-    if(path === null) {
+    if (path === null) {
       vm.path = num + '';
     } else {
       vm.path = path + ':' + num;
@@ -60,7 +60,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @param num
    */
   function isReplyShow(num) {
-    return vm.childOf == num ? true : false;
+    return vm.childOf == num;
   }
 
   /**
@@ -103,7 +103,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @methodOf chronosApp:CommentController
    */
   function createComment() {
-    CommentFactory.saveComment($routeParams.eventId, vm.commentData, 0, null, null)
+    EventFacadeService.saveComment($routeParams.eventId, vm.commentData, 0, null, null)
       .then(function (comment) {
         vm.comment.id = comment.id;
         vm.comment.content = comment.content;
@@ -121,10 +121,9 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @methodOf chronosApp:CommentController
    */
   function replyComment() {
-      CommentFactory.saveComment($routeParams.eventId, vm.replyData, vm.depth , vm.path, vm.childOf)
-        .then(function (comments) {
-          console.log(comments);
-        });
+    EventFacadeService.saveComment($routeParams.eventId, vm.replyData, vm.depth, vm.path, vm.childOf)
+      .then(function (comments) {
+      });
   }
 
   /**
@@ -133,7 +132,7 @@ function CommentController(AuthService, RestService, CommentFactory, $modal, $ro
    * @private
    */
   function _commentActivate() {
-    CommentFactory.getComment($routeParams.eventId)
+    EventFacadeService.getComment($routeParams.eventId)
       .then(function (comments) {
         vm.comments = comments;
       });

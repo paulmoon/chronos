@@ -12,9 +12,9 @@
     .module('chronosApp')
     .factory('EventPageFactory', EventPageFactory);
 
-  EventPageFactory.$inject = ['RestService', '$route', '$q', '$log'];
+  EventPageFactory.$inject = ['RestService', '$q', '$log'];
 
-  function EventPageFactory(RestService, $route, $q, $log) {
+  function EventPageFactory(RestService, $q, $log) {
     var factory =  {
       eventInstance: {},
       getEvent: getEvent,

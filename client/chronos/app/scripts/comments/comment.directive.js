@@ -22,7 +22,7 @@
       },
       templateUrl: 'scripts/comments/rootcomment.html'
     };
-    return directive
-  };
+    return directive;
+  }
 
 })();

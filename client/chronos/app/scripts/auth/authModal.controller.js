@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('AuthModalController', AuthModalController);
 
-  AuthModalController.$inject = ['$log', '$modalInstance', 'AuthService', 'shouldShowSignUpModal'];
+  AuthModalController.$inject = ['$log', '$modalInstance', 'AuthFacadeService', 'shouldShowSignUpModal'];
 
-  function AuthModalController($log, $modalInstance, AuthService, shouldShowSignUpModal) {
+  function AuthModalController($log, $modalInstance, AuthFacadeService, shouldShowSignUpModal) {
     var vm = this;
 
     vm.title = 'AuthModalController';
@@ -40,7 +40,7 @@
     function login() {
       vm.shouldShowSignUpModal = false;
 
-      AuthService.login(vm.username, vm.password)
+      AuthFacadeService.login(vm.username, vm.password)
         .then(function (response) {
           $modalInstance.close("login");
         }, function (response) {
@@ -55,9 +55,9 @@
     function signUp() {
       vm.shouldShowSignUpModal = true;
 
-      AuthService.signUp(vm.username, vm.firstName, vm.lastName, vm.password, vm.email)
+      AuthFacadeService.createUser(vm.username, vm.firstName, vm.lastName, vm.password, vm.email)
         .then(function (data) {
-          return AuthService.login(vm.username, vm.password)
+          return AuthFacadeService.login(vm.username, vm.password)
             .then(function (response) {
               $modalInstance.close();
             }, function (response) {
