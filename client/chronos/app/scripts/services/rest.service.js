@@ -182,7 +182,7 @@
      * @returns {HttpPromise}
      */
     this.unsaveEvent = function(eventId) {
-        return $http.put(settings.serverUrl + 'users/unsave/' + eventId);
+        return $http.put(settings.serverUrl + '/users/unsave/' + eventId);
     }
 
     /**
