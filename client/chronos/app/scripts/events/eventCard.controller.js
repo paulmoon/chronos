@@ -21,12 +21,16 @@
   function EventCardController($scope, RestService, AuthService, EventFactory) {
     var vm = this;
 
+    vm.saved = false;
+
     vm.voteEvent = voteEvent;
     vm.upvoteEvent = upvoteEvent;
     vm.downvoteEvent = downvoteEvent;
 
     vm.reportEvent = reportEvent;
-    vm.followEvent = followEvent;
+    vm.saveClicked = saveClicked;
+    vm.saveEvent = saveEvent;
+    vm.unsaveEvent = unsaveEvent;
     vm.goUser = goUser;
     vm.isLoggedIn = AuthService.isLoggedIn;
     vm.addTag = addTag;
@@ -34,10 +38,18 @@
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
 
-    if (vm.eventName.length > 70){
-      vm.displayName = vm.eventName.substring(0, 70) + "...";
-    } else {
-      vm.displayName = vm.eventName;
+    function _activate() {
+      if (vm.eventName.length > 70){
+        vm.displayName = vm.eventName.substring(0, 70) + "...";
+      } else {
+        vm.displayName = vm.eventName;
+      }
+
+      if (vm.saved) {
+        vm.saveButtonStyle = {
+            color: 'orange'
+        };
+      }
     }
 
     function _displayDate(date) {
@@ -49,16 +61,16 @@
      *  the current user
      * @memberOf chronosApp:EventCardController
      * @param direction: An integer representing the direction of the vote. Either 1, 0, or -1
-     * @param callback: A function to be executed on the successful voting of an event
      */
     function voteEvent(direction, callback) {
       RestService.voteEvent(vm.eventId, direction)
-        .then(function (data) {
-          callback();
+        .then(function (data) { 
+
         },
         function (response) {
           //TODO: Add something here
-        })
+        });
+      callback();
     }
 
     /**
@@ -97,28 +109,50 @@
     function reportEvent(reason) {
       RestService.reportEvent(vm.eventId, reason)
         .success(function () {
-          vm.reportButtonStyle = {
-            color: 'crimson'
-          };
+
         })
         .error(function () {
           //TODO: Add something here
         });
+        vm.reportButtonStyle = {
+          color: 'crimson'
+        };
+    }
+
+    function saveClicked() {
+      if (!vm.saved) {
+        vm.saveEvent();
+      } else {
+        vm.unsaveEvent();
+      }
+    }
+
+    function unsaveEvent() {
+      RestService.saveEvent(vm.eventId)
+      .success(function() {
+
+      })
+      .error(function() {
+
+      });
+      vm.saveButtonStyle = {};
+      vm.saved = false;
     }
 
     /**
      * @description Saves the event to the user
      * @memberOf chronosApp:EventCardController
      */
-    function followEvent() {
+    function saveEvent() {
       RestService.saveEvent(vm.eventId)
       .success(function() {
-        vm.saveButtonStyle = {
-          color: 'orange'
-        };
       })
       .error(function() {
       });
+      vm.saveButtonStyle = {
+        color: 'orange'
+      };
+      vm.saved = true;
     }
 
     /**
