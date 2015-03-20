@@ -35,12 +35,16 @@ class SimpleVoteSerializer(serializers.ModelSerializer):
         fields = ('event', 'direction',)
 
 class ChronosUserSerializer(serializers.ModelSerializer):
-    saved_events = SimpleEventSerializer(many=True)
+    saved_events = EventIdSerializer(many=True)
+    reported_events = serializers.SerializerMethodField()
     voted_events = serializers.SerializerMethodField()
 
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'place_name', 'saved_events', 'voted_events',)
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'place_name', 'saved_events', 'reported_events', 'voted_events',)
+
+    def get_reported_events(self, obj):
+        return [SimpleReportSerializer(report).data for report in app.models.Reports.objects.filter(user=obj.id)]
 
     def get_voted_events(self, obj):
         return [SimpleVoteSerializer(v).data for v in app.models.Vote.objects.filter(user=obj.id)]
@@ -283,6 +287,11 @@ class ReportEventSerializer(serializers.Serializer):
             instance.save()
 
         return instance
+
+class SimpleReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.Reports
+        fields = ('reason', 'event')
 
 ##############################
 # --------- Comments! ------ #

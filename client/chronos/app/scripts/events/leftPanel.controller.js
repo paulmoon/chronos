@@ -14,9 +14,9 @@
     .module('chronosApp')
     .controller('LeftPanelController', LeftPanelController);
 
-  LeftPanelController.$inject = ['EventFacadeService', 'settings'];
+  LeftPanelController.$inject = ['EventFacadeService', 'PubSubService', 'settings'];
 
-  function LeftPanelController(EventFacadeService, settings) {
+  function LeftPanelController(EventFacadeService, PubSubService, settings) {
     var vm = this;
 
     vm.title = 'LeftPanelController';
@@ -26,8 +26,9 @@
     vm.addedTags = [];
 
     vm.getEvents = EventFacadeService.getSelectedEvents;
-    vm.getVotedEvents = EventFacadeService.getVotedEvents;
-    vm.getSavedEvents = EventFacadeService.getSavedEvents;
+    vm.votedEventDirection = {};
+    vm.savedEvents = {};
+    vm.reportedEvents = {};
 
     vm.searchEvents = searchEvents;
     vm.updateTags = updateTags;
@@ -41,11 +42,33 @@
 
     vm.getVoteDirection = getVoteDirection;
     vm.savedByUser = savedByUser;
+    vm.reportedByUser = reportedByUser;
 
     vm.searchDateStart = vm.getLastSunday(moment().local().startOf('month'));
     vm.searchDateEnd = vm.getLastSunday(moment().local().startOf('month')).add(6, 'weeks');
 
+    _activate();
+
     ////////////////////////////////
+
+    function _activate() {
+      var votedEvents = EventFacadeService.getVotedEvents(),
+        savedEvents = EventFacadeService.getSavedEvents(),
+        reportedEvents = EventFacadeService.getReportedEvents(),
+        i;
+
+      for (i = 0; i < votedEvents.length; i += 1) {
+        vm.votedEventDirection[votedEvents[i].event.id] = votedEvents[i].direction;
+      }
+
+      for (i = 0; i < savedEvents.length; i += 1) {
+        vm.savedEvents[savedEvents[i].id] = true;
+      }
+
+      for (i = 0; i < reportedEvents.length; i += 1) {
+        vm.reportedEvents[reportedEvents[i].event] = reportedEvents[i].reason;
+      }
+    }
 
     /**
      * @description Returns the date of a Sunday used for the initial dates shown
@@ -213,14 +236,20 @@
      * @returns {Number} direction +1 if user upvoted it, -1 if user downvoted it, and 0 for neither.
      */
     function getVoteDirection(chosenEvent) {
-      var votedEvents = vm.getVotedEvents();
-
-      for (var i = 0; i < votedEvents.length; i++) {
-        if (votedEvents[i].event.id === chosenEvent.id) {
-          return votedEvents[i].direction;
-        }
+      if (vm.votedEventDirection[chosenEvent.id] !== undefined) {
+        return vm.votedEventDirection[chosenEvent.id];
       }
       return 0;
+    }
+
+    /**
+     * @description Checks whether a given event was previously reported by the user
+     * @methodOf chronosApp:LeftPanelController
+     * @param event Event to check
+     * @returns {Boolean} True if user previously reported the event
+     */
+    function reportedByUser(chosenEvent) {
+      return vm.reportedEvents[chosenEvent.id] !== undefined;
     }
 
     /**
@@ -230,13 +259,7 @@
      * @returns {Boolean} True if user previously saved the event
      */
     function savedByUser(chosenEvent) {
-      var savedEvents = vm.getSavedEvents();
-      for (var i = 0; i < savedEvents.length; i++) {
-        if (savedEvents[i].id === chosenEvent.id) {
-          return true;
-        }
-      }
-      return false;
+      return vm.savedEvents[chosenEvent.id] !== undefined;
     }
   }
 })();

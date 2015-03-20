@@ -20,6 +20,7 @@
       events: [],
       selectedEvents: [],
       savedEvents: [],
+      reportedEvents: [],
       votedEvents: [],
       keywords: [],
       tags: [],
@@ -32,6 +33,8 @@
       getSelectedEvents: getSelectedEvents,
       getSavedEvents: getSavedEvents,
       setSavedEvents: setSavedEvents,
+      getReportedEvents: getReportedEvents,
+      setReportedEvents: setReportedEvents,
       getVotedEvents: getVotedEvents,
       setVotedEvents: setVotedEvents,
       getTags: getTags,
@@ -97,9 +100,27 @@
     }
 
     /**
+     * @description Get all events that user saved.
+     * @methodOf chronosApp:EventFactory
+     * @returns savedEvents Saved events
+     */
+    function getReportedEvents() {
+      return factory.reportedEvents;
+    }
+
+    /**
+     * @description Set all events that user saved.
+     * @methodOf chronosApp:EventFactory
+     * @param savedEvents Saved events
+     */
+    function setReportedEvents(reportedEvents) {
+      factory.reportedEvents = reportedEvents;
+    }
+
+    /**
      * @description Get all events that user has voted on.
      * @methodOf chronosApp:EventFactory
-     * @returns votedEvents Voted events
+     * @returns getVotedEvents Voted events
      */
     function getVotedEvents() {
       return factory.votedEvents;

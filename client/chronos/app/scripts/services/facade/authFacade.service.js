@@ -45,7 +45,7 @@
     };
 
     this.retrieveUserProfile = function () {
-      RestService.getCurrentUserInformation()
+      return RestService.getCurrentUserInformation()
         .then(function (response) {
           if (response.data.place_id !== null) {
             StateService.setPlaceID(response.data.place_id);
@@ -57,6 +57,10 @@
 
           if (response.data.saved_events !== null) {
             EventFactory.setSavedEvents(response.data.saved_events);
+          }
+
+          if (response.data.reported_events !== null) {
+            EventFactory.setReportedEvents(response.data.reported_events);
           }
 
           if (response.data.voted_events !== null) {

@@ -33,7 +33,8 @@
         editDate: '=',
         picture: '=',
         voteDirectionByUser: '@',
-        eventSaved: '@'
+        eventSaved: '@',
+        eventReported: '@'
       },
       controller: 'EventCardController',
       controllerAs: 'vm',

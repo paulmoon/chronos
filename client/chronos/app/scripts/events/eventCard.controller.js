@@ -65,6 +65,10 @@
       if (vm.eventSaved === "true") {
         vm.saveButtonStyle = {color: "orange"};
       }
+
+      if (vm.eventReported === "true") {
+        vm.reportButtonStyle = {color: "crimson"};
+      }
     }
 
     /**
@@ -102,12 +106,11 @@
      */
     function reportEvent(reason) {
       EventFacadeService.reportEvent(vm.eventId, reason)
-        .success(function () {
+        .then(function () {
           vm.reportButtonStyle = {
             color: 'crimson'
           };
-        })
-        .error(function () {
+        }, function () {
           //TODO: Add something here
         });
     }
@@ -118,12 +121,11 @@
      */
     function saveEvent() {
       EventFacadeService.saveEvent(vm.eventId)
-        .success(function () {
+        .then(function () {
           vm.saveButtonStyle = {
             color: 'orange'
           };
-        })
-        .error(function () {
+        }, function () {
         });
     }
 
