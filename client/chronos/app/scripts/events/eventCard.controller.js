@@ -119,6 +119,10 @@
         };
     }
 
+    /*
+     * @description Action taken when save button is clicked
+     * @memberOf chronosApp:EventCardController
+     */
     function saveClicked() {
       if (!vm.saved) {
         vm.saveEvent();
@@ -127,8 +131,12 @@
       }
     }
 
+    /**
+     * @description Unsaves the event to the user
+     * @memberOf chronosApp:EventCardController
+     */
     function unsaveEvent() {
-      RestService.saveEvent(vm.eventId)
+      RestService.unsaveEvent(vm.eventId)
       .success(function() {
 
       })
