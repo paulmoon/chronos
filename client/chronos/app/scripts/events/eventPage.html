@@ -107,7 +107,7 @@
           <div data-ng-show="comment.isLoggedIn()" class="comment-save-body">
             <form role="form">
               <div class="form-group">
-                <textarea class="form-control" rows="8" id="description" placeholder="Comment"
+                <textarea class="form-control" rows="8" id="comment-description" placeholder="Comment"
                     ng-model="comment.commentData"></textarea>
               </div>
               <a type="submit" class="btn btn-primary comment-save-submit" data-ng-click="comment.createComment()">Add Comment</a>
@@ -122,17 +122,7 @@
     <div class="row">
       <div class="col-md-8">
         <hr>
-        <div data-ng-repeat="comment in comment.comments" class="comment-container">
-          <div class="comment-header">
-            <span class="comment-username">{{comment.user.username}}</span> - <span class="comment-reply">Reply</span>
-          </div>
-          <div class="comment-body">
-            {{comment.content}}
-          </div>
-          <div class="comment-date">
-            on {{comment.date}}
-          </div>
-        </div>
+        <comment comment="comment.comments"></comment>
       </div>
     </div>
   </div>

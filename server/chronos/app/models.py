@@ -4,8 +4,7 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django import forms
-from dbarray import IntegerArrayField
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 class Vote(models.Model):
@@ -80,9 +79,15 @@ class Reports(models.Model):
 ##############################
 # --------- Comments! ------ #
 ##############################
-class Comments(models.Model):
+class Comments(MPTTModel):
     content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
     event = models.ForeignKey(Events)
     user = models.ForeignKey(ChronosUser)
+    depth = models.IntegerField(default=0)
+    path = models.CharField(max_length=255, null=True)
+    parent = TreeForeignKey('self', related_name='children', null=True, blank=True, db_index=True)
+
+    class MPTTMeta:
+        order_insertion_by = ['-date']
 

@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'debug_toolbar',
     'rest_framework_swagger',
-    'dbarray',
+    'mptt',
 )
 
 MIDDLEWARE_CLASSES = (

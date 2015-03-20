@@ -153,6 +153,7 @@
       return CommentFactory.saveComment(eventID, commentText)
         .then(function (response) {
           PubSubService.publish(settings.pubSubOnCommentCreate);
+          return response;
         });
     };
 

@@ -297,17 +297,27 @@ class SimpleReportSerializer(serializers.ModelSerializer):
 # --------- Comments! ------ #
 ##############################
 
+class RecursiveField(serializers.Serializer):
+
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
+
+
+
 class CommentReadSerializer(serializers.ModelSerializer):
+    children = RecursiveField(many=True)
     user = ChronosPublicUserSerializer()
+
     class Meta:
         model = app.models.Comments
-        fields = ('content', 'event', 'user', 'date')
-
+        fields = ('id', 'content', 'event', 'user', 'date', 'depth', 'path', 'children')
 
 class CommentWriteSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = app.models.Comments
-        fields = ('content', 'event', 'user', 'date')
+        fields = ('id', 'content', 'event', 'user', 'date', 'depth', 'path', 'parent')
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
