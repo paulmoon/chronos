@@ -9,34 +9,40 @@
    */
 
   angular.module('chronosApp')
-    .directive('googleautocomplete', function () {
-      return {
-        require: 'ngModel',
-        scope: {
-          ngModel: '=',
-          placeDetails: '=?',
-          callback: '=',
-          filter: '='
-        },
-        link: function (scope, element, attrs, model) {
-          var filters = [];
-          if (scope.filter) {
-            filters = scope.filter;
-          }
-          var options = {
-            types: filters,
-            componentRestrictions: {}
-          };
-          scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
+    .directive('googleautocomplete', googleautocomplete);
+      
+  function googleautocomplete() {
+    var directive = {
+      require: 'ngModel',
+      scope: {
+        ngModel: '=',
+        placeDetails: '=?',
+        callback: '=',
+        filter: '='
+      },
+      link: link
+    };
+    return directive;
 
-          google.maps.event.addListener(scope.gPlace, 'place_changed', function () {
-            scope.$apply(function () {
-              scope.placeDetails = scope.gPlace.getPlace();
-              model.$setViewValue(element.val());
-              scope.callback(scope.placeDetails);
-            });
-          });
-        }
+    function link (scope, element, attrs, model) {
+      var filters = [];
+      if (scope.filter) {
+        filters = scope.filter;
+      }
+      var options = {
+        types: filters,
+        componentRestrictions: {}
       };
-    });
+      scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
+
+      google.maps.event.addListener(scope.gPlace, 'place_changed', function () {
+        scope.$apply(function () {
+          scope.placeDetails = scope.gPlace.getPlace();
+          model.$setViewValue(element.val());
+          scope.callback(scope.placeDetails);
+        });
+      });
+    };
+  }
+
 })();
