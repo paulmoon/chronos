@@ -106,9 +106,6 @@
         place_id: place_id,
         place_name: place_name,
         tags: tags
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnEventCreate);
-        return response;
       });
     };
 
@@ -131,9 +128,6 @@
         start_date: startDate,
         end_date: endDate,
         tags: tags
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnEventUpdate);
-        return response;
       });
     };
 
@@ -174,6 +168,16 @@
     this.saveEvent = function(eventId) {
       return $http.put(settings.serverUrl + '/users/save/' + eventId);
     };
+
+    /**
+     * @description API call for unsaving an event for a specific user
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event to save
+     * @returns {HttpPromise}
+     */
+    this.unsaveEvent = function(eventId) {
+        return $http.put(settings.serverUrl + '/users/unsave/' + eventId);
+    }
 
     /**
      * @description API call for getting a specific event
@@ -225,11 +229,7 @@
         depth: depth,
         path: path,
         parent: parent
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnCommentCreate);
-        return response;
       });
     };
-
   }
 })();

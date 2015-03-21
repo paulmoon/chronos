@@ -19,9 +19,9 @@
         templateUrl: 'scripts/chronos/main.html',
 
         resolve: {
-          userDetails: function (AuthService, StateService) {
-            if (AuthService.isLoggedIn()) {
-              return StateService.retriveUserProfile();
+          userDetails: function (AuthFacadeService) {
+            if (AuthFacadeService.isLoggedIn()) {
+              return AuthFacadeService.retrieveUserProfile();
             }
           }
         }
