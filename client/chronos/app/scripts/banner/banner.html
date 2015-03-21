@@ -1,8 +1,8 @@
 <nav class="navbar navbar-default navbar-fixed-top banner" ng-controller="BannerController as vm">
-  <div class="container-fluid">
+  <div class="container-fluid inner-banner">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <img src="images/logo.png" alt="eventurist" class="logo"></img>
+      <a href='#/'><img src="images/logo.png" alt="eventurist" class="logo"></img></a>
       <!-- <a class="navbar-brand" href="#/"></a> -->
     </div>
 
@@ -16,7 +16,7 @@
           </div>
         </form>
       </div>
-      <div class="nav navbar-nav navbar-right">
+      <div class="nav navbar-nav navbar-right banner-buttons">
         <button type="button" class="btn btn-default navbar-btn" ng-hide="vm.isLoggedIn()" ng-click="vm.openSignupModal()">
           Sign Up
         </button>
