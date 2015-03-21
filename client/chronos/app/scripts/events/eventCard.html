@@ -27,13 +27,13 @@
         <button ng-if="vm.isLoggedIn()" type="button" class="btn btn-link btn-xs dropdown-toggle event-button" data-toggle="dropdown" aria-expanded="false" style="outline:none" ng-style="vm.reportButtonStyle">
           <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
         </button>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu">
-            <li><a ng-click="vm.reportEvent('spam')">Spam</a></li>
-            <li><a ng-click="vm.reportEvent('language')">Language</a></li>
-            <li><a ng-click="vm.reportEvent('content')">Content</a></li>
-            <li><a ng-click="vm.reportEvent('duplicate')">Duplicate</a></li>
-            <li><a ng-click="vm.reportEvent('fake')">Fake</a></li>
-          </ul>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          <li><a ng-click="vm.reportEvent('spam')">Spam</a></li>
+          <li><a ng-click="vm.reportEvent('language')">Language</a></li>
+          <li><a ng-click="vm.reportEvent('content')">Content</a></li>
+          <li><a ng-click="vm.reportEvent('duplicate')">Duplicate</a></li>
+          <li><a ng-click="vm.reportEvent('fake')">Fake</a></li>
+        </ul>
       </div>
       <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.saveClicked()" class="btn btn-link btn-xs event-button" ng-style="vm.saveButtonStyle" style="outline:none">
         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>

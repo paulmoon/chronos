@@ -13,17 +13,17 @@
     .module('chronosApp')
     .controller('BannerController', BannerController);
 
-  BannerController.$inject = ['AuthService', 'StateService', '$modal', 'RestService', 'EventFactory', 'PubSubService', 'settings'];
+  BannerController.$inject = ['$modal', 'AuthFacadeService', 'EventFacadeService', 'UserFacadeService', 'StateService', 'PubSubService', 'settings'];
 
-  function BannerController(AuthService, StateService, $modal, RestService, EventFactory, PubSubService, settings) {
+  function BannerController($modal, AuthFacadeService, EventFacadeService, UserFacadeService, StateService, PubSubService, settings) {
     var vm = this;
 
     vm.title = 'BannerController';
     vm.chosenPlace = '';
     vm.filters = ['(cities)'];
-    vm.isLoggedIn = AuthService.isLoggedIn;
-    vm.logout = AuthService.logout;
-    vm.refreshEvents = EventFactory.refreshEvents;
+    vm.isLoggedIn = AuthFacadeService.isLoggedIn;
+    vm.logout = AuthFacadeService.logout;
+    vm.refreshEvents = EventFacadeService.refreshEvents;
 
     vm.onLogin = onLogin;
     vm.openSignupModal = openSignupModal;
@@ -37,7 +37,7 @@
     ////////////////////////////
 
     function _activate() {
-      if (AuthService.isLoggedIn()) {
+      if (AuthFacadeService.isLoggedIn()) {
         vm.chosenPlace = StateService.getPlaceName();
       }
 
@@ -115,7 +115,7 @@
       var _chosenPlaceID = StateService.getPlaceID();
       var _chosenPlaceName = StateService.getPlaceName();
 
-      RestService.updateUserLocation(_chosenPlaceID, _chosenPlaceName).
+      UserFacadeService.updateUserLocation(_chosenPlaceID, _chosenPlaceName).
         success(function (data, status, headers, config) {
           // Fill in at later date
         }).

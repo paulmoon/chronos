@@ -20,6 +20,7 @@
       pubSubOnLogout: 'pubSubOnLogout',
       pubSubOnSignUp: 'pubSubOnSignUp',
       pubSubOnEventCreate: 'pubSubOnEventCreate',
+      pubSubOnEventEdit: 'pubSubOnEventEdit',
       pubSubOnEventUpdate: 'pubSubOnEventUpdate',
       pubSubOnCommentCreate: 'pubSubOnCommentCreate'
     });

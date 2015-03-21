@@ -106,9 +106,6 @@
         place_id: place_id,
         place_name: place_name,
         tags: tags
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnEventCreate);
-        return response;
       });
     };
 
@@ -131,9 +128,6 @@
         start_date: startDate,
         end_date: endDate,
         tags: tags
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnEventUpdate);
-        return response;
       });
     };
 
@@ -235,11 +229,7 @@
         depth: depth,
         path: path,
         parent: parent
-      }).then(function (response) {
-        PubSubService.publish(settings.pubSubOnCommentCreate);
-        return response;
       });
     };
-
   }
 })();

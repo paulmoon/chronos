@@ -10,9 +10,9 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFactory', 'StateService'];
+  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFacadeService', 'StateService'];
 
-  function CalendarController($scope, $log, settings, EventFactory, StateService) {
+  function CalendarController($scope, $log, settings, EventFacadeService, StateService) {
     /* jshint validthis: true */
     var vm = this;
 
@@ -61,7 +61,7 @@
         filterParams.placeID = StateService.getPlaceID();
       }
 
-      EventFactory.updateEvents(filterParams)
+      EventFacadeService.updateEvents(filterParams)
         .then(function (response) {
           callback(transformEventData(response));
         }, function (response) {
@@ -120,7 +120,7 @@
      * @param view
      */
     function select(start, end, jsEvent, view) {
-      EventFactory.updateSelectionRange(start, end);
+      EventFacadeService.updateSelectionRange(start, end);
     }
 
     /**
@@ -132,9 +132,7 @@
     function unselect(view, jsEvent) {
       // view !== undefined if user clicks outside of calendar. Clear highlighted events.
       if (typeof view !== 'undefined') {
-        EventFactory.selectedEventsStartRange = null;
-        EventFactory.selectedEventsEndRange = null;
-        EventFactory.selectedEvents = EventFactory.getEvents();
+        EventFacadeService.clearSelectedEvents();
       }
     }
   }

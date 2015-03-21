@@ -35,10 +35,8 @@
 
         function elementAppend(cloned, scope) {
           element.append(cloned);
-        };
+        }
       }
     }
-
-  };
-
+  }
 })();

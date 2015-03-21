@@ -19,6 +19,9 @@
     var factory = {
       events: [],
       selectedEvents: [],
+      savedEvents: [],
+      reportedEvents: [],
+      votedEvents: [],
       keywords: [],
       tags: [],
       selectedEventsStartRange: undefined,
@@ -28,7 +31,14 @@
 
       getEvents: getEvents,
       getSelectedEvents: getSelectedEvents,
+      getSavedEvents: getSavedEvents,
+      setSavedEvents: setSavedEvents,
+      getReportedEvents: getReportedEvents,
+      setReportedEvents: setReportedEvents,
+      getVotedEvents: getVotedEvents,
+      setVotedEvents: setVotedEvents,
       getTags: getTags,
+
       updateKeywords: updateKeywords,
       updateTags: updateTags,
       addTag: addTag,
@@ -69,6 +79,60 @@
      */
     function getSelectedEvents() {
       return factory.selectedEvents;
+    }
+
+    /**
+     * @description Get all events that user saved.
+     * @methodOf chronosApp:EventFactory
+     * @returns savedEvents Saved events
+     */
+    function getSavedEvents() {
+      return factory.savedEvents;
+    }
+
+    /**
+     * @description Set all events that user saved.
+     * @methodOf chronosApp:EventFactory
+     * @param savedEvents Saved events
+     */
+    function setSavedEvents(savedEvents) {
+      factory.savedEvents = savedEvents;
+    }
+
+    /**
+     * @description Get all events that user saved.
+     * @methodOf chronosApp:EventFactory
+     * @returns savedEvents Saved events
+     */
+    function getReportedEvents() {
+      return factory.reportedEvents;
+    }
+
+    /**
+     * @description Set all events that user saved.
+     * @methodOf chronosApp:EventFactory
+     * @param savedEvents Saved events
+     */
+    function setReportedEvents(reportedEvents) {
+      factory.reportedEvents = reportedEvents;
+    }
+
+    /**
+     * @description Get all events that user has voted on.
+     * @methodOf chronosApp:EventFactory
+     * @returns getVotedEvents Voted events
+     */
+    function getVotedEvents() {
+      return factory.votedEvents;
+    }
+
+    /**
+     * @description Set all events that user has voted on.
+     * @methodOf chronosApp:EventFactory
+     * @param votedEvents
+     */
+    function setVotedEvents(votedEvents) {
+      factory.votedEvents = votedEvents;
     }
 
     /**
@@ -242,7 +306,7 @@
           return response.data;
         }, function (response) {
           $log.warn('Failed to retrieve filtered events: ' + filterParams);
-          $log.warn('Response: ' + response);
+          $log.warn(response);
           return $q.reject(response);
         });
     }

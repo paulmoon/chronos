@@ -68,7 +68,11 @@
                        report="event.report"
                        tags="event.tags"
                        edit-date="event.edit_date"
-                       picture="event.picture"></eventcard>
+                       picture="event.picture"
+                       vote-direction-by-user="{{vm.getVoteDirection(event)}}"
+                       event-saved="{{vm.savedByUser(event)}}"
+                       event-reported="{{vm.reportedByUser(event)}}"
+              ></eventcard>
           </div>
         </div>
       </div>

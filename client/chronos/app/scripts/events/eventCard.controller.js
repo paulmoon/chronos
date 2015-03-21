@@ -13,17 +13,22 @@
     .module('chronosApp')
     .controller('EventCardController', EventCardController);
 
-  EventCardController.$inject = ['$scope', 'RestService', 'AuthService', 'EventFactory'];
+  EventCardController.$inject = ['AuthFacadeService', 'EventFacadeService'];
 
   /**
    * @desc Controller for the event card directives
    */
-  function EventCardController($scope, RestService, AuthService, EventFactory) {
+  function EventCardController(AuthFacadeService, EventFacadeService) {
     var vm = this;
 
-    vm.saved = false;
-
-    vm.voteEvent = voteEvent;
+    /**
+     * @description Adds a vote for an event in the direction specified, and associates it with
+     *  the current user
+     * @memberOf chronosApp:EventCardController
+     * @param direction: An integer representing the direction of the vote. Either 1, 0, or -1
+     * @param callback: A function to be executed on the successful voting of an event
+     */
+    vm.voteEvent = EventFacadeService.voteEvent;
     vm.upvoteEvent = upvoteEvent;
     vm.downvoteEvent = downvoteEvent;
 
@@ -31,46 +36,41 @@
     vm.saveClicked = saveClicked;
     vm.saveEvent = saveEvent;
     vm.unsaveEvent = unsaveEvent;
-    vm.goUser = goUser;
-    vm.isLoggedIn = AuthService.isLoggedIn;
+    vm.goToUser = goToUser;
+
+    vm.isLoggedIn = AuthFacadeService.isLoggedIn;
     vm.addTag = addTag;
 
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
 
+    _activate();
+
+    /////////////////////////////////
+
     function _activate() {
-      if (vm.eventName.length > 70){
+      if (vm.eventName.length > 70) {
         vm.displayName = vm.eventName.substring(0, 70) + "...";
       } else {
         vm.displayName = vm.eventName;
       }
 
-      if (vm.saved) {
-        vm.saveButtonStyle = {
-            color: 'orange'
-        };
+      // vm.voteDirectionByUser and vm.eventSaved will be strings because they were interpolated using @.
+      if (vm.voteDirectionByUser === "1") {
+        vm.upArrowStyle = {color: "orange"};
+        vm.downArrowStyle = {};
+      } else if (vm.voteDirectionByUser === "-1") {
+        vm.upArrowStyle = {};
+        vm.downArrowStyle = {color: "blue"};
       }
-    }
 
-    function _displayDate(date) {
-      return date.local().format('ddd, MMMM Do [at] h:mma');
-    }
+      if (vm.eventSaved === "true") {
+        vm.saveButtonStyle = {color: "orange"};
+      }
 
-    /**
-     * @description Adds a vote for an event in the direction specified, and associates it with
-     *  the current user
-     * @memberOf chronosApp:EventCardController
-     * @param direction: An integer representing the direction of the vote. Either 1, 0, or -1
-     */
-    function voteEvent(direction, callback) {
-      RestService.voteEvent(vm.eventId, direction)
-        .then(function (data) { 
-
-        },
-        function (response) {
-          //TODO: Add something here
-        });
-      callback();
+      if (vm.eventReported === "true") {
+        vm.reportButtonStyle = {color: "crimson"};
+      }
     }
 
     /**
@@ -78,13 +78,11 @@
      * @memberOf chronosApp:EventCardController
      */
     function upvoteEvent() {
-      vm.voteEvent(1, function () {
-        vm.upArrowStyle = {
-          color: 'orange'
-        };
-        vm.downArrowStyle = {};
-        vm.vote++;
-      });
+      vm.voteEvent(vm.eventId, 1);
+      vm.upArrowStyle = {
+        color: 'orange'
+      };
+      vm.downArrowStyle = {};
     }
 
     /**
@@ -92,13 +90,11 @@
      * @memberOf chronosApp:EventCardController
      */
     function downvoteEvent() {
-      vm.voteEvent(-1, function () {
-        vm.downArrowStyle = {
-          color: 'crimson'
-        };
-        vm.upArrowStyle = {};
-        vm.vote--;
-      });
+      vm.voteEvent(vm.eventId, -1);
+      vm.downArrowStyle = {
+        color: 'blue'
+      };
+      vm.upArrowStyle = {};
     }
 
     /**
@@ -107,16 +103,10 @@
      * @param reason: a string containing the reason the event was reported
      */
     function reportEvent(reason) {
-      RestService.reportEvent(vm.eventId, reason)
-        .success(function () {
-
-        })
-        .error(function () {
-          //TODO: Add something here
-        });
-        vm.reportButtonStyle = {
-          color: 'crimson'
-        };
+      EventFacadeService.reportEvent(vm.eventId, reason);
+      vm.reportButtonStyle = {
+        color: 'crimson'
+      };
     }
 
     /*
@@ -124,11 +114,12 @@
      * @memberOf chronosApp:EventCardController
      */
     function saveClicked() {
-      if (!vm.saved) {
+      if (!vm.eventSaved) {
         vm.saveEvent();
       } else {
         vm.unsaveEvent();
       }
+      vm.eventSaved = !vm.eventSaved;
     }
 
     /**
@@ -136,15 +127,8 @@
      * @memberOf chronosApp:EventCardController
      */
     function unsaveEvent() {
-      RestService.unsaveEvent(vm.eventId)
-      .success(function() {
-
-      })
-      .error(function() {
-
-      });
+      EventFacadeService.unsaveEvent(vm.eventId);
       vm.saveButtonStyle = {};
-      vm.saved = false;
     }
 
     /**
@@ -152,23 +136,22 @@
      * @memberOf chronosApp:EventCardController
      */
     function saveEvent() {
-      RestService.saveEvent(vm.eventId)
-      .success(function() {
-      })
-      .error(function() {
-      });
+      EventFacadeService.saveEvent(vm.eventId);
       vm.saveButtonStyle = {
         color: 'orange'
       };
-      vm.saved = true;
     }
 
     /**
      * @description Handles when a user clicks a username
      * @memberOf chronosApp:EventCardController
      */
-    function goUser() {
+    function goToUser() {
       // Future Functionality
+    }
+
+    function _displayDate(date) {
+      return date.local().format('ddd, MMMM Do [at] h:mma');
     }
 
     /**
@@ -177,7 +160,7 @@
      * @param addedTag: a string containing the tag to be added
      */
     function addTag(addedTag) {
-      EventFactory.addTag(addedTag);
+      EventFacadeService.addTag(addedTag);
     }
   }
 })();
