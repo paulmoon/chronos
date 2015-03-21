@@ -170,6 +170,16 @@
     };
 
     /**
+     * @description API call for unsaving an event for a specific user
+     * @methodOf chronosApp:RestService
+     * @param eventId The id of the event to save
+     * @returns {HttpPromise}
+     */
+    this.unsaveEvent = function(eventId) {
+        return $http.put(settings.serverUrl + '/users/unsave/' + eventId);
+    }
+
+    /**
      * @description API call for getting a specific event
      * @methodOf chronosApp:RestService
      * @param eventId The id of the event

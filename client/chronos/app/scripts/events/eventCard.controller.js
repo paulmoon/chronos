@@ -33,7 +33,9 @@
     vm.downvoteEvent = downvoteEvent;
 
     vm.reportEvent = reportEvent;
+    vm.saveClicked = saveClicked;
     vm.saveEvent = saveEvent;
+    vm.unsaveEvent = unsaveEvent;
     vm.goToUser = goToUser;
 
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
@@ -76,13 +78,11 @@
      * @memberOf chronosApp:EventCardController
      */
     function upvoteEvent() {
-      vm.voteEvent(vm.eventId, 1)
-        .then(function () {
-          vm.upArrowStyle = {
-            color: 'orange'
-          };
-          vm.downArrowStyle = {};
-        });
+      vm.voteEvent(vm.eventId, 1);
+      vm.upArrowStyle = {
+        color: 'orange'
+      };
+      vm.downArrowStyle = {};
     }
 
     /**
@@ -90,13 +90,11 @@
      * @memberOf chronosApp:EventCardController
      */
     function downvoteEvent() {
-      vm.voteEvent(vm.eventId, -1)
-        .then(function () {
-          vm.downArrowStyle = {
-            color: 'blue'
-          };
-          vm.upArrowStyle = {};
-        });
+      vm.voteEvent(vm.eventId, -1);
+      vm.downArrowStyle = {
+        color: 'blue'
+      };
+      vm.upArrowStyle = {};
     }
 
     /**
@@ -105,14 +103,32 @@
      * @param reason: a string containing the reason the event was reported
      */
     function reportEvent(reason) {
-      EventFacadeService.reportEvent(vm.eventId, reason)
-        .then(function () {
-          vm.reportButtonStyle = {
-            color: 'crimson'
-          };
-        }, function () {
-          //TODO: Add something here
-        });
+      EventFacadeService.reportEvent(vm.eventId, reason);
+      vm.reportButtonStyle = {
+        color: 'crimson'
+      };
+    }
+
+    /*
+     * @description Action taken when save button is clicked
+     * @memberOf chronosApp:EventCardController
+     */
+    function saveClicked() {
+      if (!vm.eventSaved) {
+        vm.saveEvent();
+      } else {
+        vm.unsaveEvent();
+      }
+      vm.eventSaved = !vm.eventSaved;
+    }
+
+    /**
+     * @description Unsaves the event to the user
+     * @memberOf chronosApp:EventCardController
+     */
+    function unsaveEvent() {
+      EventFacadeService.unsaveEvent(vm.eventId);
+      vm.saveButtonStyle = {};
     }
 
     /**
@@ -120,13 +136,10 @@
      * @memberOf chronosApp:EventCardController
      */
     function saveEvent() {
-      EventFacadeService.saveEvent(vm.eventId)
-        .then(function () {
-          vm.saveButtonStyle = {
-            color: 'orange'
-          };
-        }, function () {
-        });
+      EventFacadeService.saveEvent(vm.eventId);
+      vm.saveButtonStyle = {
+        color: 'orange'
+      };
     }
 
     /**

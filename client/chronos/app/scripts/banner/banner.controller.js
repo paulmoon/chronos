@@ -20,6 +20,7 @@
 
     vm.title = 'BannerController';
     vm.chosenPlace = '';
+    vm.filters = ['(cities)'];
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
     vm.logout = AuthFacadeService.logout;
     vm.refreshEvents = EventFacadeService.refreshEvents;

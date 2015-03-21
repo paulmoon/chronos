@@ -35,7 +35,7 @@
           <li><a ng-click="vm.reportEvent('fake')">Fake</a></li>
         </ul>
       </div>
-      <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.saveEvent()" class="btn btn-link btn-xs event-button" ng-style="vm.saveButtonStyle" style="outline:none">
+      <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.saveClicked()" class="btn btn-link btn-xs event-button" ng-style="vm.saveButtonStyle" style="outline:none">
         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
       </button>
       <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs event-button">

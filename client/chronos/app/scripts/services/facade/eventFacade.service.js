@@ -83,6 +83,16 @@
         });
     };
 
+    this.unsaveEvent = function(eventID) {
+      return RestService.unsaveEvent(eventID)
+      .then(function(response) {
+        var savedEvents = EventFactory.getSavedEvents();
+        savedEvents.pop(eventID);
+        EventFactory.setSavedEvents(savedEvents);
+        return response;
+      });
+    }
+
     this.updateEvents = function (filterParams) {
       return EventFactory.updateEvents(filterParams)
         .then(function (response) {
