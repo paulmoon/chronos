@@ -39,6 +39,7 @@
         scope.$apply(function () {
           scope.placeDetails = scope.gPlace.getPlace();
           model.$setViewValue(element.val());
+          console.log(scope.placeDetails);
           scope.callback(scope.placeDetails);
         });
       });

@@ -1,17 +1,22 @@
 .events-area {
   width: 95%;
   min-height: 100%;
-  height: 100%;
   max-height: 100%;
-  margin-left: 10px;
+  height: 100%;
   overflow-y: scroll;
   border:0;
   background: $tertiary-colour;
 }
 
+.events-search-area {
+  float: right;
+  width: 95%;
+}
+
 .event-card-panel{
   float: top;
   background:inherit;
+  margin-top: 5px;
 }
 
 .event-card-panel:hover{

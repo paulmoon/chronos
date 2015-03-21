@@ -1,0 +1,15 @@
+.calendar-area {
+	background: $tertiary-colour;
+	height: 850px;
+	margin-top: $main-pane-margin-top;
+	width: 95%;
+	border-style: none;
+	overflow: hidden;
+}
+
+.calendar {
+	width: 95%;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}

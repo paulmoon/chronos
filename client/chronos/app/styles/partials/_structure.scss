@@ -1,6 +1,6 @@
 .pane {
   top: 60px;
-  bottom: 10px;
+  bottom: 0px;
   position: absolute;
   background-color: $primary-colour;
   width: 100%;
@@ -9,16 +9,13 @@
 .left-pane {
   float: left;
   width: 50%;
-  // background-color: #ffffff;
   height: 100%;
 }
 
 .right-pane {
   float: right;
   width: 50%;
-  // background-color: #ffffff;
   height: 100%;
-  margin-top: 5px;
 }
 
 .full-height {
