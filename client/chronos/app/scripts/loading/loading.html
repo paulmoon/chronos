@@ -1,3 +1,5 @@
+<div class="loader"><div class="loader-inner"><div class="loader-text">e</div></div></div>
+
 <div class="spinner">
   <div class="rect1"></div>
   <div class="rect2"></div>
@@ -40,3 +42,15 @@
     <animate attributeName="y" values="10;0;0;0;10" begin="400ms" dur="1000ms" repeatCount="indefinite"/>
   </rect>
 </svg>
+
+<div style="position:absolute;left:23%;top:55%;" ng-show="!vm.modalLoader">
+  <div class="loading outer">
+    <div class="loading inner"></div>
+  </div>
+</div>
+
+<div style="position:absolute;left:47%;top:45%;" ng-show="vm.modalLoader">
+  <div class="loading outer">
+    <div class="loading inner"></div>
+  </div>
+</div>

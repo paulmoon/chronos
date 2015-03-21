@@ -16,7 +16,9 @@
     var directive = {
       templateUrl: 'scripts/loading/loading.html',
       restrict: 'E',
-      scope: {},
+      scope: {
+        modalLoader: '=',
+      },
       controller: 'LoadingController',
       controllerAs: 'vm',
       bindToController: true

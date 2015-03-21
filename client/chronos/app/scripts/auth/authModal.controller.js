@@ -31,6 +31,11 @@
     vm.signUp = signUp;
     vm.cancel = cancel;
 
+    vm.loading = false;
+    vm.loadingBlurStyle = {
+      opacity: 1
+    };
+
     ////////////////
 
     /**
@@ -39,13 +44,23 @@
      */
     function login() {
       vm.shouldShowSignUpModal = false;
+      vm.loading = true;
+      vm.loadingBlurStyle = {
+        opacity: 0.4
+      };
 
-      AuthService.login(vm.username, vm.password)
-        .then(function (response) {
-          $modalInstance.close("login");
-        }, function (response) {
-          vm.loginFailed = true;
-        });
+      setTimeout(function () {
+        AuthService.login(vm.username, vm.password)
+          .then(function (response) {
+            $modalInstance.close("login");
+          }, function (response) {
+            vm.loginFailed = true;
+          });
+        vm.loading = false;
+        vm.loadingBlurStyle = {
+          opacity: 1
+        };
+      }, 5000);
     }
 
     /**
@@ -54,6 +69,10 @@
      */
     function signUp() {
       vm.shouldShowSignUpModal = true;
+      vm.loading = true;
+      vm.loadingBlurStyle = {
+        opacity: 0.4
+      };
 
       AuthService.signUp(vm.username, vm.firstName, vm.lastName, vm.password, vm.email)
         .then(function (data) {
@@ -66,6 +85,10 @@
         }, function (error) {
           $log.warn("AuthService.signUp failed. This shouldn't happen if our validation logic is correct! " + error);
         });
+      vm.loading = false;
+      vm.loadingBlurStyle = {
+        opacity: 1
+      };
     }
 
     /**

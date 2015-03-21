@@ -25,7 +25,6 @@
       selectedEventsEndRange: undefined,
       dateRangeStart: undefined,
       dateRangeEnd: undefined,
-      loading: undefined,
 
       getEvents: getEvents,
       getSelectedEvents: getSelectedEvents,
@@ -39,7 +38,6 @@
       updateSelectionRange: updateSelectionRange,
       updateEvents: updateEvents,
       refreshEvents: refreshEvents,
-      isLoading: isLoading,
     };
 
     return factory;
@@ -79,14 +77,6 @@
      */
     function refreshEvents() {
       return _updateEvents();
-    }
-
-    /**
-     * @description Returns a variable that indicates whether events are currently being loaded
-     * @methodOf chronosApp:EventFactory
-     */
-    function isLoading() {
-      return factory.loading;
     }
 
     /**
@@ -237,7 +227,6 @@
     function _updateEvents() {
       var filterParams = _constructFilterParams();
 
-      factory.loading = true;
       return RestService.getFilteredEvents(filterParams)
         .then(function (response) {
           var newEvents = response.data;
@@ -248,14 +237,12 @@
             newEvents[i].end_date = moment.utc(newEvents[i].end_date);
           }
 
-          //factory.events = newEvents;
-          //factory.selectedEvents = newEvents;
-          //factory.loading = null;
+          factory.events = newEvents;
+          factory.selectedEvents = newEvents;
           return response.data;
         }, function (response) {
           $log.warn('Failed to retrieve filtered events: ' + filterParams);
           $log.warn('Response: ' + response);
-          //factory.loading = null;
           return $q.reject(response);
         });
     }

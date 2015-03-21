@@ -51,9 +51,9 @@
           </div>
         </div>
         <div class="events-area panel panel-primary">
-          <div class="panel-body">
+          <div class="panel-body" ng-style="vm.loadingBlurStyle">
             <div ng-show="vm.loading">
-              <loading></loading>
+              <loading modal-loader="false"></loading>
             </div>
             <eventcard ng-repeat="event in vm.getEvents()"
                        ng-class-even="'event-card-color'"

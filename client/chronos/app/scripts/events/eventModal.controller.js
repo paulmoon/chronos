@@ -28,6 +28,7 @@
     vm.files = undefined;
     vm.imageId = null;
     vm.imageUrl = undefined;
+    vm.loading = false;
     vm.imageProgress = 0;
     vm.shouldShowEventCreateModal = shouldShowEventCreateModal;
     vm.locationPicked = locationPicked;
@@ -35,6 +36,10 @@
 
     vm.createEvent = createEvent;
     vm.cancel = cancel;
+
+    vm.loadingBlurStyle = {
+      opacity: 1
+    };
 
     ////////////////
 
@@ -44,12 +49,23 @@
      */
     function createEvent() {
       vm.shouldShowEventCreateModal = true;  
-      RestService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
-        .then(function (data) {
-          $modalInstance.close();
-        }, function () {
-          $log.debug("RestService.createEvent failed");
-        });
+      vm.loading = true;
+      vm.loadingBlurStyle = {
+        opacity: 0.4
+      };
+
+      setTimeout(function () {
+        RestService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
+          .then(function (data) {
+            $modalInstance.close();
+          }, function () {
+            $log.debug("RestService.createEvent failed");
+          });
+        vm.loading = false;
+        vm.loadingBlurStyle = {
+          opacity: 1
+        };
+      }, 5000);
     }
 
     /**
