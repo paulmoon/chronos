@@ -1,8 +1,7 @@
 <banner></banner>
 <div class="pane">
   <div class="left-pane" ng-controller="LeftPanelController as vm">
-    <div class="media full-height">
-      <div class="panel-group panel-height">
+      <div class="panel-group panel-height events-search-area">
         <div class="search-area panel panel-info">
           <div class="panel-body">
             <form role="form" ng-submit="vm.updateKeywords()">
@@ -76,7 +75,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
   <ng-include src="'scripts/calendar/calendar.html'"></ng-include>
 </div>

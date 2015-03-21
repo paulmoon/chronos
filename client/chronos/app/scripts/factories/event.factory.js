@@ -234,6 +234,8 @@
      * @param end Moment type
      */
     function updateSelectionRange(start, end) {
+      var deferred = $q.defer();
+
       factory.selectedEventsStartRange = start;
       factory.selectedEventsEndRange = end;
 
@@ -250,6 +252,9 @@
         // strict inequality is used.
         return element.start_date < end && element.end_date > start;
       });
+    
+      deferred.resolve("Selected a range");
+      return deferred.promise;
     }
 
     /**
