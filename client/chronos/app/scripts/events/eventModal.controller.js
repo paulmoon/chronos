@@ -28,6 +28,7 @@
     vm.files = undefined;
     vm.imageId = null;
     vm.imageUrl = undefined;
+    vm.loading = false;
     vm.imageProgress = 0;
     vm.shouldShowEventCreateModal = shouldShowEventCreateModal;
     vm.locationPicked = locationPicked;
@@ -36,6 +37,10 @@
     vm.createEvent = createEvent;
     vm.cancel = cancel;
 
+    vm.loadingBlurStyle = {
+      opacity: 1
+    };
+
     ////////////////
 
     /**
@@ -43,12 +48,25 @@
      * @methodOf chronosApp:EventModalController
      */
     function createEvent() {
-      vm.shouldShowEventCreateModal = true;
+      vm.shouldShowEventCreateModal = true;  
+      vm.loading = true;
+      vm.loadingBlurStyle = {
+        opacity: 0.4
+      };
+
       EventFacadeService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
         .then(function (data) {
           $modalInstance.close();
+          vm.loading = false;
+          vm.loadingBlurStyle = {
+            opacity: 1
+          };
         }, function () {
           $log.debug("EventFacadeService.createEvent failed");
+          vm.loading = false;
+          vm.loadingBlurStyle = {
+            opacity: 1
+          };
         });
     }
 

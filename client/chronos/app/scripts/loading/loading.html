@@ -1,0 +1,74 @@
+<!-- Spinning bar fill with e -->
+<div ng-if="vm.loaderNumber == 1">
+  <div class="loader-one-cards-position" ng-show="{{vm.eventCardLoader}}">
+    <div class="loader">
+      <div class="loader-inner">
+        <div class="loader-text">e</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loader-one-event-position" ng-show="{{vm.eventModalLoader}}">
+    <div class="loader">
+      <div class="loader-inner">
+        <div class="loader-text">e</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loader-one-auth-position" ng-show="{{vm.authModalLoader}}">
+    <div class="loader">
+      <div class="loader-inner">
+        <div class="loader-text">e</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Three balls in a row -->
+<div ng-if="vm.loaderNumber == 2">
+  <div class="loader-two-cards-position" ng-show="{{vm.eventCardLoader}}">
+    <div class="bouncer">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </div>
+
+  <div class="loader-two-event-position" ng-show="{{vm.eventModalLoader}}">
+    <div class="bouncer">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </div>
+
+  <div class="loader-two-auth-position" ng-show="{{vm.authModalLoader}}">
+    <div class="bouncer">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Two ring spinner -->
+<div ng-if="vm.loaderNumber == 3">
+  <div class="loader-three-cards-position" ng-show="{{vm.eventCardLoader}}">
+    <div class="loading outer">
+      <div class="loading inner"></div>
+    </div>
+  </div>
+
+  <div class="loader-three-event-position" ng-show="{{vm.eventModalLoader}}">
+    <div class="loading outer">
+      <div class="loading inner"></div>
+    </div>
+  </div>
+
+  <div class="loader-three-auth-position" ng-show="{{vm.authModalLoader}}">
+    <div class="loading outer">
+      <div class="loading inner"></div>
+    </div>
+  </div>
+</div>

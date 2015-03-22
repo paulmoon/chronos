@@ -1,6 +1,4 @@
-
-
-<div class="modal-content">
+<div class="modal-content" ng-style="authModal.loadingBlurStyle">
   <div class="modal-header">
     <h3 ng-if="authModal.shouldShowSignUpModal" class="modal-title">
       <strong>Sign Up</strong>
@@ -108,6 +106,9 @@
               ng-click="authModal.formSubmitted = true; loginForm.$valid && authModal.login()">Login
       </button>
       <button type="submit" class="btn btn-default" ng-click="authModal.cancel()">Cancel</button>
+      <div ng-show="authModal.loading">
+        <loading event-modal-loader="false" auth-modal-loader="true" event-card-loader="false"></loading>
+      </div>
     </form>
   </div>
 </div>
