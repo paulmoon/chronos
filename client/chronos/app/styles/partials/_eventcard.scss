@@ -1,16 +1,12 @@
 .events-area {
-  width: 95%;
+  width: 96%;
   min-height: 96%;
   max-height: 96%;
   height: 96%;
   overflow-y: scroll;
   border:0;
   background: $tertiary-colour;
-}
-
-.events-search-area {
-  float: right;
-  width: 95%;
+  margin-left: 2%;
 }
 
 .event-card-panel{
