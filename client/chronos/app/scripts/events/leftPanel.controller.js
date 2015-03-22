@@ -25,6 +25,7 @@
     vm.storageTags = [];
     vm.addedTags = [];
 
+    vm.loading = false;
     vm.getEvents = EventFacadeService.getSelectedEvents;
     vm.votedEventDirection = {};
     vm.savedEvents = {};
@@ -46,6 +47,10 @@
 
     vm.searchDateStart = vm.getLastSunday(moment().local().startOf('month'));
     vm.searchDateEnd = vm.getLastSunday(moment().local().startOf('month')).add(6, 'weeks');
+
+    vm.loadingBlurStyle = {
+      opacity: 1
+    };
 
     _activate();
 
@@ -95,6 +100,10 @@
       vm.searchError = '';
       var tempKeywords = '';
       var filterParams = {};
+      vm.loading = true;
+      vm.loadingBlurStyle = {
+        opacity: 0.4
+      };
 
       if (vm.searchKeywords) {
         tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(" ");
@@ -116,6 +125,10 @@
       if (!vm.searchError) {
         EventFacadeService.updateEvents(filterParams);
       }
+      vm.loading = false;
+      vm.loadingBlurStyle = {
+        opacity: 1
+      };
     }
 
     /**
