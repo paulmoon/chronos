@@ -12,9 +12,9 @@
     .module('chronosApp')
     .service('StateService', StateService);
 
-  StateService.$inject = ['$log', '$q', 'RestService'];
+  StateService.$inject = [];
 
-  function StateService($log, $q, RestService) {
+  function StateService() {
     var self = this;
     var _placeID;
     var _placeName;
@@ -53,41 +53,6 @@
      */
     this.getPlaceName = function () {
       return _placeName;
-    };
-
-    /**
-     * @description Gets user information from the server and uses Google Places API and user's place ID to look up
-     * the formatted address. Sets place_id and placeName for StateService.
-     *
-     * Note that we need to use $q.defer() because $routeProvider is waiting for the promises
-     * to be resolved/rejected, and thinks the promise is resolved as soon as we enter
-     * RestService.getCurrentUserInformation.success(). By deferring the promise, we make $routeProvider wait until
-     * after processing the user profile information.
-     *
-     * All the promises are resolved because if any of the promises are rejected, $routeProvider will not initialize
-     * the controllers.
-     * @methodOf chronosApp.stateService
-     * @returns {*} Promise object which will always be resolved
-     */
-    this.retriveUserProfile = function () {
-      var deferred = $q.defer();
-      RestService.getCurrentUserInformation()
-        .success(function (data, status, headers, config) {
-          if (data.place_id !== null) {
-            self.setPlaceID(data.place_id);
-          }
-
-          if (data.place_name !== null) {
-            self.setPlaceName(data.place_name);
-          }
-
-          deferred.resolve();
-        })
-        .error(function (data, status, headers, config) {
-          $log.warn('Failed to retrieve user information.');
-          deferred.resolve();
-        });
-      return deferred.promise;
     };
   }
 })();

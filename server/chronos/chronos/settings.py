@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'debug_toolbar',
     'rest_framework_swagger',
-    'dbarray',
+    'mptt',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,7 +102,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_ROOT = '/tmp/'
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 SWAGGER_SETTINGS = {
     'api_key': '8513d558de1558c15d58a072f2934d2c0011e7aa',

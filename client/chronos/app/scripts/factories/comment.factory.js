@@ -12,9 +12,9 @@
     .module('chronosApp')
     .factory('CommentFactory', CommentFactory);
 
-  CommentFactory.$inject = ['RestService', '$route', '$q', '$log'];
+  CommentFactory.$inject = ['RestService', '$q', '$log'];
 
-  function CommentFactory(RestService, $route, $q, $log) {
+  function CommentFactory(RestService, $q, $log) {
     var comment =  {
       getComment: getComment,
       saveComment: saveComment,
@@ -29,7 +29,8 @@
     /**
      * @description Returns comments that the factory holds.
      * @methodOf chronosApp:CommentFactory
-     * @returns Get event in the CommentFactory.
+     * @param eventId
+     * @returns {*}
      */
     function getComment(eventId) {
       return RestService.getComment(eventId)
@@ -44,10 +45,12 @@
     /**
      * @description saves comments that the factory holds.
      * @methodOf chronosApp:CommentFactory
+     * @param eventId
+     * @param commentData
      * @returns {*}
      */
-    function saveComment(eventId, commentData) {
-      return RestService.saveComment(eventId, commentData)
+    function saveComment(eventId, commentData, depth, path, parent) {
+      return RestService.saveComment(eventId, commentData, depth, path, parent)
         .then(function(response) {
           return response.data;
         }, function(response) {

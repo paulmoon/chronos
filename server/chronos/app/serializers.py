@@ -21,10 +21,33 @@ class SimpleEventSerializer(serializers.ModelSerializer):
         model = app.models.Events
         fields = ('id', 'name',)
 
+class EventIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.Events
+        fields = ('id',)
+
+class SimpleVoteSerializer(serializers.ModelSerializer):
+    event = EventIdSerializer()
+    direction = serializers.IntegerField(min_value=-1, max_value=1)
+
+    class Meta:
+        model = app.models.Vote
+        fields = ('event', 'direction',)
+
 class ChronosUserSerializer(serializers.ModelSerializer):
+    saved_events = EventIdSerializer(many=True)
+    reported_events = serializers.SerializerMethodField()
+    voted_events = serializers.SerializerMethodField()
+
     class Meta:
         model = app.models.ChronosUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'place_name')
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'userType', 'place_id', 'place_name', 'saved_events', 'reported_events', 'voted_events',)
+
+    def get_reported_events(self, obj):
+        return [SimpleReportSerializer(report).data for report in app.models.Reports.objects.filter(user=obj.id)]
+
+    def get_voted_events(self, obj):
+        return [SimpleVoteSerializer(v).data for v in app.models.Vote.objects.filter(user=obj.id)]
 
 class ChronosUserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -60,7 +83,7 @@ class ChronosUserRegisterSerializer(serializers.ModelSerializer):
         Ensure that the email doesn't already exist
         """
         if app.models.ChronosUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError("Email already exists");
+            raise serializers.ValidationError("Email already exists")
         return value
 
 class ChronosUserUpdateSerializer(serializers.ModelSerializer):
@@ -74,7 +97,7 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
         Ensure that the email doesn't already exist
         """
         if app.models.ChronosUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError("Email already exists");
+            raise serializers.ValidationError("Email already exists")
         return value
 
     def update(self, instance, validated_data):
@@ -136,12 +159,12 @@ class ImageWriteSerializer(serializers.HyperlinkedModelSerializer):
 ##############################
 class EventWriteSerializer(serializers.ModelSerializer):
     tags = TagEventSerializer(many=True, required=False)
-    class Meta: 
+    class Meta:
         model = app.models.Events
         fields = ('id', 'name', 'description', 'creator', 'picture', "create_date", "edit_date" , "start_date", "end_date", "report", "is_deleted", "place_id", "place_name", "tags")
 
     def __init__(self, *args, **kwargs):
-        fields = kwargs.pop('fields', None)          
+        fields = kwargs.pop('fields', None)
         super(serializers.ModelSerializer, self).__init__(*args, **kwargs)
         if fields:
             allowed = set(fields)
@@ -157,12 +180,12 @@ class EventWriteSerializer(serializers.ModelSerializer):
 
         # Get all the tags that already exist
         tag_names = [tag["name"] for tag in tags]
-        existing_tag_queryset = app.models.Tag.objects.filter(name__in=tag_names)        
+        existing_tag_queryset = app.models.Tag.objects.filter(name__in=tag_names)
 
         # Get all the tags that don't exist in the DB yet, and create them in bulk
         missing_tag_names = filter(lambda x: x not in [e.name for e in existing_tag_queryset], tag_names)
 
-        #TODO: Attempt to get the bulk create working. It is inefficient to create in a list like this. The problem is that 
+        #TODO: Attempt to get the bulk create working. It is inefficient to create in a list like this. The problem is that
         # bulk_create will not call save, meaning all newly created Tags will not be in the database quite yet
         #missing_tags = app.models.Tag.objects.bulk_create([app.models.Tag(name=missing_tag_name) for missing_tag_name in missing_tag_names])
         missing_tags = [app.models.Tag.objects.create(name=missing_tag_name) for missing_tag_name in missing_tag_names]
@@ -220,7 +243,7 @@ class VoteEventSerializer(serializers.Serializer):
             event.upvote += 1
         elif direction == -1:
             event.downvote += 1
-        
+
         event.save()
         return vote
 
@@ -265,21 +288,36 @@ class ReportEventSerializer(serializers.Serializer):
 
         return instance
 
+class SimpleReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = app.models.Reports
+        fields = ('reason', 'event')
+
 ##############################
 # --------- Comments! ------ #
 ##############################
 
+class RecursiveField(serializers.Serializer):
+
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
+
+
+
 class CommentReadSerializer(serializers.ModelSerializer):
+    children = RecursiveField(many=True)
     user = ChronosPublicUserSerializer()
+
     class Meta:
         model = app.models.Comments
-        fields = ('content', 'event', 'user', 'date')
-
+        fields = ('id', 'content', 'event', 'user', 'date', 'depth', 'path', 'children')
 
 class CommentWriteSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = app.models.Comments
-        fields = ('content', 'event', 'user', 'date')
+        fields = ('id', 'content', 'event', 'user', 'date', 'depth', 'path', 'parent')
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)

@@ -1,23 +1,24 @@
-'use strict';
+(function () {
+  'use strict';
 
-/**
- * @author Justin Guze
- * @ngdoc function
- * @name chronosApp.controller:EventPageController
- * @description
- * # EventPageController
- * Controller of the chronosApp
- */
-angular.module('chronosApp')
-  .controller('EventPageController', EventPageController);
+  /**
+   * @author Justin Guze
+   * @ngdoc function
+   * @name chronosApp.controller:EventPageController
+   * @description
+   * # EventPageController
+   * Controller of the chronosApp
+   */
+  angular.module('chronosApp')
+    .controller('EventPageController', EventPageController);
 
-  EventPageController.$inject = ['AuthService', 'EventPageFactory', '$routeParams'];
+  EventPageController.$inject = ['AuthFacadeService', 'EventFacadeService', '$routeParams'];
 
-  function EventPageController(AuthService, EventPageFactory, $routeParams) {
+  function EventPageController(AuthFacadeService, EventFacadeService, $routeParams) {
     var vm = this;
 
     vm.title = 'EventPageController';
-    vm.isLoggedIn = AuthService.isLoggedIn;
+    vm.isLoggedIn = AuthFacadeService.isLoggedIn;
 
     vm.saveEvent = 'SAVE';
     vm.saveEventClick = saveEventClick;
@@ -40,20 +41,20 @@ angular.module('chronosApp')
      * @private
      */
     function _activate() {
-      EventPageFactory.updateEvent($routeParams.eventId)
-        .then(function(data) {
-          vm.placeName = data.place_name;
-          vm.description = data.description;
-          vm.name = data.name;
-          vm.username = data.creator.username;
-          vm.upvote = data.upvote;
-          vm.downvote = data.downvote;
-          vm.vote = data.vote;
-          vm.picture = data.picture;
-          vm.startDate = moment(data.start_date).format('MMMM Do YYYY, h:mm:ss a');
-          vm.endDate =  moment(data.end_date).format('MMMM Do YYYY, h:mm:ss a');
-          vm.tags = data.tags;
+      EventFacadeService.getEvent($routeParams.eventId)
+        .then(function (response) {
+          vm.placeName = response.data.place_name;
+          vm.description = response.data.description;
+          vm.name = response.data.name;
+          vm.username = response.data.creator.username;
+          vm.upvote = response.data.upvote;
+          vm.downvote = response.data.downvote;
+          vm.vote = response.data.vote;
+          vm.picture = response.data.picture;
+          vm.startDate = moment(response.data.start_date).format('MMMM Do YYYY, h:mm:ss a');
+          vm.endDate = moment(response.data.end_date).format('MMMM Do YYYY, h:mm:ss a');
+          vm.tags = response.data.tags;
         });
     }
-
   }
+})();

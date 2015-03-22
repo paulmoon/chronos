@@ -13,10 +13,10 @@
     .module('chronosApp')
     .directive('uniqueUsername', uniqueUsername);
 
-  uniqueUsername.$inject = ['RestService', '$q'];
+  uniqueUsername.$inject = ['AuthFacadeService', '$q'];
 
   /* @ngInject */
-  function uniqueUsername(RestService, $q) {
+  function uniqueUsername(AuthFacadeService, $q) {
     var directive = {
       link: link,
       require: 'ngModel'
@@ -29,7 +29,7 @@
         var username = modelValue || viewValue;
         var deferred = $q.defer();
 
-        RestService.createUser(username, "", "", "", "")
+        AuthFacadeService.createUser(username, "", "", "", "")
           .then(function resolved() {
             deferred.resolve();
           }, function rejected(response) {

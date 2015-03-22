@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('EventModalController', EventModalController);
 
-  EventModalController.$inject = ['$modalInstance', 'RestService', 'shouldShowEventCreateModal', '$log'];
+  EventModalController.$inject = ['$modalInstance', 'EventFacadeService', 'shouldShowEventCreateModal', '$log'];
 
-  function EventModalController($modalInstance, RestService, shouldShowEventCreateModal, $log) {
+  function EventModalController($modalInstance, EventFacadeService, shouldShowEventCreateModal, $log) {
     var vm = this;
 
     vm.title = 'EventModalController';
@@ -44,7 +44,7 @@
     ////////////////
 
     /**
-     * @description Calls {@link chronosApp:RestService#createEvent}|RestService.createEvent} to create event.
+     * @description Calls {@link chronosApp:EventFacadeService#createEvent}|EventFacadeService.createEvent} to create event.
      * @methodOf chronosApp:EventModalController
      */
     function createEvent() {
@@ -55,11 +55,11 @@
       };
 
       setTimeout(function () {
-        RestService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
+        EventFacadeService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
           .then(function (data) {
             $modalInstance.close();
           }, function () {
-            $log.debug("RestService.createEvent failed");
+            $log.debug("EventFacadeService.createEvent failed");
           });
         vm.loading = false;
         vm.loadingBlurStyle = {
@@ -69,19 +69,19 @@
     }
 
     /**
-     * @description Calls {@link chronosApp:RestService#updateEvent}|RestService.updateEvent} to create event.
+     * @description Calls {@link chronosApp:EventFacadeService#updateEvent}|EventFacadeService.updateEvent} to create event.
      * @methodOf chronosApp:EventModalController
      */
     function updateEvent() {
       vm.shouldShowEventCreateModal = false;
 
-      RestService.updateEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.tags)
+      EventFacadeService.updateEvent(vm.eventName, vm.description, vm.picture, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.tags)
         .then(function (data) {
           $modalInstance.close();
         }, function () {
-          $log.debug("RestService.updateEvent failed");
+          $log.debug("EventFacadeService.updateEvent failed");
         });
-    };
+    }
 
     /**
      * @description Closes the modal window.
@@ -89,7 +89,7 @@
      */
     function cancel() {
       $modalInstance.dismiss('cancel');
-    };
+    }
 
     /**
      * @description Callback function when a location is chosen
@@ -98,20 +98,20 @@
      */
     function locationPicked(details) {
       vm.locationId = details.place_id;
-    };
+    }
 
     function uploadImage(files) {
       if (files && files.length) {
         vm.imageProgress = 0;
-        RestService.uploadImage(files[0])
-        .progress(function(evt) {
-          vm.imageProgress = parseInt(100.0 * evt.loaded / evt.total);
-        }).success(function (data, status, headers, config) {
-          vm.imageId = data['id'];
-          vm.imageUrl = data['image'];
-        }).error(function() {
-          $log.debug("Error uploading file");
-        });
+        EventFacadeService.uploadImage(files[0])
+          .progress(function (evt) {
+            vm.imageProgress = parseInt(100.0 * evt.loaded / evt.total);
+          }).success(function (data, status, headers, config) {
+            vm.imageId = data['id'];
+            vm.imageUrl = data['image'];
+          }).error(function () {
+            $log.debug("Error uploading file");
+          });
       }
     }
 
