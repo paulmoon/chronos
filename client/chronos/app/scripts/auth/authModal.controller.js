@@ -81,16 +81,24 @@
           return AuthFacadeService.login(vm.username, vm.password)
             .then(function (response) {
               $modalInstance.close();
+              vm.loading = false;
+              vm.loadingBlurStyle = {
+                opacity: 1
+              };
             }, function (response) {
+              vm.loading = false;
+              vm.loadingBlurStyle = {
+                opacity: 1
+              };
               $modalInstance.close();
             });
         }, function (error) {
+          vm.loading = false;
+          vm.loadingBlurStyle = {
+            opacity: 1
+          };
           $log.warn("AuthService.signUp failed. This shouldn't happen if our validation logic is correct! " + error);
         });
-      vm.loading = false;
-      vm.loadingBlurStyle = {
-        opacity: 1
-      };
     }
 
     /**
