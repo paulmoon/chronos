@@ -49,18 +49,20 @@
         opacity: 0.4
       };
 
-      setTimeout(function () {
-        AuthFacadeService.login(vm.username, vm.password)
-          .then(function (response) {
-            $modalInstance.close("login");
-          }, function (response) {
-            vm.loginFailed = true;
-          });
-        vm.loading = false;
-        vm.loadingBlurStyle = {
-          opacity: 1
-        };
-      }, 5000);
+      AuthFacadeService.login(vm.username, vm.password)
+        .then(function (response) {
+          $modalInstance.close("login");
+          vm.loading = false;
+          vm.loadingBlurStyle = {
+            opacity: 1
+          };
+        }, function (response) {
+          vm.loginFailed = true;
+          vm.loading = false;
+          vm.loadingBlurStyle = {
+            opacity: 1
+          };
+        });
     }
 
     /**

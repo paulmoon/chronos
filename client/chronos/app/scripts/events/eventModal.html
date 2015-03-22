@@ -71,7 +71,7 @@
         <a type="submit" class="btn btn-primary" ng-click="eventModal.createEvent()">Create</a>
         <a type="submit" class="right btn btn-default" ng-click="eventModal.cancel()">Cancel</a>
         <div ng-show="eventModal.loading">
-          <loading modal-loader="true"></loading>
+          <loading event-modal-loader="true" auth-modal-loader="false" event-card-loader="false"></loading>
         </div>
       </form>
     </div>

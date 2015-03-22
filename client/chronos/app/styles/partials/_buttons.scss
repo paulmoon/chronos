@@ -1,1 +1,115 @@
-// Standardize button styles here
+$button-color-primary: $secondary-colour;
+$button-color-secondary: $primary-colour;
+$button-color-special: #edc421; // used for create button
+$tag-label-color: $button-color-special;
+
+///////////////////////////
+// Overwriting Bootstrap //
+///////////////////////////
+.btn-primary {
+    background-color: $button-color-primary;
+    border:0;
+}
+
+.btn-primary:hover {
+    opacity: 0.8;
+    background-color: $button-color-primary;
+    border:0;
+}
+
+.btn-primary:active {
+	opacity: 0.8;
+    background-color: $button-color-primary;
+    border:0;
+}
+
+.btn-primary:focus {
+	opacity: 0.8;
+    background-color: $button-color-primary;
+    border:0;
+}
+
+.btn-success {
+    background-color: $button-color-special;
+    border:0;
+}
+
+.btn-success:hover {
+    opacity: 0.8;
+    background-color: $button-color-special;
+    border:0;
+}
+
+.btn-success:active {
+	opacity: 0.8;
+    background-color: $button-color-special;
+    border:0;
+}
+
+.btn-success:focus {
+	opacity: 0.8;
+    background-color: $button-color-special;
+    border:0;
+}
+
+.btn-link {
+	color: $button-color-secondary;
+}
+
+.btn-link:hover {
+	color: $button-color-secondary;
+	opacity: 0.6;
+}
+
+.btn-link:action {
+	color: $button-color-secondary;
+	opacity: 0.6;
+}
+
+.btn-link:focus {
+	color: $button-color-secondary;
+	opacity: 0.6;
+}
+
+.btn-info {
+    background-color: $button-color-special;
+}
+
+.btn-info:hover {
+    background-color: $button-color-special;
+    opacity: 0.8;
+}
+
+.btn-info:action {
+    background-color: $button-color-special;
+    opacity: 0.8;
+}
+
+.btn-info:focus {
+    background-color: $button-color-special;
+    opacity: 0.8;
+}
+
+///////////////////////////
+//      Tag styling      //
+///////////////////////////
+.label-info {
+	background-color: $tag-label-color;
+}
+
+.bootstrap .tags .tag-item {
+  background: $tag-label-color;
+  border: 1px solid $tag-label-color;
+}
+
+.remove-button {
+   color: #fff !important;
+ }
+
+///////////////////////////
+// Overwriting Calendar  //
+///////////////////////////
+.fc-event{
+	background-color: $button-color-primary;
+	border-color: $button-color-primary;
+}

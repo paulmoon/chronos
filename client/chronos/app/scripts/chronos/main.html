@@ -52,7 +52,7 @@
         <div class="events-area panel panel-primary">
           <div class="panel-body" ng-style="vm.loadingBlurStyle">
             <div ng-show="vm.loading">
-              <loading modal-loader="false"></loading>
+              <loading event-modal-loader="false" auth-modal-loader="false" event-card-loader="true"></loading>
             </div>
             <eventcard ng-repeat="event in vm.getEvents()"
                        ng-class-even="'event-card-color'"
@@ -73,8 +73,7 @@
                        picture="event.picture"
                        vote-direction-by-user="{{vm.getVoteDirection(event)}}"
                        event-saved="{{vm.savedByUser(event)}}"
-                       event-reported="{{vm.reportedByUser(event)}}"
-              ></eventcard>
+                       event-reported="{{vm.reportedByUser(event)}}"></eventcard>
           </div>
         </div>
       </div>

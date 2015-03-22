@@ -105,32 +105,30 @@
         opacity: 0.4
       };
 
-      setTimeout(function () {
-        if (vm.searchKeywords) {
-          tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(" ");
-          if (tempKeywords.length > settings.maxKeywords) {
-            vm.searchError = "Max of 10 keywords.";
-          } else {
-            filterParams.keywords = tempKeywords;
-          }
+      if (vm.searchKeywords) {
+        tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(" ");
+        if (tempKeywords.length > settings.maxKeywords) {
+          vm.searchError = "Max of 10 keywords.";
+        } else {
+          filterParams.keywords = tempKeywords;
         }
+      }
 
-        if (vm.searchDateStart) {
-          filterParams.fromDate = moment(vm.searchDateStart).utc();
-        }
+      if (vm.searchDateStart) {
+        filterParams.fromDate = moment(vm.searchDateStart).utc();
+      }
 
-        if (vm.searchDateEnd) {
-          filterParams.toDate = moment(vm.searchDateEnd).utc();
-        }
+      if (vm.searchDateEnd) {
+        filterParams.toDate = moment(vm.searchDateEnd).utc();
+      }
 
-        if (!vm.searchError) {
-          EventFacadeService.updateEvents(filterParams);
-        }
-        vm.loading = false;
-        vm.loadingBlurStyle = {
-          opacity: 1
-        };
-      }, 5000);
+      if (!vm.searchError) {
+        EventFacadeService.updateEvents(filterParams);
+      }
+      vm.loading = false;
+      vm.loadingBlurStyle = {
+        opacity: 1
+      };
     }
 
     /**

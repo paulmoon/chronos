@@ -1,5 +1,5 @@
 /**
- * @author Mark Roller
+ * @author Mark Roller 
  * @ngdoc directive
  * @name chronosApp.directive:loading
  * @description directive for loading animations
@@ -17,7 +17,9 @@
       templateUrl: 'scripts/loading/loading.html',
       restrict: 'E',
       scope: {
-        modalLoader: '=',
+        eventCardLoader: '@',
+        eventModalLoader: '@',
+        authModalLoader: '@',
       },
       controller: 'LoadingController',
       controllerAs: 'vm',

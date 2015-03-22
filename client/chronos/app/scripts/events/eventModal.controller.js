@@ -54,18 +54,20 @@
         opacity: 0.4
       };
 
-      setTimeout(function () {
-        EventFacadeService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
-          .then(function (data) {
-            $modalInstance.close();
-          }, function () {
-            $log.debug("EventFacadeService.createEvent failed");
-          });
-        vm.loading = false;
-        vm.loadingBlurStyle = {
-          opacity: 1
-        };
-      }, 5000);
+      EventFacadeService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
+        .then(function (data) {
+          $modalInstance.close();
+          vm.loading = false;
+          vm.loadingBlurStyle = {
+            opacity: 1
+          };
+        }, function () {
+          $log.debug("EventFacadeService.createEvent failed");
+          vm.loading = false;
+          vm.loadingBlurStyle = {
+            opacity: 1
+          };
+        });
     }
 
     /**
