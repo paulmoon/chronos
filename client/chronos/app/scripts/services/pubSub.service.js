@@ -149,4 +149,4 @@
     PubSub.off = alias('unsubscribe');
     return PubSub;
   }
-}());
+})();
