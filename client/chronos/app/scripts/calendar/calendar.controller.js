@@ -67,6 +67,7 @@
         }, function (response) {
           $log.warn('EventFactory.getEvents: Failed to get events');
           $log.warn('Response: ' + response);
+          $.growl.error({message:"AHHH"});
         });
     }
 
