@@ -167,9 +167,9 @@ module.exports = function (grunt) {
       },
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath: /\.\.\//
       },
-	  sass: {
+      sass: {
         src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
       }
@@ -203,7 +203,7 @@ module.exports = function (grunt) {
         }
       }
     },
-	
+
     // Renames files for browser caching purposes
     filerev: {
       dist: {
@@ -240,7 +240,7 @@ module.exports = function (grunt) {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
-        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
+        assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/images']
       }
     },
 
@@ -313,7 +313,7 @@ module.exports = function (grunt) {
     // ngmin tries to make the code safe for minification automatically by
     // using the Angular long form for dependency injection. It doesn't work on
     // things like resolve or inject so those have to be done manually.
-    ngmin: {
+    ngAnnotate: {
       dist: {
         files: [{
           expand: true,
@@ -356,8 +356,8 @@ module.exports = function (grunt) {
           expand: true,
           //cwd: 'bower_components/bootstrap/dist',
           //src: 'fonts/*',
-		  src: 'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*',
-		  dest: '<%= yeoman.dist %>'
+          src: 'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*',
+          dest: '<%= yeoman.dist %>'
         }]
       },
       styles: {
@@ -378,9 +378,40 @@ module.exports = function (grunt) {
       ],
       dist: [
         'compass:dist',
-        'imagemin',
-        'svgmin'
+        //'imagemin',
+        //'svgmin'
       ]
+    },
+
+    replace: {
+      development: {
+        options: {
+          patterns: [{
+            json: grunt.file.readJSON('./config/local.json')
+          }]
+        },
+        files: [{
+          expand: true,
+          flatten: true,
+          src: '<%= yeoman.app %>/scripts/settings/constants.js',
+          // Don't need to specify the filename.
+          dest: '<%= yeoman.app %>/scripts/settings/'
+        }]
+      },
+
+      production: {
+        options: {
+          patterns: [{
+            json: grunt.file.readJSON('./config/production.json')
+          }]
+        },
+        files: [{
+          expand: true,
+          flatten: true,
+          src: '<%= yeoman.app %>/settings/constants.js',
+          dest: '<%= yeoman.app %>/settings/constants.js'
+        }]
+      }
     },
 
     // Test settings
@@ -401,6 +432,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'replace:development',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -424,11 +456,12 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
+    'replace:production',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
     'concat',
-    'ngmin',
+    'ngAnnotate',
     'copy:dist',
     'cdnify',
     'cssmin',
