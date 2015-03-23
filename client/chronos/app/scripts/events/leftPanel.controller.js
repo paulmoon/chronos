@@ -14,9 +14,9 @@
     .module('chronosApp')
     .controller('LeftPanelController', LeftPanelController);
 
-  LeftPanelController.$inject = ['EventFacadeService', 'PubSubService', 'settings'];
+  LeftPanelController.$inject = ['EventFacadeService', 'NotificationService', 'PubSubService', 'settings'];
 
-  function LeftPanelController(EventFacadeService, PubSubService, settings) {
+  function LeftPanelController(EventFacadeService, NotificationService, PubSubService, settings) {
     var vm = this;
 
     vm.title = 'LeftPanelController';
@@ -216,6 +216,7 @@
       if (vm.addedTags.length > settings.maxNumberTags) {
         vm.addedTags.splice(-1, 1);
         vm.searchError = "Max of 5 tags.";
+        NotificationService.errorMessage(vm.searchError);
         return;
       }
 
