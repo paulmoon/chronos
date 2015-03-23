@@ -1,7 +1,10 @@
 # Install with: `pip install -r requirements.txt`
 
 django-cors-headers==0.13
+django-dbarray=0.2
 django-debug-toolbar==1.2.2
+django-extensions=1.5.0
+django-mptt=0.6.1
 django-rest-swagger==0.2.8
 Django==1.7.4
 djangorestframework==3.0.4
