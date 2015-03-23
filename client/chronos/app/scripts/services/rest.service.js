@@ -74,6 +74,15 @@
     };
 
     /**
+     * @description API call for retrieving the list of top 5 popular tags
+     * @methodOf chronosApp:RestService
+     * @returns {HttpPromise}
+     */
+    this.getPopularTags = function () {
+      return $http.get(settings.serverUrl + '/tags/popular/');
+    };
+
+    /**
      * @description API call for getting a filtered list of events
      * @methodOf chronosApp:RestService
      * @param filterParams parameters for filtering the events

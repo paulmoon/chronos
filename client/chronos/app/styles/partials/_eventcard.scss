@@ -1,8 +1,8 @@
 .events-area {
   width: 96%;
-  min-height: 96%;
-  max-height: 96%;
-  height: 96%;
+  min-height: calc(96% - 99px);
+  max-height: calc(96% - 99px);
+  height: calc(96% - 99px);
   overflow-y: scroll;
   border:0;
   background: $tertiary-colour;
@@ -12,7 +12,7 @@
 .event-card-panel{
   float: top;
   background:inherit;
-  margin-top: 5px;
+  margin-bottom:5px;
 }
 
 .event-card-panel:hover{

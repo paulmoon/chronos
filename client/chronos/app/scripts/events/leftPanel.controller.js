@@ -14,9 +14,9 @@
     .module('chronosApp')
     .controller('LeftPanelController', LeftPanelController);
 
-  LeftPanelController.$inject = ['EventFacadeService', 'PubSubService', 'settings'];
+  LeftPanelController.$inject = ['EventFacadeService', 'PubSubService', 'settings', 'RestService'];
 
-  function LeftPanelController(EventFacadeService, PubSubService, settings) {
+  function LeftPanelController(EventFacadeService, PubSubService, settings, RestService) {
     var vm = this;
 
     vm.title = 'LeftPanelController';
@@ -24,6 +24,7 @@
     vm.searchError = '';
     vm.storageTags = [];
     vm.addedTags = [];
+    vm.popularTags = [];
 
     vm.loading = false;
     vm.getEvents = EventFacadeService.getSelectedEvents;
@@ -40,6 +41,7 @@
     vm.clearStartDate = clearStartDate;
     vm.clearEndDate = clearEndDate;
     vm.clearKeywords = clearKeywords;
+    vm.addPopularTag = addPopularTag;
 
     vm.getVoteDirection = getVoteDirection;
     vm.savedByUser = savedByUser;
@@ -73,6 +75,14 @@
       for (i = 0; i < reportedEvents.length; i += 1) {
         vm.reportedEvents[reportedEvents[i].event] = reportedEvents[i].reason;
       }
+
+      RestService.getPopularTags().
+        success(function (data, status, headers, config) {
+          vm.popularTags = data;
+        }).
+        error(function (data, status, headers, config) {
+          // Fill in at later date
+        });
     }
 
     /**
@@ -100,10 +110,6 @@
       vm.searchError = '';
       var tempKeywords = '';
       var filterParams = {};
-      vm.loading = true;
-      vm.loadingBlurStyle = {
-        opacity: 0.4
-      };
 
       if (vm.searchKeywords) {
         tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(" ");
@@ -125,10 +131,6 @@
       if (!vm.searchError) {
         EventFacadeService.updateEvents(filterParams);
       }
-      vm.loading = false;
-      vm.loadingBlurStyle = {
-        opacity: 1
-      };
     }
 
     /**
@@ -201,6 +203,33 @@
       } else {
         vm.searchEvents();
       }
+    }
+
+    /**
+     * @description Adds a selected popular tag to the tag bar
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function addPopularTag(tag) {
+      vm.searchError = '';
+      var noMatch = true;
+      var tempTags = [];
+
+      delete tag['usage'];
+      delete tag['$$hashKey'];
+
+      vm.addedTags.forEach(function (tag2) {
+        if (tag2.name == tag.name){
+          noMatch = false;
+        }
+      });
+
+      if (noMatch) {
+        vm.addedTags.push(tag);
+      } else {
+        vm.searchError = "Identical Tag Found.";
+      }
+
+      updateTags();
     }
 
     /**

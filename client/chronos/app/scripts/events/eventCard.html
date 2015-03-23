@@ -25,7 +25,7 @@
     <div style="float:right">
       <div class="btn-group">
         <button ng-if="vm.isLoggedIn()" type="button" class="btn btn-link btn-xs dropdown-toggle event-button" data-toggle="dropdown" aria-expanded="false" style="outline:none" ng-style="vm.reportButtonStyle">
-          <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+          <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
           <li><a ng-click="vm.reportEvent('spam')">Spam</a></li>
@@ -39,14 +39,14 @@
         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
       </button>
       <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs event-button">
-        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
       </button>
       <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs event-button">
         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
       </button>
     </div>
     <div class="float-left" ng-repeat="tag in vm.tags">
-      <label class="label label-info margin-right-two" ng-click="vm.addTag(tag.name)">{{ tag.name }}</label>
+      <label class="label label-info margin-right-two" style="cursor:pointer;" ng-click="vm.addTag(tag.name)">{{ tag.name }}</label>
     </div>
   </div>
 </div>

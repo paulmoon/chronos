@@ -117,7 +117,7 @@ class ChronosUserUpdateSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = app.models.Tag
-        fields = ('name',)
+        fields = ('name','usage')
 
 class TagEventSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)

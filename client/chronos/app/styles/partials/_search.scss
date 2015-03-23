@@ -1,8 +1,9 @@
 .search-area {
   float: top;
-  text-align: center;
   width: 96%;
+  height: 95px;
   margin-left: 2%;
+  margin-bottom: 5px;
   border:0;
   background: $tertiary-colour;
   margin-top: $main-pane-margin-top;
@@ -41,6 +42,13 @@
   float: left;
 }
 
+.popular-tags {
+  color: $secondary-colour;
+  float: left;
+  margin-top:2px;
+  margin-right:5px;
+  margin-left:5px;
+}
 
 .add-opacity {
   opacity: 0.6;
