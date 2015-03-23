@@ -71,6 +71,9 @@
               ng-click="authModal.formSubmitted = true; signUpForm.$valid && authModal.signUp()">Sign Up
       </button>
       <button type="submit" class="right btn btn-default" ng-click="authModal.cancel()">Cancel</button>
+      <div ng-show="authModal.loading">
+        <loading event-modal-loader="false" auth-modal-loader="true" event-card-loader="false"></loading>
+      </div>
     </form>
 
     <!--Login Modal-->

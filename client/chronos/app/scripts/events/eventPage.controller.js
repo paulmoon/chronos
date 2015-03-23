@@ -52,8 +52,8 @@
           vm.downvote = response.data.downvote;
           vm.vote = response.data.vote;
           vm.picture = response.data.picture;
-          vm.startDate = moment(response.data.start_date).format('MMMM Do YYYY, h:mm:ss a');
-          vm.endDate = moment(response.data.end_date).format('MMMM Do YYYY, h:mm:ss a');
+          vm.startDate = moment(response.data.start_date).format('lll');
+          vm.endDate = moment(response.data.end_date).format('lll');
           vm.tags = response.data.tags;
         });
     }

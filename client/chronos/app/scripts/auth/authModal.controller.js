@@ -86,11 +86,11 @@
                 opacity: 1
               };
             }, function (response) {
+              $modalInstance.close();
               vm.loading = false;
               vm.loadingBlurStyle = {
                 opacity: 1
               };
-              $modalInstance.close();
             });
         }, function (error) {
           vm.loading = false;

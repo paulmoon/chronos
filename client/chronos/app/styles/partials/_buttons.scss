@@ -1,8 +1,3 @@
-$button-color-special: #edc421;
-$button-color-primary: $secondary-colour;
-$button-color-secondary: $primary-colour;
-$tag-label-color: $button-color-special;
-
 ///////////////////////////
 // Overwriting Bootstrap //
 ///////////////////////////
@@ -31,24 +26,28 @@ $tag-label-color: $button-color-special;
 
 .btn-success {
     background-color: $button-color-special;
+    font-weight: bold;
     border:0;
 }
 
 .btn-success:hover {
     opacity: 0.8;
     background-color: $button-color-special;
+    font-weight: bold;
     border:0;
 }
 
 .btn-success:active {
 	opacity: 0.8;
     background-color: $button-color-special;
+    font-weight: bold;
     border:0;
 }
 
 .btn-success:focus {
 	opacity: 0.8;
     background-color: $button-color-special;
+    font-weight: bold;
     border:0;
 }
 

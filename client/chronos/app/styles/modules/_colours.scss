@@ -14,12 +14,17 @@
 // $primary-colour: #dadbdf;
 // $secondary-colour: #b7b8be;
 
-// Purple Style
-$primary-colour: #0AA0D9;
-$secondary-colour: #0C98CF;
 
 /////////////////////////
 // Common Color Pieces //
 /////////////////////////
-$tertiary-colour: #FAFAFA;
-$loader-color: #551A8B; // darker shade of primary colour
+$primary-colour: #ffffff;
+$secondary-colour: #455A64;
+
+$tertiary-colour: #eeeeee;
+
+$loader-color: $secondary-colour;
+$button-color-special: #ff9800;
+$button-color-primary: $secondary-colour;
+$button-color-secondary: #829cbf;
+$tag-label-color: $secondary-colour;//$button-color-special;
