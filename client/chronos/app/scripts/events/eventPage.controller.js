@@ -44,6 +44,7 @@
       EventFacadeService.getEvent($routeParams.eventId)
         .then(function (response) {
           vm.placeName = response.data.place_name;
+          vm.placeId = response.data.placeId;
           vm.description = response.data.description;
           vm.name = response.data.name;
           vm.username = response.data.creator.username;
