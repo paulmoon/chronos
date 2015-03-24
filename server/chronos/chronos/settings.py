@@ -107,3 +107,8 @@ STATIC_URL = '/static/'
 SWAGGER_SETTINGS = {
     'api_key': '8513d558de1558c15d58a072f2934d2c0011e7aa',
 }
+
+try:
+    from local_settings import *
+except ImportError:
+    pass

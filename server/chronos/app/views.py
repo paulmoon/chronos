@@ -96,7 +96,7 @@ class GetCurrentUserInformation(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated, )
     serializer_class = ChronosUserSerializer
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs): 
         serializer = self.get_serializer_class()(request.user)
         return Response(serializer.data, status.HTTP_200_OK)
 
@@ -232,7 +232,12 @@ class VoteEvent(generics.GenericAPIView):
 class TagView(generics.ListCreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = app.serializers.TagSerializer
-    queryset = app.models.Tag.objects.all()
+
+    def get_queryset(self):
+        queryset = app.models.Tag.objects.all()
+        queryset = queryset.order_by('-usage')[:5]
+
+        return queryset
 
 class SaveEvent(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication, )
@@ -358,7 +363,7 @@ get_user = GetUserInformation.as_view()
 list_users = ListUsers.as_view()
 list_specific_event = EventOnlyView.as_view()
 list_create_event = EventView.as_view()
-create_tag = TagView.as_view()
+get_popular_tags = TagView.as_view()
 vote_event = VoteEvent.as_view()
 save_event = SaveEvent.as_view()
 unsave_event = UnsaveEvent.as_view()

@@ -8,3 +8,5 @@ django-mptt==0.6.1
 django-rest-swagger==0.2.8
 Django==1.7.4
 djangorestframework==3.0.4
+psycopg2==2.6
+dj-static==0.0.6

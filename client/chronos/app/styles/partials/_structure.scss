@@ -23,10 +23,28 @@
   min-height: 100%;
 }
 
-.panel-height {
-  height: 75%;
+.left-container {
+  height: 100%;
 }
 
 .empty {
   z-index: -10000;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: #777;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: #777;
+   opacity: 1;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: #777;
+   opacity: 1;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color: #777;
 }
