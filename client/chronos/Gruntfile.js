@@ -333,7 +333,7 @@ module.exports = function (grunt) {
 
     ngtemplates: {
       app: {
-        cwd: '<%= yeoman.app %>/scripts',
+        cwd: '<%= yeoman.app %>',
         src: '**/*.html',
         dest: '<%= yeoman.dist %>/templates.js'
       }
