@@ -27,7 +27,7 @@ urlpatterns = patterns('',
     url(r'^events/$', 'app.views.list_create_event'),
     url(r'^events/vote/$', 'app.views.vote_event'),
     url(r'^events/report/$', 'app.views.report_event'),
-    url(r'^tags/$', 'app.views.create_tag'),
+    url(r'^tags/popular/$', 'app.views.get_popular_tags'),
 
     url(r'^images/$', 'app.views.upload_image'),
 

@@ -17,6 +17,7 @@
   LeftPanelController.$inject = ['EventFacadeService', 'NotificationService', 'PubSubService', 'settings'];
 
   function LeftPanelController(EventFacadeService, NotificationService, PubSubService, settings) {
+
     var vm = this;
 
     vm.title = 'LeftPanelController';
@@ -24,6 +25,7 @@
     vm.searchError = '';
     vm.storageTags = [];
     vm.addedTags = [];
+    vm.popularTags = [];
 
     vm.loading = false;
     vm.getEvents = EventFacadeService.getSelectedEvents;
@@ -40,6 +42,7 @@
     vm.clearStartDate = clearStartDate;
     vm.clearEndDate = clearEndDate;
     vm.clearKeywords = clearKeywords;
+    vm.addPopularTag = addPopularTag;
 
     vm.getVoteDirection = getVoteDirection;
     vm.savedByUser = savedByUser;
@@ -73,6 +76,14 @@
       for (i = 0; i < reportedEvents.length; i += 1) {
         vm.reportedEvents[reportedEvents[i].event] = reportedEvents[i].reason;
       }
+
+      EventFacadeService.getPopularTags().
+        success(function (data, status, headers, config) {
+          vm.popularTags = data;
+        }).
+        error(function (data, status, headers, config) {
+          // Do something
+        });
     }
 
     /**
@@ -100,15 +111,12 @@
       vm.searchError = '';
       var tempKeywords = '';
       var filterParams = {};
-      vm.loading = true;
-      vm.loadingBlurStyle = {
-        opacity: 0.4
-      };
 
       if (vm.searchKeywords) {
         tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(" ");
         if (tempKeywords.length > settings.maxKeywords) {
           vm.searchError = "Max of 10 keywords.";
+          NotificationService.errorMessage(vm.searchError);
         } else {
           filterParams.keywords = tempKeywords;
         }
@@ -125,10 +133,6 @@
       if (!vm.searchError) {
         EventFacadeService.updateEvents(filterParams);
       }
-      vm.loading = false;
-      vm.loadingBlurStyle = {
-        opacity: 1
-      };
     }
 
     /**
@@ -169,6 +173,7 @@
 
         if (tempKeywords.length > settings.maxKeywords) {
           vm.searchError = "Max of 10 keywords.";
+          NotificationService.errorMessage(vm.searchError);
         } else {
           EventFacadeService.updateKeywords(tempKeywords);
         }
@@ -201,6 +206,34 @@
       } else {
         vm.searchEvents();
       }
+    }
+
+    /**
+     * @description Adds a selected popular tag to the tag bar
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function addPopularTag(tag) {
+      vm.searchError = '';
+      var noMatch = true;
+      var tempTags = [];
+
+      delete tag['usage'];
+      delete tag['$$hashKey'];
+
+      vm.addedTags.forEach(function (tag2) {
+        if (tag2.name == tag.name){
+          noMatch = false;
+        }
+      });
+
+      if (noMatch) {
+        vm.addedTags.push(tag);
+      } else {
+        vm.searchError = "Identical Tag Found.";
+        NotificationService.errorMessage(vm.searchError);
+      }
+
+      updateTags();
     }
 
     /**
@@ -237,6 +270,7 @@
           vm.storageTags.push(tag);
         } else {
           vm.searchError = "Identical Tag Found.";
+          NotificationService.errorMessage(vm.searchError);
         }
       });
 
