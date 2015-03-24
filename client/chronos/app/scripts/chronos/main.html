@@ -4,10 +4,10 @@
       <div class="search-area panel panel-info">
         <div class="panel-body">
           <form role="form" ng-submit="vm.updateKeywords()">
-            <div class="input-group input-group-sm search-area-input-margin" style="width:99%">
+            <div class="input-group input-group-sm search-area-input-margin search-input-group">
               <input type="text" class="form-control" aria-describedby="wordsAddon"
                      ng-model="vm.searchKeywords" placeholder="Search">
-              <span class="input-group-addon btn-primary" style="width:10%;cursor:pointer;" ng-click="vm.updateKeywords()">
+              <span class="input-group-addon btn-primary search-button" ng-click="vm.updateKeywords()">
                 <span class="glyphicon glyphicon-search btn-primary" aria-hidden="true"></span>
               </span>
             </div>
@@ -33,8 +33,8 @@
               <span class="glyphicon glyphicon-remove clear-field" aria-hidden="true"></span>
             </span>
           </div> -->
-          <div class="input-group input-group-sm search-area-input-margin" style="width:99%">
-            <span class="input-group-addon" style="background-color:#fafafa;"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span></span>
+          <div class="input-group input-group-sm search-area-input-margin search-input-group">
+            <span class="input-group-addon tag-input-background"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span></span>
             <tags-input class="bootstrap" data-ng-model="vm.addedTags" display-property="name" add-on-space="true" placeholder="New Tag"
                 add-on-enter="true" min-length="1" max-length="50" on-tag-added="vm.updateTags()" on-tag-removed="vm.updateTags()">
             </tags-input>
@@ -43,7 +43,7 @@
               <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li><a class="popular-tags-title"><strong>Popular Tags</strong> (click to add)</a></li>
                 <li class="divider"></li>
-                <li ng-repeat="tag in vm.popularTags" style="cursor:pointer;" ng-click="vm.addPopularTag(tag)"><a>{{ tag.name }}</a></li>
+                <li class="style-mouse" ng-repeat="tag in vm.popularTags" ng-click="vm.addPopularTag(tag)"><a>{{ tag.name }}</a></li>
               </ul>
             </div>
           </div>

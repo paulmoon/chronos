@@ -14,6 +14,23 @@
   margin-right: 5px;
 }
 
+.search-button {
+  width:10%;
+  cursor:pointer;
+}
+
+.search-input-group {
+  width:99%;
+}
+
+.style-mouse {
+  cursor:pointer;
+}
+
+.tag-input-background {
+  background-color:#fafafa;
+}
+
 .apply-filters {
    float:right;
    margin-right:10px;
@@ -47,7 +64,7 @@
 }
 
 .popular-tags-title {
-  pointer: default; 
+  cursor: default; 
   background: #fff;
   background-image:none;
   color: $secondary-colour;

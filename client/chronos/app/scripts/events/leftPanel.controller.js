@@ -14,9 +14,9 @@
     .module('chronosApp')
     .controller('LeftPanelController', LeftPanelController);
 
-  LeftPanelController.$inject = ['EventFacadeService', 'NotificationService', 'PubSubService', 'settings', 'RestService'];
+  LeftPanelController.$inject = ['EventFacadeService', 'NotificationService', 'PubSubService', 'settings'];
 
-  function LeftPanelController(EventFacadeService, NotificationService, PubSubService, settings, RestService) {
+  function LeftPanelController(EventFacadeService, NotificationService, PubSubService, settings) {
 
     var vm = this;
 
@@ -77,12 +77,12 @@
         vm.reportedEvents[reportedEvents[i].event] = reportedEvents[i].reason;
       }
 
-      RestService.getPopularTags().
+      EventFacadeService.getPopularTags().
         success(function (data, status, headers, config) {
           vm.popularTags = data;
         }).
         error(function (data, status, headers, config) {
-          // Fill in at later date
+          // Do something
         });
     }
 

@@ -182,7 +182,6 @@ class EventWriteSerializer(serializers.ModelSerializer):
         tag_names = [tag["name"] for tag in tags]
         existing_tag_queryset = app.models.Tag.objects.filter(name__in=tag_names)
 
-        ######### add stuff here for adding to number of times its used
         for tag in existing_tag_queryset:
             tag.usage += 1
             tag.save()

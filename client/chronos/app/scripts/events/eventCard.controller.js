@@ -79,9 +79,12 @@
 
       if (vm.voteDirectionByUser === "-1"){
         vm.vote = vm.vote + 2;
+      } else if (vm.voteDirectionByUser === "1"){
+        vm.vote = vm.vote;
       } else {
         vm.vote = vm.vote + 1;
       }
+
       vm.voteDirectionByUser = "1";
     }
 
@@ -98,6 +101,8 @@
 
       if (vm.voteDirectionByUser === "1"){
         vm.vote = vm.vote - 2;
+      } else if (vm.voteDirectionByUser === "-1"){
+        vm.vote = vm.vote;
       } else {
         vm.vote = vm.vote - 1;
       }

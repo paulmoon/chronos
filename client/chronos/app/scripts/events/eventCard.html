@@ -18,11 +18,11 @@
     <div ng-if="vm.picture" class="picture-group">
       <img ng-src="{{vm.picture.image}}" alt="Image Not Found" class="event-picture">
     </div>
-    <div class="event-creation" style="float:right">Created by <a ng-click="vm.goUser()" style="text-decoration:none">{{vm.creator.username}}</a></div>
+    <div class="event-creation float-right">Created by <a ng-click="vm.goUser()" style="text-decoration:none">{{vm.creator.username}}</a></div>
     <h4 class="media-heading"><a href="#/event/{{vm.eventId}}" class="event-name" style="text-decoration:none">{{ vm.displayName }}</a></h4>
     <div class="event-details-date">{{vm.displayStartDate}} to {{vm.displayEndDate}}</div>
     <div class="event-details-place">{{vm.placeName}}</div>
-    <div style="float:right">
+    <div class="float-right">
       <div class="btn-group">
         <button ng-if="vm.isLoggedIn()" type="button" class="btn btn-link btn-xs dropdown-toggle event-button" data-toggle="dropdown" aria-expanded="false" style="outline:none" ng-style="vm.reportButtonStyle">
           <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
@@ -46,7 +46,7 @@
       </button>
     </div>
     <div class="float-left" ng-repeat="tag in vm.tags">
-      <label class="label label-info margin-right-two" style="cursor:pointer;" ng-click="vm.addTag(tag.name)">{{ tag.name }}</label>
+      <label class="label label-info margin-right-two style-mouse" ng-click="vm.addTag(tag.name)">{{ tag.name }}</label>
     </div>
   </div>
 </div>

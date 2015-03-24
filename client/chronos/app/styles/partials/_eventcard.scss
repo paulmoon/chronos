@@ -4,7 +4,6 @@
   max-height: calc(96% - 99px);
   height: calc(96% - 99px);
   overflow-y: scroll;
-  position:relative;
   border:0;
   background: $tertiary-colour;
   margin-left: 2%;
@@ -44,6 +43,10 @@
 
 .float-left {
   float:left;
+}
+
+.float-right {
+  float:right;
 }
 
 .margin-right-two {
