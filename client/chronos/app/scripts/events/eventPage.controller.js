@@ -19,6 +19,7 @@
 
     vm.title = 'EventPageController';
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
+    vm.eventId = $routeParams.eventId;
 
     vm.saveEvent = 'SAVE';
     vm.saveEventClick = saveEventClick;
@@ -41,7 +42,7 @@
      * @private
      */
     function _activate() {
-      EventFacadeService.getEvent($routeParams.eventId)
+      EventFacadeService.getEvent(vm.eventId)
         .then(function (response) {
           vm.placeName = response.data.place_name;
           vm.placeId = response.data.placeId;
@@ -57,5 +58,7 @@
           vm.tags = response.data.tags;
         });
     }
+
+
   }
 })();
