@@ -14,7 +14,7 @@
     .module('chronosApp')
     .controller('LeftPanelController', LeftPanelController);
 
-  LeftPanelController.$inject = ['EventFacadeService', 'PubSubService', 'settings', 'RestService', 'NotificationService'];
+  LeftPanelController.$inject = ['EventFacadeService', 'NotificationService', 'PubSubService', 'settings', 'RestService'];
 
   function LeftPanelController(EventFacadeService, NotificationService, PubSubService, settings, RestService) {
 
