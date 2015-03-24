@@ -24,37 +24,37 @@
     }
 
 .fc-state-default { /* non-theme */
-  display: inline-block;
-  padding: 6px 12px;
-  margin-bottom: 0;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.42857143;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
       touch-action: manipulation;
-  cursor: pointer;
-  -webkit-user-select: none;
+    cursor: pointer;
+    -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  background-image: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-    }
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
 
 .fc-button-inner {
     position: relative;
     float: left;
     overflow: hidden;
-    }
+}
 
 .fc-state-default .fc-button-inner { /* non-theme */
     border-style: solid;
     border-width: 0 1px;
-    }
+}
 
 .fc-button-content {
     position: relative;
@@ -63,7 +63,7 @@
     line-height: 1.9em;
     padding: 0 .6em;
     white-space: nowrap;
-    }
+}
 
 /* icon (for jquery ui) */
 
@@ -71,7 +71,7 @@
     position: relative;
     float: left;
     top: 50%;
-    }
+}
 
 .fc-button-content .ui-icon {
     position: relative;
@@ -79,7 +79,7 @@
     margin-top: -50%;
     *margin-top: 0;
     *top: -50%;
-    }
+}
 
 /* gloss effect */
 
@@ -87,7 +87,7 @@
     position: absolute;
     top: 50%;
     left: 0;
-    }
+}
 
 .fc-state-default .fc-button-effect span {
     position: absolute;
@@ -101,7 +101,7 @@
     background: #444;
     opacity: .09;
     filter: alpha(opacity=9);
-    }
+}
 
 /* button states (determines colors)  */
 
@@ -111,31 +111,31 @@
     border-color: #ccc #bbb #aaa;
     background: #F3F3F3;
     color: rgb(0, 0, 0);
-    }
+}
 
 .fc-state-hover,
 .fc-state-hover .fc-button-inner {
     border-color: #999;
-    }
+}
 
 .fc-state-down,
 .fc-state-down .fc-button-inner {
     border-color: #555;
     background: #777;
-    }
+}
 
 .fc-state-active,
 .fc-state-active .fc-button-inner {
     border-color: #555;
     background: #777;
     color: #fff;
-    }
+}
 
 .fc-state-disabled,
 .fc-state-disabled .fc-button-inner {
     color: rgb(122, 69, 69);
     border-color: #ddd;
-    }
+}
 
 .fc-state-disabled {
    pointer-events: none;
@@ -144,9 +144,9 @@
   -webkit-box-shadow: none;
           box-shadow: none;
   opacity: .65;
-    }
+}
 
 .fc-state-disabled .fc-button-effect {
     display: none;
-    }
+}
 
