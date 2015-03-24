@@ -18,6 +18,6 @@
     // 1 = Spinning loading bar with an e in it
     // 2 = Three balls in a row
     // 3 = Two spining rings
-    vm.loaderNumber = 1;
+    vm.loaderNumber = 3;
   }
 })();
