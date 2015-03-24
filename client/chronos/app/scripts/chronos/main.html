@@ -41,7 +41,7 @@
             <div class="input-group-btn">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
               <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                <li><a><strong style="color:$secondary-color;text-align:center;">Popular Tags</strong> (click to add)</a></li>
+                <li><a class="popular-tags-title"><strong>Popular Tags</strong> (click to add)</a></li>
                 <li class="divider"></li>
                 <li ng-repeat="tag in vm.popularTags" style="cursor:pointer;" ng-click="vm.addPopularTag(tag)"><a>{{ tag.name }}</a></li>
               </ul>
@@ -76,7 +76,7 @@
                      event-reported="{{vm.reportedByUser(event)}}"></eventcard>
         </div>
       </div>
-      <div class="faded-scroller"></div>
+      <!-- <div class="faded-scroller"></div> -->
   </div>
   <ng-include src="'scripts/calendar/calendar.html'"></ng-include>
 </div>

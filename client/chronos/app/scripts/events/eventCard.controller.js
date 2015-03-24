@@ -114,12 +114,13 @@
      * @memberOf chronosApp:EventCardController
      */
     function saveClicked() {
-      if (!vm.eventSaved) {
+      if (vm.eventSaved == "false") {
         vm.saveEvent();
+        vm.eventSaved = "true";
       } else {
         vm.unsaveEvent();
+        vm.eventSaved = "false";
       }
-      vm.eventSaved = !vm.eventSaved;
     }
 
     /**

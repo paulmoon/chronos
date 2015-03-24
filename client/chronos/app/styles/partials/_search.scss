@@ -42,14 +42,18 @@
   float: left;
 }
 
-.popular-tags {
-  color: $secondary-colour;
-  float: left;
-  margin-top:2px;
-  margin-right:5px;
-  margin-left:5px;
-}
-
 .add-opacity {
   opacity: 0.6;
+}
+
+.popular-tags-title {
+  pointer: default; 
+  background: #fff;
+  background-image:none;
+  color: $secondary-colour;
+  text-align: center;
+}
+
+.popular-tags-title:hover {
+  background-image: linear-gradient(#fff, #fff);
 }
