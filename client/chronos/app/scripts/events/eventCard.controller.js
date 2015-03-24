@@ -122,7 +122,7 @@
       vm.eventReported = "true";
     }
 
-    /*
+    /**
      * @description Action taken when save button is clicked
      * @memberOf chronosApp:EventCardController
      */

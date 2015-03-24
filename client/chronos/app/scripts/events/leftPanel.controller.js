@@ -64,7 +64,6 @@
         savedEvents = EventFacadeService.getSavedEvents(),
         reportedEvents = EventFacadeService.getReportedEvents(),
         i;
-
       for (i = 0; i < votedEvents.length; i += 1) {
         vm.votedEventDirection[votedEvents[i].event.id] = votedEvents[i].direction;
       }

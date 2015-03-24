@@ -19,6 +19,7 @@
 
     vm.title = 'EventPageController';
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
+    vm.eventId = $routeParams.eventId;
 
     vm.saveEvent = 'SAVE';
     vm.saveEventClick = saveEventClick;
@@ -41,9 +42,10 @@
      * @private
      */
     function _activate() {
-      EventFacadeService.getEvent($routeParams.eventId)
+      EventFacadeService.getEvent(vm.eventId)
         .then(function (response) {
           vm.placeName = response.data.place_name;
+          vm.placeId = response.data.placeId;
           vm.description = response.data.description;
           vm.name = response.data.name;
           vm.username = response.data.creator.username;
@@ -51,10 +53,12 @@
           vm.downvote = response.data.downvote;
           vm.vote = response.data.vote;
           vm.picture = response.data.picture;
-          vm.startDate = moment(response.data.start_date).format('MMMM Do YYYY, h:mm:ss a');
-          vm.endDate = moment(response.data.end_date).format('MMMM Do YYYY, h:mm:ss a');
+          vm.startDate = moment(response.data.start_date).format('lll');
+          vm.endDate = moment(response.data.end_date).format('lll');
           vm.tags = response.data.tags;
         });
     }
+
+
   }
 })();
