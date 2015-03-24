@@ -331,6 +331,24 @@ module.exports = function (grunt) {
       }
     },
 
+    ng_template: {
+      // The directory of your views
+      files: ['<%= yeoman.app %>/scripts/'],
+
+      options: {
+
+        // The directory of your app
+        appDir: '<%= yeoman.app %>',
+
+        // The main html file to place your inline templates
+        indexFile: 'index.html',
+
+        // Default set to false
+        concat: true
+
+      }
+    },
+
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
@@ -377,7 +395,7 @@ module.exports = function (grunt) {
         'compass'
       ],
       dist: [
-        'compass:dist',
+        'compass:dist'
         //'imagemin',
         //'svgmin'
       ]
@@ -457,6 +475,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'replace:production',
+    'ng_template',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
