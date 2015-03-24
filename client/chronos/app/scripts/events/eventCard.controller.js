@@ -106,6 +106,7 @@
       } else {
         vm.vote = vm.vote - 1;
       }
+      
       vm.voteDirectionByUser = "-1";
     }
 

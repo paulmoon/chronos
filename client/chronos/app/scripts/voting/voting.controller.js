@@ -30,16 +30,18 @@
     /////////////////////////////////
 
     function _activate() {
-      // vm.voteDirectionByUser and vm.eventSaved will be strings because they were interpolated using @.
       AuthFacadeService.retrieveUserProfile()
         .then(function(response) {
-           var votedEvents = response.data.voted_events;
-           for(var i = 0, len = votedEvents.length; i < len; ++i) {
-             if(vm.eventId == votedEvents[i].event.id) {
-               vm.voteDirectionByUser = votedEvents[i].direction;
-               break;
-             }
-           }
+
+          var votedEvents = response.data.voted_events;
+
+          for(var i = 0, len = votedEvents.length; i < len; ++i) {
+            if(vm.eventId == votedEvents[i].event.id) {
+              vm.voteDirectionByUser = votedEvents[i].direction;
+              break;
+            }
+          }
+
           if (vm.voteDirectionByUser == "1") {
             vm.upArrowStyle = {color: "orange"};
             vm.downArrowStyle = {};
@@ -60,6 +62,18 @@
         color: 'orange'
       };
       vm.downArrowStyle = {};
+
+      console.log(vm.voteDirectionByUser);
+
+      if (vm.voteDirectionByUser === -1){
+        vm.vote = vm.vote + 2;
+      } else if (vm.voteDirectionByUser === 1){
+        vm.vote = vm.vote;
+      } else {
+        vm.vote = vm.vote + 1;
+      }
+
+      vm.voteDirectionByUser = 1;
     }
 
     /**
@@ -72,6 +86,16 @@
         color: 'blue'
       };
       vm.upArrowStyle = {};
+
+      if (vm.voteDirectionByUser === 1){
+        vm.vote = vm.vote - 2;
+      } else if (vm.voteDirectionByUser === -1){
+        vm.vote = vm.vote;
+      } else {
+        vm.vote = vm.vote - 1;
+      }
+      
+      vm.voteDirectionByUser = -1;
     }
   }
 })();
