@@ -335,10 +335,14 @@ module.exports = function (grunt) {
       app: {
         cwd: '<%= yeoman.app %>/scripts',
         src: '**/*.html',
-        dest: '<%= yeoman.dist %>/templates.js',
-        options: {
-          htmlmin: '<%= htmlmin.app %>'
-        }
+        dest: '<%= yeoman.dist %>/templates.js'
+      }
+    },
+
+    concat: {
+      app: {
+        src: ['<%= yeoman.app %>/scripts/app.js', '<%= yeoman.dist %>/templates.js'],
+        dest: '<%= yeoman.dist %>/app.js'
       }
     },
 
@@ -467,11 +471,15 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
+    // Replace serverUrl with production-appropriate url
     'replace:production',
+    // Put all templates into $templateCache so production website can use it while minified
     'ngtemplates',
     'useminPrepare',
+    // Use compass to build Sass concurrently
     'concurrent:dist',
     'autoprefixer',
+    // Concatenate template.js outputted by ngtemplates with app.js
     'concat',
     'ngAnnotate',
     'copy:dist',
