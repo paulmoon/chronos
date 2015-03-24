@@ -331,21 +331,14 @@ module.exports = function (grunt) {
       }
     },
 
-    ng_template: {
-      // The directory of your views
-      files: ['<%= yeoman.app %>/scripts/'],
-
-      options: {
-
-        // The directory of your app
-        appDir: '<%= yeoman.app %>',
-
-        // The main html file to place your inline templates
-        indexFile: 'index.html',
-
-        // Default set to false
-        concat: true
-
+    ngtemplates: {
+      app: {
+        cwd: '<%= yeoman.app %>/scripts',
+        src: '**/*.html',
+        dest: '<%= yeoman.dist %>/templates.js',
+        options: {
+          htmlmin: '<%= htmlmin.app %>'
+        }
       }
     },
 
@@ -475,7 +468,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'replace:production',
-    'ng_template',
+    'ngtemplates',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
