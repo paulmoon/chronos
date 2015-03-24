@@ -21,13 +21,6 @@
   function EventCardController(AuthFacadeService, EventFacadeService) {
     var vm = this;
 
-    /**
-     * @description Adds a vote for an event in the direction specified, and associates it with
-     *  the current user
-     * @memberOf chronosApp:EventCardController
-     * @param direction: An integer representing the direction of the vote. Either 1, 0, or -1
-     * @param callback: A function to be executed on the successful voting of an event
-     */
     vm.voteEvent = EventFacadeService.voteEvent;
     vm.upvoteEvent = upvoteEvent;
     vm.downvoteEvent = downvoteEvent;
@@ -83,6 +76,13 @@
         color: 'orange'
       };
       vm.downArrowStyle = {};
+
+      if (vm.voteDirectionByUser === "-1"){
+        vm.vote = vm.vote + 2;
+      } else {
+        vm.vote = vm.vote + 1;
+      }
+      vm.voteDirectionByUser = "1";
     }
 
     /**
@@ -95,6 +95,13 @@
         color: 'blue'
       };
       vm.upArrowStyle = {};
+
+      if (vm.voteDirectionByUser === "1"){
+        vm.vote = vm.vote - 2;
+      } else {
+        vm.vote = vm.vote - 1;
+      }
+      vm.voteDirectionByUser = "-1";
     }
 
     /**
@@ -107,6 +114,7 @@
       vm.reportButtonStyle = {
         color: 'crimson'
       };
+      vm.eventReported = "true";
     }
 
     /*
