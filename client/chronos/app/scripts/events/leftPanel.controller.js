@@ -116,6 +116,7 @@
         tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(" ");
         if (tempKeywords.length > settings.maxKeywords) {
           vm.searchError = "Max of 10 keywords.";
+          NotificationService.errorMessage(vm.searchError);
         } else {
           filterParams.keywords = tempKeywords;
         }
@@ -172,6 +173,7 @@
 
         if (tempKeywords.length > settings.maxKeywords) {
           vm.searchError = "Max of 10 keywords.";
+          NotificationService.errorMessage(vm.searchError);
         } else {
           EventFacadeService.updateKeywords(tempKeywords);
         }
@@ -228,6 +230,7 @@
         vm.addedTags.push(tag);
       } else {
         vm.searchError = "Identical Tag Found.";
+        NotificationService.errorMessage(vm.searchError);
       }
 
       updateTags();
@@ -267,6 +270,7 @@
           vm.storageTags.push(tag);
         } else {
           vm.searchError = "Identical Tag Found.";
+          NotificationService.errorMessage(vm.searchError);
         }
       });
 
