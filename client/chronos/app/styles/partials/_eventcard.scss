@@ -1,39 +1,52 @@
 .events-area {
   width: 96%;
-  min-height: 96%;
-  max-height: 96%;
-  height: 96%;
+  min-height: calc(96% - 99px);
+  max-height: calc(96% - 99px);
+  height: calc(96% - 99px);
   overflow-y: scroll;
   border:0;
   background: $tertiary-colour;
   margin-left: 2%;
 }
 
+.faded-scroller {
+    content:'';
+    margin-top: calc(-96% + 122px);
+    margin-left:14px;
+    margin-right:25px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(251, 251, 251, 1) 0%, rgba(251, 251, 251, 0) 100%);
+    position: relative;
+}
+
 .event-card-panel{
   float: top;
   background:inherit;
-  margin-top: 5px;
+  margin-bottom:5px;
 }
 
-.event-card-panel:hover{
-  float: top;
-  background:#FBFBFB;
+.event-card-panel:hover {
+  background:#F6F6F6;
 }
 
 .event-card-color-alternate {
-  background-color:#FEFEFE;
+  background-color:#FDFDFD;
 }
 
 .event-card-color {
   background-color:#FFF;
 }
 
-.event-card{
+.event-card {
   margin-top:5px;
 }
 
 .float-left {
   float:left;
+}
+
+.float-right {
+  float:right;
 }
 
 .margin-right-two {
@@ -63,10 +76,16 @@
   color:#405D87;
 }
 
-.event-details {
+.event-details-date {
   font-size: 13px;
   color: #5B636E;
   font-weight: 450;
+}
+
+.event-details-place {
+  font-size: 11px;
+  color: #5B636E;
+  font-weight: 800;
 }
 
 .event-creation {

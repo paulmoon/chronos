@@ -1,8 +1,9 @@
 .search-area {
   float: top;
-  text-align: center;
   width: 96%;
+  height: 95px;
   margin-left: 2%;
+  margin-bottom: 5px;
   border:0;
   background: $tertiary-colour;
   margin-top: $main-pane-margin-top;
@@ -11,6 +12,23 @@
 .search-area-input-margin {
   margin-bottom: 5px;
   margin-right: 5px;
+}
+
+.search-button {
+  width:10%;
+  cursor:pointer;
+}
+
+.search-input-group {
+  width:99%;
+}
+
+.style-mouse {
+  cursor:pointer;
+}
+
+.tag-input-background {
+  background-color:#fafafa;
 }
 
 .apply-filters {
@@ -41,7 +59,18 @@
   float: left;
 }
 
-
 .add-opacity {
   opacity: 0.6;
+}
+
+.popular-tags-title {
+  cursor: default; 
+  background: #fff;
+  background-image:none;
+  color: $secondary-colour;
+  text-align: center;
+}
+
+.popular-tags-title:hover {
+  background-image: linear-gradient(#fff, #fff);
 }
