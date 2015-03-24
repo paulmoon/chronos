@@ -163,8 +163,8 @@
       return CommentFactory.getComment(eventID);
     };
 
-    this.saveComment = function (eventID, commentText) {
-      return CommentFactory.saveComment(eventID, commentText)
+    this.saveComment = function (eventID, commentText, depth, path, parent) {
+      return CommentFactory.saveComment(eventID, commentText, depth, path, parent)
         .then(function (response) {
           PubSubService.publish(settings.pubSubOnCommentCreate);
           return response;

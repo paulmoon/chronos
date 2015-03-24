@@ -123,6 +123,7 @@ function CommentController(AuthFacadeService, EventFacadeService, $modal, $route
   function replyComment() {
     EventFacadeService.saveComment($routeParams.eventId, vm.replyData, vm.depth, vm.path, vm.childOf)
       .then(function (comments) {
+        console.log(comments);
       });
   }
 
