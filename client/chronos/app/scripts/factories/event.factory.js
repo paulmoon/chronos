@@ -248,7 +248,7 @@
         // Note we will never enter this via Full Calendar because selecting one day always
         // ensures we are checking against the next day
         if (element.start_date.diff(element.end_date) === 0) {
-          return element.start_date < start.add(1, 'd') && element.end_date >= start;
+          return element.start_date < start.local().add(1, 'd') && element.end_date >= start.local();
         }
 
 
