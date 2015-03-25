@@ -245,6 +245,12 @@ module.exports = function (grunt) {
       }
     },
 
+    uglify: {
+      options: {
+        mangle: false
+      }
+    },
+
     concat: {
       prependNgTemplates: {
         // Note that ordering matters here, because scripts.js will contain app.js which instantiates chronosApp and
@@ -370,9 +376,13 @@ module.exports = function (grunt) {
             '.htaccess',
             '*.html',
             'views/{,*/}*.html',
-            'images/{,*/}*.{webp}',
-            'fonts/*'
+            'images/{,*/}*.{webp}'
           ]
+        }, {
+          expand: true,
+          flatten: true,
+          src: ['bower_components/{,*/}*.{ttf, woff}'],
+          dest: '<%= yeoman.dist %>/fonts'
         }, {
           expand: true,
           cwd: '.tmp/images',
