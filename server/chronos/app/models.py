@@ -47,6 +47,7 @@ class Image(models.Model):
 ##############################
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    usage = models.IntegerField(default=1)
 
 ##############################
 # --------- Events! -------- #
