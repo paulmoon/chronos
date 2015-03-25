@@ -13,6 +13,8 @@
     .module('chronosApp')
     .directive('childcomment', childcomment);
 
+  childcomment.$inject = ['$compile'];
+
   function childcomment($compile) {
     var directive = {
       restrict: 'E',

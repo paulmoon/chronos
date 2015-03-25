@@ -25,6 +25,6 @@
       'ui.calendar',
       'ngTagsInput',
       'leaflet-directive',
-      'angularFileUpload',
+      'angularFileUpload'
     ]);
 })();
