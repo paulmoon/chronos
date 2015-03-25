@@ -247,7 +247,9 @@ module.exports = function (grunt) {
 
     concat: {
       prependNgTemplates: {
-        src: ['.tmp/concat/js/templates.js', '.tmp/concat/scripts/scripts.js'],
+        // Note that ordering matters here, because scripts.js will contain app.js which instantiates chronosApp and
+        // templates.js depends on chronosApp being present.
+        src: ['.tmp/concat/scripts/scripts.js', '.tmp/concat/js/templates.js'],
         dest: '.tmp/concat/scripts/scripts.js'
       }
     },
@@ -330,7 +332,7 @@ module.exports = function (grunt) {
       }
     },
 
-    // ngmin tries to make the code safe for minification automatically by
+    // ngAnnotate tries to make the code safe for minification automatically by
     // using the Angular long form for dependency injection. It doesn't work on
     // things like resolve or inject so those have to be done manually.
     ngAnnotate: {
@@ -433,8 +435,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           flatten: true,
-          src: '<%= yeoman.app %>/settings/constants.js',
-          dest: '<%= yeoman.app %>/settings/constants.js'
+          src: '<%= yeoman.app %>/scripts/settings/constants.js',
+          dest: '<%= yeoman.app %>/scripts/settings/'
         }]
       }
     },
