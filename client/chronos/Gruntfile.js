@@ -211,7 +211,9 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
-          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          // Don't rename our images because we're referencing them in the original file name, not the revisioned file names
+          // in our Angular code. Need to figure out how to make Angular reference filerev'd images.
+          //'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }
@@ -376,12 +378,17 @@ module.exports = function (grunt) {
             '.htaccess',
             '*.html',
             'views/{,*/}*.html',
-            'images/{,*/}*.{webp}'
+            'images/{,*/}*.{webp,png}'
           ]
         }, {
           expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: 'images/**/*.png',
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
           flatten: true,
-          src: ['bower_components/{,*/}*.{ttf, woff}'],
+          src: ['bower_components/**/*.{ttf,woff}'],
           dest: '<%= yeoman.dist %>/fonts'
         }, {
           expand: true,
