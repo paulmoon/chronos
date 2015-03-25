@@ -12,9 +12,9 @@
     .module('chronosApp')
     .controller('EventModalController', EventModalController);
 
-  EventModalController.$inject = ['$modalInstance', 'EventFacadeService', 'shouldShowEventCreateModal', '$log'];
+  EventModalController.$inject = ['$modalInstance', 'EventFacadeService', 'shouldShowEventCreateModal', '$log', 'NotificationService', 'settings'];
 
-  function EventModalController($modalInstance, EventFacadeService, shouldShowEventCreateModal, $log) {
+  function EventModalController($modalInstance, EventFacadeService, shouldShowEventCreateModal, $log, NotificationService, settings) {
     var vm = this;
 
     vm.title = 'EventModalController';
@@ -25,7 +25,7 @@
     vm.startDate = '';
     vm.endDate = '';
     vm.tags = [];
-    vm.files = undefined;
+    vm.popularTags = [];
     vm.imageId = null;
     vm.imageUrl = undefined;
     vm.loading = false;
@@ -33,6 +33,9 @@
     vm.shouldShowEventCreateModal = shouldShowEventCreateModal;
     vm.locationPicked = locationPicked;
     vm.uploadImage = uploadImage;
+    vm.removeImage = removeImage;
+    vm.addPopularTag = addPopularTag;
+    vm.verifyTags = verifyTags;
 
     vm.createEvent = createEvent;
     vm.cancel = cancel;
@@ -41,7 +44,19 @@
       opacity: 1
     };
 
+    _activate();
+
     ////////////////
+
+    function _activate(){
+      EventFacadeService.getPopularTags().
+        success(function (data, status, headers, config) {
+          vm.popularTags = data;
+        }).
+        error(function (data, status, headers, config) {
+          // Do something
+        });
+    }
 
     /**
      * @description Calls {@link chronosApp:EventFacadeService#createEvent}|EventFacadeService.createEvent} to create event.
@@ -117,5 +132,43 @@
       }
     }
 
+    function removeImage() {
+      vm.imageProgress = 0;
+      vm.imageId = null;
+      vm.imageUrl = undefined;
+    }
+
+    function verifyTags(){
+      if (vm.tags.length > settings.maxNumberTags) {
+        vm.tags.splice(-1, 1);
+        vm.creationError = "Max of 5 tags.";
+        NotificationService.errorMessage(vm.creationError);
+      }
+    }
+
+    function addPopularTag(tag) {
+      vm.creationError = '';
+      var noMatch = true;
+      var tempTags = [];
+
+
+      delete tag['usage'];
+      delete tag['$$hashKey'];
+
+      vm.tags.forEach(function (tag2) {
+        if (tag2.name == tag.name){
+          noMatch = false;
+        }
+      });
+
+      if (noMatch) {
+        vm.tags.push(tag);
+      } else {
+        vm.creationError = "Identical Tag Found.";
+        NotificationService.errorMessage(vm.creationError);
+      }
+
+      verifyTags();
+    }
   }
 })();

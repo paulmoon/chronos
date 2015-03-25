@@ -1,7 +1,47 @@
-.event-dates {
-  padding-right: 20px;
+.pac-container {
+  z-index: 1051 !important;
 }
 
-.pac-container {
-    z-index: 1051 !important;
+.create-modal-size .modal-dialog{
+  width:60%; height: 90%;
+  position: absolute;
+  top:0; bottom: 0; left: 0; right: 0;
+  margin: auto;
+}
+
+.text-area-size {
+  width: 100%;
+  height: 90%; 
+  resize: none;
+}
+
+.picture-zone {
+  background-color:#F7F7F7;
+  height:193px;
+  border-style: dashed;
+  border-color: #ccc;
+  text-align: center;
+  margin-top:2px;
+}
+
+.create-picture {
+  width:100%;
+  height:193px;
+  margin-top:2px;
+}
+
+.picture-wrap {
+  display:inline-block;
+  position:relative;
+}
+
+.image-removal-button {
+  position:absolute;
+  top:3px;
+  right:0;
+}
+
+.shadow-removal {
+  -moz-box-shadow: 0 0 5px 2px black;
+  -webkit-box-shadow: 0 0 5px 2px black;
 }
