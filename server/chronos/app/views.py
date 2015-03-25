@@ -21,6 +21,8 @@ import datetime
 from django.db.models import Q, Count
 from mptt.templatetags.mptt_tags import cache_tree_children
 
+SECONDS_IN_A_DAY_MINUS_ONE = 86399
+
 ##############################
 # --------- Users! --------- #
 ##############################
@@ -155,18 +157,22 @@ class EventListView(generics.ListAPIView):
             filterargs['place_id'] = placeid
         if creatorid is not None:
             filterargs['creator'] = int(creatorid)
+
         # If the from date is only specified, then we are looking for only that date
-        if fromDate is not None:
-            if toDate is not None:
-                if ':' not in toDate:
-                    filterargs['start_date__range'] = [fromDate, toDate[:10] + 'T23:59:59']
+        try:
+            if fromDate is not None:
+                from_date_time = datetime.datetime.strptime(fromDate, "%Y-%m-%d")
+                if toDate is not None:
+                    to_date_time = datetime.datetime.strptime(toDate, "%Y-%m-%d")
+                    filterargs['start_date__range'] = [from_date_time, to_date_time]
                 else:
-                    filterargs['start_date__range'] = [fromDate, toDate]
-            else:
-                filterargs['start_date__range'] = [fromDate, fromDate[:10] + 'T23:59:59']
-        else:
-            if toDate is not None:
-                filterargs['start_date__range'] = [toDate + 'T00:00:00', toDate[:10] + 'T23:59:59']
+                    filterargs['start_date__range'] = [fromDate, fromDate + datetime.timedelta(0, SECONDS_IN_A_DAY_MINUS_ONE)]
+            elif toDate is not None:
+                    to_date_time = datetime.datetime.strptime(toDate, "%Y-%m-%d")
+                    filterargs['start_date__range'] = [toDate, toDate + datetime.timedelta(0, SECONDS_IN_A_DAY_MINUS_ONE)]
+        except ValueError:
+            # Silently ignore badly formatted dates
+            pass
 
         queryset = queryset.filter(**filterargs)
 
