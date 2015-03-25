@@ -256,6 +256,11 @@
         // beginning on June 15th 12AM should not be shown when we click on June 14th (clicked date's end =
         // June 15th 12AM). Since we don't want to show the event because they are on different days,
         // strict inequality is used.
+
+        // The check goes as follows: (It can probably be simplified I know)
+        // 1. Is the start date after or the same as the start of the date range filter AND is the start date before the end of the date range filter OR (start of event is in the date range)
+        // 2. Is the end date after the start of the date range filter AND is the end date before or the same as the end of the date range filter OR (end of event is in the date range)
+        // 3. Is the start date after or the same as the date range filter AND is the end date before or the same as the end of the date range filter (event exists in between the start and end of date range)
         return ((element.start_date.isAfter(start) || element.start_date.isSame(start)) && (element.start_date.isBefore(end))) || 
           ((element.end_date.isAfter(start)) && (element.end_date.isBefore(end) || element.end_date.isSame(end))) ||
           ((element.start_date.isAfter(start) || element.start_date.isSame(start)) && (element.end_date.isBefore(end) || element.end_date.isSame(end)));
