@@ -106,7 +106,7 @@
      * @returns {HttpPromise}
      */
     this.createEvent = function (eventName, description, picture, startDate, endDate, place_id, place_name, tags) {
-      return $http.post(settings.serverUrl + '/events/', {
+      return $http.post(settings.serverUrl + '/events/create/', {
         name: eventName,
         description: description,
         picture: picture,

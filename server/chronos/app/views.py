@@ -131,15 +131,14 @@ class EventOnlyView(generics.RetrieveUpdateAPIView):
         else:
             return app.serializers.EventWriteSerializer
 
-class EventView(generics.ListAPIView):
+class EventListView(generics.ListAPIView):
     """
     Gets a filtered set of events specified by a set of QUERY_PARAMS
 
     Example:
     /events/?fromDate=2006-01-01&toDate=2006-01-02
     """
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (AllowAny,)
     serializer_class = app.serializers.EventReadSerializer
 
     def get_queryset(self):
@@ -190,13 +189,18 @@ class EventView(generics.ListAPIView):
         queryset = queryset.extra(select={'sumvote':'upvote - downvote'}).annotate(itemcount=Count('id')).order_by('-itemcount', 'start_date', '-sumvote')
         return queryset
 
+class EventCreateView(generics.CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = app.serializers.EventWriteSerializer
+
     def post(self, request, *args, **kwargs):
         """
         Create new Event, backend should handle a lot if not all of the authentication/validation with frontend having
         another layer of security
         """
         request.data['creator'] = request.user.id
-        serializer = app.serializers.EventWriteSerializer(data=request.data)
+        serializer = self.get_serializer_class()(data=request.data)
         if serializer.is_valid():
             event = serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
@@ -362,7 +366,8 @@ get_my_user = GetCurrentUserInformation.as_view()
 get_user = GetUserInformation.as_view()
 list_users = ListUsers.as_view()
 list_specific_event = EventOnlyView.as_view()
-list_create_event = EventView.as_view()
+list_event = EventListView.as_view()
+create_event = EventCreateView.as_view()
 get_popular_tags = TagView.as_view()
 vote_event = VoteEvent.as_view()
 save_event = SaveEvent.as_view()
