@@ -20,11 +20,11 @@
     // A function that FullCalendar will call as necessary to retrieve events
     vm.eventSources = [getEvents];
 
-    activate();
+    _activate();
 
     ////////////////
 
-    function activate() {
+    function _activate() {
       // Need to use $scope instead of vm because of ui.calendar (Angular directive for FullCalendar)
       $scope.uiConfig = {
         calendar: {
@@ -38,7 +38,7 @@
           dayClick: dayClick,
           eventClick: eventClick,
           select: select,
-          unselect: unselect
+          unselect: unselect,
         }
       };
     }
