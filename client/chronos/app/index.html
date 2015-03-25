@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
@@ -19,6 +20,7 @@
     <!-- endbower -->
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.bootstrap.min.css">
     <!-- endbuild -->
+
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
@@ -33,7 +35,6 @@
     <!-- Add your site or application content here -->
 
       <div ng-view=""></div>
-
 
     <!--&lt;!&ndash; Google Analytics: change UA-XXXXX-X to be your site's ID &ndash;&gt;-->
     <!--//  <script>-->
@@ -93,6 +94,8 @@
     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
+
+    <script src="scripts/vendor/jquery.growl.js"></script>
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -108,13 +111,14 @@
 
     <script src="scripts/calendar/calendar.controller.js"></script>
 
+    <script src="scripts/comments/comment.controller.js"></script>
+    <script src="scripts/comments/comment.directive.js"></script>
+    <script src="scripts/comments/childcomment.directive.js"></script>
+
     <script src="scripts/events/eventCard.controller.js"></script>
     <script src="scripts/events/eventCard.directive.js"></script>
     <script src="scripts/events/eventModal.controller.js"></script>
     <script src="scripts/events/eventPage.controller.js"></script>
-    <script src="scripts/comments/comment.controller.js"></script>
-    <script src="scripts/comments/comment.directive.js"></script>
-    <script src="scripts/comments/childcomment.directive.js"></script>
     <script src="scripts/events/leftPanel.controller.js"></script>
     <script src="scripts/events/restrictMaxTags.directive.js"></script>
 
@@ -122,10 +126,10 @@
     <script src="scripts/factories/eventPage.factory.js"></script>
     <script src="scripts/factories/comment.factory.js"></script>
 
+    <script src="scripts/google/googleAutocomplete.directive.js"></script>
+
     <script src="scripts/loading/loading.controller.js"></script>
     <script src="scripts/loading/loading.directive.js"></script>
-
-    <script src="scripts/google/googleAutocomplete.directive.js"></script>
 
     <script src="scripts/services/facade/authFacade.service.js"></script>
     <script src="scripts/services/facade/eventFacade.service.js"></script>
@@ -139,8 +143,6 @@
     <script src="scripts/settings/constants.js"></script>
     <script src="scripts/settings/routeProvider.config.js"></script>
     <script src="scripts/settings/tagsInputProvider.config.js"></script>
-
-    <script src="scripts/vendor/jquery.growl.js"></script>
     <!-- endbuild -->
   </body>
 </html>

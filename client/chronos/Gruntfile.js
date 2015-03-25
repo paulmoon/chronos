@@ -18,7 +18,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'dist',
+    appName: 'chronosApp'
   };
 
   // Define the configuration for all the tasks
@@ -227,7 +228,7 @@ module.exports = function (grunt) {
           html: {
             steps: {
               js: ['concat', 'uglifyjs'],
-              css: ['cssmin']
+              css: ['concat', 'cssmin']
             },
             post: {}
           }
@@ -241,6 +242,13 @@ module.exports = function (grunt) {
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
         assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/images']
+      }
+    },
+
+    concat: {
+      prependNgTemplates: {
+        src: ['.tmp/concat/js/templates.js', '.tmp/concat/scripts/scripts.js'],
+        dest: '.tmp/concat/scripts/scripts.js'
       }
     },
 
@@ -310,6 +318,18 @@ module.exports = function (grunt) {
       }
     },
 
+    ngtemplates: {
+      app: {
+        cwd: '<%= yeoman.app %>',
+        src: '**/*.html',
+        //dest: '<%= yeoman.dist %>/templates.js'
+        dest: '.tmp/concat/js/templates.js',
+        options: {
+          module: '<%= yeoman.appName %>'
+        }
+      }
+    },
+
     // ngmin tries to make the code safe for minification automatically by
     // using the Angular long form for dependency injection. It doesn't work on
     // things like resolve or inject so those have to be done manually.
@@ -317,9 +337,12 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: '*.js',
-          dest: '.tmp/concat/scripts'
+          //cwd: '.tmp/concat/scripts',
+          //src: '*.js',
+          //dest: '.tmp/concat/scripts'
+          cwd: '<%= yeoman.app %>',
+          src: ['**/*.js'],
+          dest: '.tmp/js/scripts'
         }]
       }
     },
@@ -327,24 +350,10 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/*.html']
+        html: ['<%= yeoman.app %>/*.html']
       }
     },
 
-    ngtemplates: {
-      app: {
-        cwd: '<%= yeoman.app %>',
-        src: '**/*.html',
-        dest: '<%= yeoman.dist %>/templates.js'
-      }
-    },
-
-    concat: {
-      app: {
-        src: ['<%= yeoman.app %>/scripts/app.js', '<%= yeoman.dist %>/templates.js'],
-        dest: '<%= yeoman.dist %>/app.js'
-      }
-    },
 
     // Copies remaining files to places other tasks can use
     copy: {
@@ -393,6 +402,7 @@ module.exports = function (grunt) {
       ],
       dist: [
         'compass:dist'
+        // This is broken at the moment: https://github.com/gruntjs/grunt-contrib-imagemin/issues/96
         //'imagemin',
         //'svgmin'
       ]
@@ -470,25 +480,30 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    // Inject Bower dependencies into index.html
     'wiredep',
-    // Replace serverUrl with production-appropriate url
+    // Replace serverUrl with production-appropriate url. Development is localhost but production is eventurist.io
     'replace:production',
     // Put all templates into $templateCache so production website can use it while minified
     'ngtemplates',
-    'useminPrepare',
-    // Use compass to build Sass concurrently
-    'concurrent:dist',
-    'autoprefixer',
-    // Concatenate template.js outputted by ngtemplates with app.js
-    'concat',
+    // Add, remove, and rebuild AngularJS dependency injection annotations
     'ngAnnotate',
+    // Use compass to compile SASS into CSS, concurrently
+    'concurrent:dist',
+    // Copy the remaining files (CSS, images, fonts etc.) to <%= yeoman.dist %> or .tmp for later processors
     'copy:dist',
-    'cdnify',
-    'cssmin',
-    'uglify',
+    // Parses CSS and add vendor prefixes to CSS rules using values from Can I Use
+    'autoprefixer',
+    // Parse index.html for blocks and transform it so it references our minified rather than original files.
+    // e.g. <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    'useminPrepare',
+    'concat:generated',
+    // Concatenate our templates.js from ngtempplates with the rest of the scripts.
+    'concat:prependNgTemplates',
+    'cssmin:generated',
+    'uglify:generated',
     'filerev',
-    'usemin',
-    'htmlmin'
+    'usemin'
   ]);
 
   grunt.registerTask('default', [
