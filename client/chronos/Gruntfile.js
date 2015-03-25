@@ -253,6 +253,13 @@ module.exports = function (grunt) {
       }
     },
 
+    cssmin: {
+      options: {
+        aggressiveMerging: false,
+        advanced: false
+      }
+    },
+
     concat: {
       prependNgTemplates: {
         // Note that ordering matters here, because scripts.js will contain app.js which instantiates chronosApp and
