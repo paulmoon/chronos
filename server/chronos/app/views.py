@@ -168,8 +168,8 @@ class EventListView(generics.ListAPIView):
                 else:
                     filterargs['start_date__range'] = [from_date_time, from_date_time + datetime.timedelta(0, SECONDS_IN_A_DAY_MINUS_ONE)]
             elif toDate is not None:
-                    to_date_time = datetime.datetime.strptime(toDate, "%Y-%m-%dT%H:%M:%S")
-                    filterargs['start_date__range'] = [to_date_time, to_date_time + datetime.timedelta(0, SECONDS_IN_A_DAY_MINUS_ONE)]
+                to_date_time = datetime.datetime.strptime(toDate, "%Y-%m-%dT%H:%M:%S")
+                filterargs['start_date__range'] = [to_date_time, to_date_time + datetime.timedelta(0, SECONDS_IN_A_DAY_MINUS_ONE)]
         except ValueError:
             # Silently ignore badly formatted dates
             pass
