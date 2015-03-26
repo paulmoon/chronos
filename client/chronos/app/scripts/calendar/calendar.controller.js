@@ -49,7 +49,6 @@
 
     function eventRender(event, element, view) {
       element.attr({'id': 'event-calendar-' + event.id});
-      $compile(element)($scope);
     }
 
     function viewRender(view, element) {
