@@ -3,7 +3,7 @@
  * @ngdoc directive
  * @name chronosApp.directive:voting
  * @description
- * # eventCard
+ * # voting
  */
 
 (function () {
