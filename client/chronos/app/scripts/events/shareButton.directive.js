@@ -16,7 +16,10 @@
   function shareButton() {
     var directive = {
       templateUrl: 'scripts/events/shareButton.html',
-      restrict: 'E'
+      restrict: 'E',
+      scope: {
+        share: '=url'
+      }
     };
     return directive;
   }

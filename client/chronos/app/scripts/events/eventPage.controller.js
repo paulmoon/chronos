@@ -12,9 +12,9 @@
   angular.module('chronosApp')
     .controller('EventPageController', EventPageController);
 
-  EventPageController.$inject = ['AuthFacadeService', 'EventFacadeService', '$routeParams'];
+  EventPageController.$inject = ['AuthFacadeService', 'EventFacadeService', '$routeParams', '$location'];
 
-  function EventPageController(AuthFacadeService, EventFacadeService, $routeParams) {
+  function EventPageController(AuthFacadeService, EventFacadeService, $routeParams, $location) {
     var vm = this;
 
     vm.title = 'EventPageController';
@@ -23,6 +23,7 @@
 
     vm.saveEvent = 'SAVE';
     vm.saveEventClick = saveEventClick;
+    vm.url = $location.absUrl();
     _activate();
     _commentActivate();
     /////////
