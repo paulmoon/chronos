@@ -63,8 +63,6 @@
       };
       vm.downArrowStyle = {};
 
-      console.log(vm.voteDirectionByUser);
-
       if (vm.voteDirectionByUser === -1){
         vm.vote = vm.vote + 2;
       } else if (vm.voteDirectionByUser === 1){
