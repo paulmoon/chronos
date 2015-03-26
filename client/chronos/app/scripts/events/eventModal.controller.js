@@ -59,18 +59,58 @@
     }
 
     /**
+     * @description Called by crete function to check the inputs
+     * @methodOf chronosApp:EventModalController
+     */
+    function _sanatizeInputs(){
+      vm.creationError = '';
+      
+      if (!vm.eventName){
+        vm.creationError = 'Event name required.';
+      } else if (!vm.description){
+        vm.creationError = 'Description required.';
+      } else if (!vm.locationName){
+        vm.creationError = 'Location required.';
+      } else if (!vm.startDate){
+        vm.creationError = 'Start date required.';
+      } else if (!vm.endDate){
+        vm.creationError = 'End date required.';
+      } else if (!vm.locationId){
+        vm.creationError = 'Invalid location.'
+      } else if (vm.eventName.length > 100){
+        vm.creationError = 'Name is longer than 100 characters.'
+      }
+
+      if (vm.creationError){
+        NotificationService.errorMessage(vm.creationError);
+        return false;
+      }
+
+      return true;   
+    }
+
+    /**
      * @description Calls {@link chronosApp:EventFacadeService#createEvent}|EventFacadeService.createEvent} to create event.
      * @methodOf chronosApp:EventModalController
      */
     function createEvent() {
-      vm.shouldShowEventCreateModal = true;  
+      vm.shouldShowEventCreateModal = true;
       vm.loading = true;
       vm.loadingBlurStyle = {
         opacity: 0.4
       };
 
+      if (_sanatizeInputs() == false){
+        vm.loading = false;
+        vm.loadingBlurStyle = {
+          opacity: 1
+        };
+        return;
+      }
+
       EventFacadeService.createEvent(vm.eventName, vm.description, vm.imageId, moment(vm.startDate).utc().format(), moment(vm.endDate).utc().format(), vm.locationId, vm.locationName, vm.tags)
         .then(function (data) {
+          NotificationService.noticeMessage("Event Created.");
           $modalInstance.close();
           vm.loading = false;
           vm.loadingBlurStyle = {
@@ -86,7 +126,7 @@
     }
 
     /**
-     * @description Calls {@link chronosApp:EventFacadeService#updateEvent}|EventFacadeService.updateEvent} to create event.
+     * @description Calls {@link chronosApp:EventFacadeService#updateEvent}|EventFacadeService.updateEvent} to update event.
      * @methodOf chronosApp:EventModalController
      */
     function updateEvent() {
@@ -117,6 +157,11 @@
       vm.locationId = details.place_id;
     }
 
+    /**
+     * @description Handles when a file is selected to be uploaded
+     * @methodOf chronosApp:EventModalController
+     * @parameters the file being uploaded
+     */
     function uploadImage(files) {
       if (files && files.length) {
         vm.imageProgress = 0;
@@ -132,12 +177,20 @@
       }
     }
 
+    /**
+     * @description Removes the information on the uploaded file so a different one can be added
+     * @methodOf chronosApp:EventModalController
+     */
     function removeImage() {
       vm.imageProgress = 0;
       vm.imageId = null;
       vm.imageUrl = undefined;
     }
 
+    /**
+     * @description Checks if more than the max number of tags are being used
+     * @methodOf chronosApp:EventModalController
+     */
     function verifyTags(){
       if (vm.tags.length > settings.maxNumberTags) {
         vm.tags.splice(-1, 1);
@@ -146,6 +199,11 @@
       }
     }
 
+    /**
+     * @description Checks if a duplicate tag exists
+     * @methodOf chronosApp:EventModalController
+     * @parameters the tag chosen
+     */
     function addPopularTag(tag) {
       vm.creationError = '';
       var noMatch = true;

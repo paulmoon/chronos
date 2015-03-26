@@ -3,9 +3,9 @@
 }
 
 .create-modal-size .modal-dialog{
-  width:60%; height: 90%;
+  width:50%;
   position: absolute;
-  top:0; bottom: 0; left: 0; right: 0;
+  top:4%; bottom: 0; left: 0; right: 0;
   margin: auto;
 }
 
@@ -17,7 +17,7 @@
 
 .picture-zone {
   background-color:#F7F7F7;
-  height:193px;
+  height:186px;
   border-style: dashed;
   border-color: #ccc;
   text-align: center;
@@ -26,7 +26,7 @@
 
 .create-picture {
   width:100%;
-  height:193px;
+  max-height:186px;
   margin-top:2px;
 }
 
@@ -39,6 +39,38 @@
   position:absolute;
   top:3px;
   right:0;
+}
+
+.left-border {
+  border-left: 1px solid #F0F0F0;
+}
+
+.right-border {
+  border-right: 1px solid #F0F0F0;
+}
+
+.reduced-hr {
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.remove-bottom-margin {
+  margin-bottom:0px;
+}
+
+.removal-glyphicon {
+  background-color:black;
+  color:white;
+  opacity:0.6;
+}
+
+.upload-button {
+  position:relative;
+  top:45%;
+}
+
+.center-text {
+  text-align:center;
 }
 
 .shadow-removal {

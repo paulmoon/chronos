@@ -18,8 +18,21 @@
       </div>
       <hr>
       <div class="row">
-        <div class="col-lg-4">
-          <div class="progress" style="margin-bottom:0px;">
+        <div class="col-lg-7 right-border">
+          <textarea class="form-control text-area-size" rows="7" placeholder="Description" data-ng-model="eventModal.description"></textarea>
+          <hr class="reduced-hr">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="input-group">
+                <span class="input-group-addon" id="location-addon"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span></span>
+                <input type="text" class="form-control" data-ng-model="eventModal.locationName" details="chosenPlaceDetails"
+                  callback="eventModal.locationPicked" aria-describedby="location-addon" placeholder="Enter A Location" googleautocomplete/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="progress remove-bottom-margin">
             <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="eventModal.imageProgress"
             aria-valuemin="0" aria-valuemax="100" style="width:{{eventModal.imageProgress}}%">
               {{eventModal.imageProgress}} %
@@ -29,36 +42,45 @@
             <div class="picture-wrap">
               <img ng-src="{{eventModal.imageUrl}}" alt="Image Not Found" class="create-picture">
               <button class="btn btn-link image-removal-button" ng-click="eventModal.removeImage()" style="outline:none">
-                <span class="glyphicon glyphicon-remove shadow-removal" style="background-color:black;color:white;opacity:0.6;" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-remove shadow-removal removal-glyphicon" aria-hidden="true"></span>
               </button>
             </div>
           </div>
           <div ng-if="!eventModal.imageUrl" class="picture-zone">
-            <button class="btn btn-primary btn-xs" style="position:relative;top:45%;" ng-file-select ng-file-change="eventModal.uploadImage($files)">
+            <button class="btn btn-primary btn-xs upload-button" ng-file-select ng-file-change="eventModal.uploadImage($files)">
               <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload Image
             </button>
           </div>
         </div>
-        <div class="col-lg-8" style="border-left: 1px solid #F0F0F0;">
-          <textarea class="form-control text-area-size" rows="10" placeholder="Description" data-ng-model="eventModal.description" style="margin-bottom:10px"></textarea>
-        </div>
       </div>
-      <hr>
-      <input type="text" class="form-control" data-ng-model="eventModal.locationName" details="chosenPlaceDetails"
-             callback="eventModal.locationPicked" placeholder="Enter A Location" googleautocomplete/>
       <hr>
       <div class="row">
         <div class="col-lg-6">
-          <input type="text" size="10" class="form-control" data-ng-model="eventModal.startDate" data-min-date="today"
-                 data-max-date="{{eventModal.endDate}}" data-autoclose="1" placeholder="Date" bs-datepicker>
-          <input type="text" size="8" class="form-control" data-ng-model="eventModal.startDate" data-autoclose="1"
-                 placeholder="Time" bs-timepicker>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="input-group">
+                <span class="input-group-addon" id="first-date-addon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
+                <input type="text" class="form-control read-only center-text" data-ng-model="eventModal.startDate"
+                  data-max-date="{{eventModal.endDate}}" data-autoclose="1" aria-describedby="first-date-addon" placeholder="Start Date"
+                  readonly bs-datepicker>
+                <span class="input-group-addon" id="first-time-addon">-</span>
+                <input type="text" class="form-control read-only center-text" aria-describedby="first-time-addon" data-ng-model="eventModal.startDate" length="3" placeholder="Start Time" readonly bs-timepicker>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-lg-6" style="border-left: 1px solid #F0F0F0;">
-          <input type="text" size="10" class="form-control" data-ng-model="eventModal.endDate"
-                 data-min-date="{{eventModal.startDate}}" data-autoclose="1" placeholder="Date" bs-datepicker>
-          <input type="text" size="8" class="form-control" data-ng-model="eventModal.endDate" data-autoclose="1"
-                 placeholder="Time" bs-timepicker>
+        <div class="col-lg-6 left-border">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="input-group">
+                <span class="input-group-addon" id="second-date-addon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
+                <input type="text" class="form-control read-only center-text" aria-describedby="second-date-addon" data-ng-model="eventModal.endDate" data-min-date="{{eventModal.startDate}}" data-autoclose="1" placeholder="End Date" readonly bs-datepicker>
+                <span class="input-group-addon" id="second-time-addon">-</span>
+                <input type="text" class="form-control read-only center-text" data-ng-model="eventModal.endDate" length="3"
+                  placeholder="End Time" aria-describedby="second-time-addon" readonly bs-timepicker>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <hr>
@@ -77,8 +99,8 @@
         </div>
       </div>
       <hr>
-      <a type="submit" class="btn btn-primary" ng-click="eventModal.createEvent()">Create</a>
-      <a type="submit" class="right btn btn-default" ng-click="eventModal.cancel()">Cancel</a>
+      <button type="submit" class="btn btn-primary" ng-click="eventModal.createEvent()">Create</button>
+      <button type="submit" class="right btn btn-default" ng-click="eventModal.cancel()">Cancel</button>
       <div ng-show="eventModal.loading">
         <loading event-modal-loader="true" auth-modal-loader="false" event-card-loader="false"></loading>
       </div>
