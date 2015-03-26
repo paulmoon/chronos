@@ -17,9 +17,9 @@
     var vm = this;
 
     vm.title = 'CalendarController';
+    vm.injectedClearButton = false;
     // A function that FullCalendar will call as necessary to retrieve events
     vm.eventSources = [getEvents];
-
     _activate();
 
     ////////////////
@@ -42,8 +42,17 @@
           unselect: unselect,
           unselectCancel: settings.calendarUnselectCancelClasses,
           selectHelper: true,
+          viewRender: viewRender
         }
       };
+    }
+
+    function viewRender(view, element) {
+      if (!vm.injectedClearButton) {
+        var $buttons = $('.fc-left');
+        $buttons.append('<button type="button" ng-click="unselect()" class="fc-button fc-state-default fc-corner-left fc-corner-right btn btn-default">Clear</button>');
+        vm.injectedClearButton = true;
+      }
     }
 
     /**
