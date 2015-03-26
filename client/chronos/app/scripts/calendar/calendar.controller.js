@@ -10,9 +10,9 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$anchorScroll', '$location', '$log', 'settings', 'EventFacadeService', 'StateService'];
+  CalendarController.$inject = ['$scope', '$anchorScroll', '$location', '$log', 'settings', 'EventFacadeService', 'StateService', 'PubSubService'];
 
-  function CalendarController($scope, $anchorScroll, $location, $log, settings, EventFacadeService, StateService) {
+  function CalendarController($scope, $anchorScroll, $location, $log, settings, EventFacadeService, StateService, PubSubService) {
     /* jshint validthis: true */
     var vm = this;
 
@@ -125,6 +125,7 @@
       $location.hash('event-card-' + event.eventCardId);
       $anchorScroll();
       $location.hash(old);
+      PubSubService.publish(settings.pubSubOnEventCalendarClick + event.eventCardId);
     }
 
     /**

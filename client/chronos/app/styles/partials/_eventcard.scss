@@ -107,3 +107,12 @@
 .glyphicon.glyphicon-chevron-up.event-card-up {
   font-size: 20px;
 }
+
+@keyframes blink {
+    from { opacity:1; }
+    to { opacity:0.2; }
+};
+
+.event-card-blink-animation {
+  animation: blink 500ms 2 alternate;
+}
