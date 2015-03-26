@@ -12,10 +12,10 @@
     .module('chronosApp')
     .factory('EventFactory', EventFactory);
 
-  EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService', 'settings'];
+  EventFactory.$inject = ['$log', '$q', 'RestService', 'StateService', 'settings', 'NotificationService', 'PubSubService'];
 
   /* @ngInject */
-  function EventFactory($log, $q, RestService, StateService, settings) {
+  function EventFactory($log, $q, RestService, StateService, settings, NotificationService, PubSubService) {
     var factory = {
       events: [],
       selectedEvents: [],
@@ -66,10 +66,10 @@
     /**
      * @description Returns the tags that the event factory holds
      * @methodOf chronosApp:EventFactory
-     * @returns Joined string of events in the event factory
+     * @returns the current set of tags
      */
     function getTags() {
-      return factory.tags.join(" ");
+      return factory.tags;
     }
 
     /**
@@ -152,7 +152,8 @@
     function addTag(tag) {
       var match = false;
 
-      if (factory.tags.length > settings.maxNumberTags) {
+      if (factory.tags.length >= settings.maxNumberTags) {
+        NotificationService.errorMessage("Max of 5 tags.");
         return;
       }
 
@@ -163,10 +164,12 @@
       });
 
       if (match) {
+        NotificationService.errorMessage("Identical tag found.");
         return;
       }
 
       factory.tags.push(tag);
+      PubSubService.publish(settings.pubSubOnSetTagsLeftPanel);
       return _updateEvents();
     }
 
@@ -294,6 +297,7 @@
      * @private
      */
     function _updateEvents() {
+      PubSubService.publish(settings.pubSubOnStartLoader);
       var filterParams = _constructFilterParams();
 
       return RestService.getFilteredEvents(filterParams)
@@ -308,10 +312,12 @@
 
           factory.events = newEvents;
           factory.selectedEvents = newEvents;
+          PubSubService.publish(settings.pubSubOnStopLoader);
           return response.data;
         }, function (response) {
           $log.warn('Failed to retrieve filtered events: ' + filterParams);
           $log.warn(response);
+          PubSubService.publish(settings.pubSubOnStopLoader);
           return $q.reject(response);
         });
     }

@@ -22,6 +22,9 @@
       pubSubOnEventCreate: 'pubSubOnEventCreate',
       pubSubOnEventEdit: 'pubSubOnEventEdit',
       pubSubOnEventUpdate: 'pubSubOnEventUpdate',
-      pubSubOnCommentCreate: 'pubSubOnCommentCreate'
+      pubSubOnCommentCreate: 'pubSubOnCommentCreate',
+      pubSubOnSetTagsLeftPanel: 'pubSubOnSetTagsLeftPanel',
+      pubSubOnStartLoader: 'pubSubOnStartLoader',
+      pubSubOnStopLoader: 'pubSubOnStopLoader'
     });
 })();

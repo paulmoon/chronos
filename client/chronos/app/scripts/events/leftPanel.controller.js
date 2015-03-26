@@ -43,6 +43,9 @@
     vm.clearEndDate = clearEndDate;
     vm.clearKeywords = clearKeywords;
     vm.addPopularTag = addPopularTag;
+    vm.setTags = setTags;
+    vm.startLoader = startLoader;
+    vm.stopLoader = stopLoader;
 
     vm.getVoteDirection = getVoteDirection;
     vm.savedByUser = savedByUser;
@@ -83,6 +86,33 @@
         error(function (data, status, headers, config) {
           // Do something
         });
+
+      // multiple pubsubs that are all used by event factory
+      PubSubService.subscribe(settings.pubSubOnSetTagsLeftPanel, vm.setTags);
+      PubSubService.subscribe(settings.pubSubOnStartLoader, vm.startLoader);
+      PubSubService.subscribe(settings.pubSubOnStopLoader, vm.stopLoader);
+    }
+
+    /**
+     * @description starts the loading icon (subscribed to event factory)
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function startLoader() {
+      vm.loading = true;
+      vm.loadingBlurStyle = {
+        opacity: 0.4
+      };
+    }
+
+    /**
+     * @description stops the loading icon (subscribed to event factory)
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function stopLoader() {
+      vm.loading = false;
+      vm.loadingBlurStyle = {
+        opacity: 1
+      };
     }
 
     /**
@@ -116,10 +146,6 @@
         if (tempKeywords.length > settings.maxKeywords) {
           vm.searchError = "Max of 10 keywords.";
           NotificationService.errorMessage(vm.searchError);
-          vm.loading = false;
-          vm.loadingBlurStyle = {
-            opacity: 1
-          };
           return;
         } else {
           filterParams.keywords = tempKeywords;
@@ -135,13 +161,7 @@
       }
 
       if (!vm.searchError) {
-        EventFacadeService.updateEvents(filterParams).
-          then(function (data, status, headers, config) {
-            vm.loading = false;
-            vm.loadingBlurStyle = {
-              opacity: 1
-            };
-          });
+        EventFacadeService.updateEvents(filterParams);
       }
     }
 
@@ -177,11 +197,6 @@
      * @methodOf chronosApp:LeftPanelController
      */
     function updateKeywords() {
-      vm.loading = true;
-      vm.loadingBlurStyle = {
-        opacity: 0.4
-      };
-
       if (vm.searchKeywords) {
         vm.searchError = '';
         var tempKeywords = vm.searchKeywords.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(" ");
@@ -189,19 +204,9 @@
         if (tempKeywords.length > settings.maxKeywords) {
           vm.searchError = "Max of 10 keywords.";
           NotificationService.errorMessage(vm.searchError);
-          vm.loading = false;
-          vm.loadingBlurStyle = {
-            opacity: 1
-          };
           return;
         } else {
-          EventFacadeService.updateKeywords(tempKeywords).
-            then(function (data, status, headers, config) {
-              vm.loading = false;
-              vm.loadingBlurStyle = {
-                opacity: 1
-              };
-            });
+          EventFacadeService.updateKeywords(tempKeywords);
         }
       } else {
         vm.searchEvents();
@@ -242,10 +247,6 @@
       vm.searchError = '';
       var noMatch = true;
       var tempTags = [];
-      vm.loading = true;
-      vm.loadingBlurStyle = {
-        opacity: 0.4
-      };
 
       delete tag['usage'];
       delete tag['$$hashKey'];
@@ -261,10 +262,6 @@
       } else {
         vm.searchError = "Identical Tag Found.";
         NotificationService.errorMessage(vm.searchError);
-        vm.loading = false;
-        vm.loadingBlurStyle = {
-          opacity: 1
-        };
         return;
       }
 
@@ -279,19 +276,11 @@
       vm.searchError = '';
       vm.storageTags = [];
       var tempTags = [];
-      vm.loading = true;
-      vm.loadingBlurStyle = {
-        opacity: 0.4
-      };
 
       if (vm.addedTags.length > settings.maxNumberTags) {
         vm.addedTags.splice(-1, 1);
         vm.searchError = "Max of 5 tags.";
         NotificationService.errorMessage(vm.searchError);
-        vm.loading = false;
-        vm.loadingBlurStyle = {
-          opacity: 1
-        };
         return;
       }
 
@@ -313,21 +302,29 @@
         } else {
           vm.searchError = "Identical Tag Found.";
           NotificationService.errorMessage(vm.searchError);
-          vm.loading = false;
-          vm.loadingBlurStyle = {
-            opacity: 1
-          };
           return;
         }
       });
 
-      EventFacadeService.updateTags(vm.storageTags).
-        then(function (data, status, headers, config) {
-          vm.loading = false;
-          vm.loadingBlurStyle = {
-            opacity: 1
-          };
-        });
+      EventFacadeService.updateTags(vm.storageTags);
+    }
+
+    /**
+     * @description Allows tags to be set when it is changed in evevntfactory
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function setTags() {
+      var tempTagsEventFactory = EventFacadeService.getTags();
+      var tempTags = [];
+      var tempTagObject = {};
+
+      tempTagsEventFactory.forEach(function (tag) {
+        tempTagObject = {};
+        tempTagObject.name = tag;
+        tempTags.push(tempTagObject);
+      });
+
+      vm.addedTags = tempTags;
     }
 
     /**
