@@ -37,7 +37,7 @@
     }
 
     function updateComment(eventId) {
-      return _updateComment(eventId);
+      _updateComment(eventId);
     }
 
     /**
@@ -50,6 +50,7 @@
     function saveComment(eventId, commentData, depth, path, parent) {
       return RestService.saveComment(eventId, commentData, depth, path, parent)
         .then(function(response) {
+          _updateComment(eventId);
           return response.data;
         }, function(response) {
           $log.warn('Response: ' + response);

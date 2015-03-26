@@ -23,7 +23,6 @@
 
     vm.saveEvent = 'SAVE';
     vm.saveEventClick = saveEventClick;
-
     _activate();
     _commentActivate();
     /////////
@@ -65,7 +64,7 @@
      * @private
      */
     function _commentActivate() {
-      EventFacadeService.updateComment($routeParams.eventId);
+      EventFacadeService.updateComment(vm.eventId);
     }
 
 

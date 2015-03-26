@@ -16,7 +16,7 @@
 
   function EventPageFactory(RestService, $q, $log) {
     var factory =  {
-      eventInstance: {},
+      eventInstance: null,
       getEvent: getEvent,
       updateEvent: updateEvent
     };

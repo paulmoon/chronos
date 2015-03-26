@@ -101,14 +101,6 @@ function CommentController(AuthFacadeService, EventFacadeService, $modal, $route
   function createComment() {
     EventFacadeService.saveComment($routeParams.eventId, vm.commentData, 0, null, null)
       .then(function (comment) {
-        vm.comment.id = comment.id;
-        vm.comment.content = comment.content;
-        vm.comment.user = {id: comment.user, username: comment.username};
-        vm.comment.depth = 0;
-        vm.comment.path = null;
-        vm.comment.date = comment.date;
-        vm.comment.children = [];
-        vm.comments.unshift(vm.comment);
         vm.commentData = '';
       });
   }
@@ -120,41 +112,7 @@ function CommentController(AuthFacadeService, EventFacadeService, $modal, $route
   function replyComment() {
     EventFacadeService.saveComment($routeParams.eventId, vm.replyData, vm.depth, vm.path, vm.childOf)
       .then(function (comment) {
-        vm.comment.id = comment.id;
-        vm.comment.content = comment.content;
-        vm.comment.user = {id: comment.user, username: comment.username};
-        vm.comment.depth = comment.depth;
-        vm.comment.path = comment.path;
-        vm.comment.children = [];
-        var id = comment.path;
-        vm.comments.unshift(vm.comment);
         vm.replyData = '';
       });
   }
-
-  /**
-   * @description place reply comment into the current comments
-   * @methodOf chronosApp:CommentController
-   * @param root
-   * @param id
-   */
-  function replyCommentPlacement(comments, id, comment) {
-    //for(var i = 0, len = comments.length; i < len; ++i) {
-    //  if(comments.id == id) {
-    //    comments[i].children.unshift(comment);
-    //  }
-    //  for(var i = 0, len = comments[i].children.length; i < len; ++i) {
-    //    if(comments.children[i].id == id) {
-    //      comments[i].children.push(comment);
-    //    } else {
-    //      replyCommentPlacement(comments.children[i], id, comment);
-    //    }
-    //  }
-    //}
-    //
-    //
-    //console.log(comments);
-  }
-
-
 }

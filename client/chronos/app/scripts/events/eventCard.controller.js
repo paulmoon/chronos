@@ -20,7 +20,7 @@
    */
   function EventCardController(AuthFacadeService, EventFacadeService) {
     var vm = this;
-
+    console.log("sdfsdfsfsddsf");
     vm.voteEvent = EventFacadeService.voteEvent;
     vm.upvoteEvent = upvoteEvent;
     vm.downvoteEvent = downvoteEvent;
