@@ -10,7 +10,7 @@
   angular
     .module('chronosApp')
     .constant('settings', {
-      serverUrl: '@@serverUrl',
+      serverUrl: 'http://localhost:8000',
       maxKeywords: 10,
       maxTagLength: 50,
       maxNumberTags: 5,
