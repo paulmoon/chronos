@@ -257,13 +257,18 @@
         // June 15th 12AM). Since we don't want to show the event because they are on different days,
         // strict inequality is used.
 
+        var startAfterStart = element.start_date.isAfter(start);
+        var startAfterStartOrSame = startAfterStart || element.start_date.isSame(start);
+        var endBeforeEnd = element.end_date.isBefore(end);
+        var endBeforeEndOrSame = endBeforeEnd || element.end_date.isSame(end);
+
         // The check goes as follows: (It can probably be simplified I know)
         // 1. Is the start date after or the same as the start of the date range filter AND is the start date before the end of the date range filter OR (start of event is in the date range)
         // 2. Is the end date after the start of the date range filter AND is the end date before or the same as the end of the date range filter OR (end of event is in the date range)
         // 3. Is the start date after or the same as the date range filter AND is the end date before or the same as the end of the date range filter (event exists in between the start and end of date range)
-        return ((element.start_date.isAfter(start) || element.start_date.isSame(start)) && (element.start_date.isBefore(end))) || 
-          ((element.end_date.isAfter(start)) && (element.end_date.isBefore(end) || element.end_date.isSame(end))) ||
-          ((element.start_date.isAfter(start) || element.start_date.isSame(start)) && (element.end_date.isBefore(end) || element.end_date.isSame(end)));
+        return (startAfterStartOrSame && element.start_date.isBefore(end)) || 
+          (element.end_date.isAfter(start) && endBeforeEndOrSame) ||
+          (startAfterStartOrSame && endBeforeEndOrSame);
       });
     
       deferred.resolve("Selected a range");
