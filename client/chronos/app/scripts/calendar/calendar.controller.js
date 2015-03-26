@@ -32,6 +32,7 @@
             left: 'month basicWeek',
             center: 'title'
           },
+          timezone: 'local',
           editable: false,
           selectable: true,
           eventLimit: settings.calendarEventLimitPerDay,
@@ -82,8 +83,8 @@
         new_events.push({
           id: event.id,
           title: event.name,
-          start: event.start_date.local(),
-          end: event.end_date.local()
+          start: event.start_date,
+          end: event.end_date
         });
       });
       return new_events;
@@ -120,7 +121,8 @@
      * @param view
      */
     function select(start, end, jsEvent, view) {
-      EventFacadeService.updateSelectionRange(start, end);
+      // Full Calendar is passing in the dates in UTC mode for some reason, so converting it to local mode
+      EventFacadeService.updateSelectionRange(start.local(), end.local());
     }
 
     /**

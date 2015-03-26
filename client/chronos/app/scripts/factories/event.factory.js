@@ -238,7 +238,6 @@
 
       factory.selectedEventsStartRange = start;
       factory.selectedEventsEndRange = end;
-
       // The only time we don't display any events is if eventStart > end or eventEnd < start.
       // Converse by De Morgan's Law: If eventStart <= end and eventEnd >= start
       factory.selectedEvents = factory.events.filter(function (element) {
@@ -257,10 +256,19 @@
         // beginning on June 15th 12AM should not be shown when we click on June 14th (clicked date's end =
         // June 15th 12AM). Since we don't want to show the event because they are on different days,
         // strict inequality is used.
-        
-        // Note that the elements are currently in the local time for display purposes, but the provided start and end 
-        //times are in utc. Must transform into local times. We really must be careful with our dates.
-        return element.start_date < end.local() && element.end_date > start.local();
+
+        var startAfterStart = element.start_date.isAfter(start);
+        var startAfterStartOrSame = startAfterStart || element.start_date.isSame(start);
+        var endBeforeEnd = element.end_date.isBefore(end);
+        var endBeforeEndOrSame = endBeforeEnd || element.end_date.isSame(end);
+
+        // The check goes as follows: (It can probably be simplified I know)
+        // 1. Is the start date after or the same as the start of the date range filter AND is the start date before the end of the date range filter OR (start of event is in the date range)
+        // 2. Is the end date after the start of the date range filter AND is the end date before or the same as the end of the date range filter OR (end of event is in the date range)
+        // 3. Is the start date after or the same as the date range filter AND is the end date before or the same as the end of the date range filter (event exists in between the start and end of date range)
+        return (startAfterStartOrSame && element.start_date.isBefore(end)) || 
+          (element.end_date.isAfter(start) && endBeforeEndOrSame) ||
+          (startAfterStartOrSame && endBeforeEndOrSame);
       });
     
       deferred.resolve("Selected a range");
@@ -318,7 +326,7 @@
 
           factory.events = newEvents;
           factory.selectedEvents = newEvents;
-          return response.data;
+          return factory.events;
         }, function (response) {
           $log.warn('Failed to retrieve filtered events: ' + filterParams);
           $log.warn(response);
