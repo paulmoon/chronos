@@ -15,6 +15,8 @@
       maxTagLength: 50,
       maxNumberTags: 5,
       calendarEventLimitPerDay: 4,
+      // CSS classes that will not cause a deselection of the calendar
+      calendarUnselectCancelClasses: '.left-pane, .banner, .modal-dialog',
 
       pubSubOnLogin: 'pubSubOnLogin',
       pubSubOnLogout: 'pubSubOnLogout',

@@ -40,6 +40,8 @@
           eventClick: eventClick,
           select: select,
           unselect: unselect,
+          unselectCancel: settings.calendarUnselectCancelClasses,
+          selectHelper: true,
         }
       };
     }
