@@ -12,9 +12,7 @@
         </form>
       </div>
     </div>
-  <div class="comment-body">
-    {{childcomment.content}}
-  </div>
+  <div class="comment-body" style="white-space: pre; word-wrap: break-word">{{childcomment.content}}</div>
   <div class="comment-date">
     {{vm.setCommentDateFormat(childcomment.date)}}
   </div>
