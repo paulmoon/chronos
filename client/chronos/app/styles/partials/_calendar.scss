@@ -16,12 +16,21 @@
 	margin-right: auto;
 }
 
-// Full calendar button css
+.clear-selection-button {
+
+}
+
+//  calendar button css
 
 .fc-button {
     background-color: $button-color-primary;
     border:0;
-    }
+}
+
+// Remove blue button highlights when clicking on full calendar buttons
+.fc-button:focus {
+    outline: 0;
+}
 
 .fc-state-default { /* non-theme */
     display: inline-block;
@@ -150,3 +159,6 @@
     display: none;
 }
 
+.fc h2 {
+   font-size: 50px;
+}
