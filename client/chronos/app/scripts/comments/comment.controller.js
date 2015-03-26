@@ -33,23 +33,18 @@ function CommentController(AuthFacadeService, EventFacadeService, $modal, $route
   vm.isReplyOpen = isReplyOpen;
   vm.isReplyShow = isReplyShow;
   vm.replyCancel = replyCancel;
-
-  _commentActivate();
+  vm.comments = EventFacadeService.getComment;
 
   /////////
 
   /**
-   * @description This function sets the click to open
+   * @description This function sets the values for reply to comment when sending to saveComment end point
    * @methodOf chronosApp:CommentController
    * @param num
    * @param depth
    */
-  function isReplyOpen(num, depth, path) {
-    if (path === null) {
-      vm.path = num + '';
-    } else {
-      vm.path = path + ':' + num;
-    }
+  function isReplyOpen(num, depth) {
+    vm.path = num;
     vm.childOf = num;
     vm.depth = depth + 1;
   }
@@ -105,13 +100,6 @@ function CommentController(AuthFacadeService, EventFacadeService, $modal, $route
   function createComment() {
     EventFacadeService.saveComment($routeParams.eventId, vm.commentData, 0, null, null)
       .then(function (comment) {
-        vm.comment.id = comment.id;
-        vm.comment.content = comment.content;
-        vm.comment.user = {id: comment.user, username: comment.username};
-        vm.comment.depth = 0;
-        vm.comment.path = null;
-        vm.comment.date = comment.date
-        vm.comments.unshift(vm.comment);
         vm.commentData = '';
       });
   }
@@ -122,20 +110,8 @@ function CommentController(AuthFacadeService, EventFacadeService, $modal, $route
    */
   function replyComment() {
     EventFacadeService.saveComment($routeParams.eventId, vm.replyData, vm.depth, vm.path, vm.childOf)
-      .then(function (comments) {
-        console.log(comments);
-      });
-  }
-
-  /**
-   * @description on load page it fills in the comment data
-   * @methodOf chronosApp:CommentController
-   * @private
-   */
-  function _commentActivate() {
-    EventFacadeService.getComment($routeParams.eventId)
-      .then(function (comments) {
-        vm.comments = comments;
+      .then(function (comment) {
+        vm.replyData = '';
       });
   }
 }
