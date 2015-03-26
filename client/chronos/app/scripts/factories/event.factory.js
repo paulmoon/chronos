@@ -325,7 +325,12 @@
           }
 
           factory.events = newEvents;
-          factory.selectedEvents = newEvents;
+          if (factory.selectedEventsStartRange !== undefined && factory.selectedEventsEndRange !== undefined) {
+            updateSelectionRange(factory.selectedEventsStartRange, factory.selectedEventsEndRange);
+          } else {
+            factory.selectedEvents = newEvents;
+          }
+
           return factory.events;
         }, function (response) {
           $log.warn('Failed to retrieve filtered events: ' + filterParams);
