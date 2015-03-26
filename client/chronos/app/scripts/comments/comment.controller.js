@@ -38,11 +38,10 @@ function CommentController(AuthFacadeService, EventFacadeService, $modal, $route
   /////////
 
   /**
-   * @description This function sets the click to open
+   * @description This function sets the values for reply to comment when sending to saveComment end point
    * @methodOf chronosApp:CommentController
    * @param num
    * @param depth
-   * @param path
    */
   function isReplyOpen(num, depth) {
     vm.path = num;
