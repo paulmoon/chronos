@@ -10,9 +10,9 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$anchorScroll', '$location', '$log', 'settings', 'EventFacadeService', 'StateService', 'PubSubService'];
+  CalendarController.$inject = ['$scope', '$anchorScroll', '$compile', '$location', '$log', 'settings', 'EventFacadeService', 'StateService', 'PubSubService'];
 
-  function CalendarController($scope, $anchorScroll, $location, $log, settings, EventFacadeService, StateService, PubSubService) {
+  function CalendarController($scope, $anchorScroll, $compile, $location, $log, settings, EventFacadeService, StateService, PubSubService) {
     /* jshint validthis: true */
     var vm = this;
 
@@ -41,9 +41,14 @@
           select: select,
           unselect: unselect,
           unselectCancel: settings.calendarUnselectCancelClasses,
-          viewRender: viewRender
+          viewRender: viewRender,
+          eventRender: eventRender
         }
       };
+    }
+
+    function eventRender(event, element, view) {
+      element.attr({'id': 'event-calendar-' + event.id});
     }
 
     function viewRender(view, element) {
