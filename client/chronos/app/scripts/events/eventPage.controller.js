@@ -64,7 +64,7 @@
      * @private
      */
     function _commentActivate() {
-      EventFacadeService.updateComment(vm.eventId);
+      EventFacadeService.retrieveComment(vm.eventId);
     }
 
 

@@ -19,7 +19,7 @@
       comments: [],
       getComment: getComment,
       saveComment: saveComment,
-      updateComment: updateComment
+      retrieveComment: retrieveComment
     };
 
     return factory;
@@ -36,7 +36,7 @@
       return factory.comments;
     }
 
-    function updateComment(eventId) {
+    function retrieveComment(eventId) {
       _updateComment(eventId);
     }
 

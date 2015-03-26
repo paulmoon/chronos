@@ -163,8 +163,8 @@
       return CommentFactory.getComment();
     };
 
-    this.updateComment = function (eventID) {
-      return CommentFactory.updateComment(eventID);
+    this.retrieveComment = function (eventID) {
+      return CommentFactory.retrieveComment(eventID);
     };
 
     this.saveComment = function (eventID, commentText, depth, path, parent) {
