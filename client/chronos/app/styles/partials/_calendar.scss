@@ -16,12 +16,17 @@
 	margin-right: auto;
 }
 
-// Full calendar button css
+//  calendar button css
 
 .fc-button {
     background-color: $button-color-primary;
     border:0;
-    }
+}
+
+// Remove blue button highlights when clicking on full calendar buttons
+.fc-button:focus {
+    outline: 0;
+}
 
 .fc-state-default { /* non-theme */
     display: inline-block;
@@ -148,5 +153,198 @@
 
 .fc-state-disabled .fc-button-effect {
     display: none;
+}
+
+.fc h2 {
+   font-size: 50px;
+}
+
+.fc-event-container {
+    cursor: pointer; 
+    cursor: hand; 
+}
+
+// Calendar event animations
+
+.calendar-event-highlight {
+    background: #669966;
+
+    -webkit-animation: bounce 1000ms ease-out infinite;
+    -moz-animation: bounce 1000ms ease-out infinite;
+    -o-animation: bounce 1000ms ease-out infinite;
+    animation: bounce 1000ms ease-out infinite;
+}
+
+/* Webkit, Chrome and Safari */
+
+@-webkit-keyframes bounce {
+  0% {
+    -webkit-transform:translateY(-5%);
+  }
+  5% {
+    -webkit-transform:translateY(-10%);
+  }
+  15% {
+    -webkit-transform:translateY(-30%);
+  }
+  30% {
+    -webkit-transform:translateY(0%);
+  }
+  40% {
+    -webkit-transform:translateY(-10%);
+  }
+  50% {
+    -webkit-transform:translateY(0%);
+  }
+  70% {
+    -webkit-transform:translateY(0%);
+  }
+  80% {
+    -webkit-transform:translateY(0%);
+  }
+  90% {
+    -webkit-transform:translateY(0%);
+  }
+  95% {
+    -webkit-transform:translateY(0%);
+  }
+  97% {
+    -webkit-transform:translateY(0%);
+  }
+  99% {
+    -webkit-transform:translateY(0%);
+  }
+  100% {
+    -webkit-transform:translateY(0);
+  }
+}
+
+/* Mozilla Firefox 15 below */
+@-moz-keyframes bounce {
+  0% {
+    -moz-transform:translateY(-5%);
+  }
+  5% {
+    -moz-transform:translateY(-10%);
+  }
+  15% {
+    -moz-transform:translateY(-30%);
+  }
+  30% {
+    -moz-transform:translateY(0%);
+  }
+  40% {
+    -moz-transform:translateY(-10%);
+  }
+  50% {
+    -moz-transform:translateY(0%);
+  }
+  70% {
+    -moz-transform:translateY(0%);
+  }
+  80% {
+    -moz-transform:translateY(0%);
+  }
+  90% {
+    -moz-transform:translateY(0%);
+  }
+  95% {
+    -moz-transform:translateY(0%);
+  }
+  97% {
+    -moz-transform:translateY(0%);
+  }
+  99% {
+    -moz-transform:translateY(0%);
+  }
+  100% {
+    -moz-transform:translateY(0);
+  }
+}
+
+/* Opera 12.0 */
+@-o-keyframes bounce {
+  0% {
+    -o-transform:translateY(-5%);
+  }
+  5% {
+    -o-transform:translateY(-10%);
+  }
+  15% {
+    -o-transform:translateY(-30%);
+  }
+  30% {
+    -o-transform:translateY(0%);
+  }
+  40% {
+    -o-transform:translateY(-10%);
+  }
+  50% {
+    -o-transform:translateY(0%);
+  }
+  70% {
+    -o-transform:translateY(0%);
+  }
+  80% {
+    -o-transform:translateY(0%);
+  }
+  90% {
+    -o-transform:translateY(0%);
+  }
+  95% {
+    -o-transform:translateY(0%);
+  }
+  97% {
+    -o-transform:translateY(0%);
+  }
+  99% {
+    -o-transform:translateY(0%);
+  }
+  100% {
+    -o-transform:translateY(0);
+  }
+}
+
+/* W3, Opera 12+, Firefox 16+ */
+@keyframes bounce {
+  0% {
+    transform:translateY(-5%);
+  }
+  5% {
+    transform:translateY(-10%);
+  }
+  15% {
+    transform:translateY(-30%);
+  }
+  30% {
+    transform:translateY(0%);
+  }
+  40% {
+    transform:translateY(-10%);
+  }
+  50% {
+    transform:translateY(0%);
+  }
+  70% {
+    transform:translateY(0%);
+  }
+  80% {
+    transform:translateY(0%);
+  }
+  90% {
+    transform:translateY(0%);
+  }
+  95% {
+    transform:translateY(0%);
+  }
+  97% {
+    transform:translateY(0%);
+  }
+  99% {
+    transform:translateY(0%);
+  }
+  100% {
+    transform:translateY(0);
+  }
 }
 

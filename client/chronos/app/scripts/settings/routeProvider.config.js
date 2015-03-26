@@ -19,6 +19,7 @@
         templateUrl: 'scripts/chronos/main.html',
 
         resolve: {
+          /* @ngInject */
           userDetails: function (AuthFacadeService) {
             if (AuthFacadeService.isLoggedIn()) {
               return AuthFacadeService.retrieveUserProfile();
@@ -30,8 +31,7 @@
         templateUrl: 'scripts/chronos/about.html'
       })
       .when('/event/:eventId', {
-        templateUrl: 'scripts/events/eventPage.html',
-        controller: 'EventPageController'
+        templateUrl: 'scripts/events/eventPage.html'
       })
       .otherwise({
         redirectTo: '/'

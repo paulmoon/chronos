@@ -57,6 +57,7 @@
           <eventcard ng-repeat="event in vm.getEvents()"
                      ng-class-even="'event-card-color'"
                      ng-class-odd="'event-card-color-alternate'"
+                     id="event-card-{{event.id}}"
                      event-name="event.name"
                      event-id="event.id"
                      description="event.description"

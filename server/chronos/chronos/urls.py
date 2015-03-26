@@ -8,9 +8,6 @@ router = routers.DefaultRouter()
 
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^docs/', include('rest_framework_swagger.urls')),
-
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^users/verify_credentials/$', 'rest_framework.authtoken.views.obtain_auth_token'),
     url(r'^users/create/$', 'app.views.create_user'),
@@ -24,7 +21,8 @@ urlpatterns = patterns('',
     url(r'^users/saved/$', 'app.views.get_saved_events'),
 
     url(r'^events/(?P<pk>[0-9]+)/?$', 'app.views.list_specific_event'),
-    url(r'^events/$', 'app.views.list_create_event'),
+    url(r'^events/$', 'app.views.list_event'),
+    url(r'^events/create/$', 'app.views.create_event'),
     url(r'^events/vote/$', 'app.views.vote_event'),
     url(r'^events/report/$', 'app.views.report_event'),
     url(r'^tags/popular/$', 'app.views.get_popular_tags'),
@@ -37,6 +35,9 @@ urlpatterns = patterns('',
 
 if settings.DEBUG:
     urlpatterns += patterns('',
+        url(r'^admin/', include(admin.site.urls)),
+        url(r'^docs/', include('rest_framework_swagger.urls')),
+
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT,
         }),

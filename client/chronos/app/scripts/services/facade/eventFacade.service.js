@@ -163,12 +163,16 @@
       EventFactory.selectedEvents = EventFactory.getEvents();
     };
 
-    this.getComment = function (eventID) {
-      return CommentFactory.getComment(eventID);
+    this.getComment = function () {
+      return CommentFactory.getComment();
     };
 
-    this.saveComment = function (eventID, commentText) {
-      return CommentFactory.saveComment(eventID, commentText)
+    this.retrieveComment = function (eventID) {
+      return CommentFactory.retrieveComment(eventID);
+    };
+
+    this.saveComment = function (eventID, commentText, depth, path, parent) {
+      return CommentFactory.saveComment(eventID, commentText, depth, path, parent)
         .then(function (response) {
           PubSubService.publish(settings.pubSubOnCommentCreate);
           return response;

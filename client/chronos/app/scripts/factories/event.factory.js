@@ -241,19 +241,37 @@
 
       factory.selectedEventsStartRange = start;
       factory.selectedEventsEndRange = end;
-
       // The only time we don't display any events is if eventStart > end or eventEnd < start.
       // Converse by De Morgan's Law: If eventStart <= end and eventEnd >= start
       factory.selectedEvents = factory.events.filter(function (element) {
+
+        // If the start and end date are the same, then we are only selecting one day. Then, we filter
+        // based on start_date to start_date + 23:59:59
+        // Note we will never enter this via Full Calendar because selecting one day always
+        // ensures we are checking against the next day
         if (element.start_date.diff(element.end_date) === 0) {
-          return element.start_date < end && element.end_date >= start;
+          return element.start_date < start.local().add(1, 'd') && element.end_date >= start.local();
         }
 
+
+        // This is in case the start and end dates are an actual selection
         // An event ending at 12AM June 15th should not be shown when we select on June 15th. Similarly, an event
         // beginning on June 15th 12AM should not be shown when we click on June 14th (clicked date's end =
         // June 15th 12AM). Since we don't want to show the event because they are on different days,
         // strict inequality is used.
-        return element.start_date < end && element.end_date > start;
+
+        var startAfterStart = element.start_date.isAfter(start);
+        var startAfterStartOrSame = startAfterStart || element.start_date.isSame(start);
+        var endBeforeEnd = element.end_date.isBefore(end);
+        var endBeforeEndOrSame = endBeforeEnd || element.end_date.isSame(end);
+
+        // The check goes as follows: (It can probably be simplified I know)
+        // 1. Is the start date after or the same as the start of the date range filter AND is the start date before the end of the date range filter OR (start of event is in the date range)
+        // 2. Is the end date after the start of the date range filter AND is the end date before or the same as the end of the date range filter OR (end of event is in the date range)
+        // 3. Is the start date after or the same as the date range filter AND is the end date before or the same as the end of the date range filter (event exists in between the start and end of date range)
+        return (startAfterStartOrSame && element.start_date.isBefore(end)) || 
+          (element.end_date.isAfter(start) && endBeforeEndOrSame) ||
+          (startAfterStartOrSame && endBeforeEndOrSame);
       });
     
       deferred.resolve("Selected a range");
@@ -313,7 +331,7 @@
           factory.events = newEvents;
           factory.selectedEvents = newEvents;
           PubSubService.publish(settings.pubSubOnStopLoader);
-          return response.data;
+          return factory.events;
         }, function (response) {
           $log.warn('Failed to retrieve filtered events: ' + filterParams);
           $log.warn(response);
@@ -343,13 +361,13 @@
         });
       }
 
-      // Provide YYYY-MM-DD for Django.
+      // Provide YYYY-MM-DDTHH:mm:ss for Django.
       if (factory.dateRangeStart) {
-        filterParams.push({name: "fromDate", value: factory.dateRangeStart.format('YYYY-MM-DD')});
+        filterParams.push({name: "fromDate", value: factory.dateRangeStart.utc().format('YYYY-MM-DD[T]HH:mm:ss')});
       }
 
       if (factory.dateRangeEnd) {
-        filterParams.push({name: "toDate", value: factory.dateRangeEnd.format('YYYY-MM-DD')});
+        filterParams.push({name: "toDate", value: factory.dateRangeEnd.utc().format('YYYY-MM-DD[T]HH:mm:ss')});
       }
 
       if (StateService.getPlaceID()) {
