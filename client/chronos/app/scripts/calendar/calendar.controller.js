@@ -10,9 +10,9 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFacadeService', 'StateService'];
+  CalendarController.$inject = ['$scope', '$anchorScroll', '$location', '$log', 'settings', 'EventFacadeService', 'StateService'];
 
-  function CalendarController($scope, $log, settings, EventFacadeService, StateService) {
+  function CalendarController($scope, $anchorScroll, $location, $log, settings, EventFacadeService, StateService) {
     /* jshint validthis: true */
     var vm = this;
 
@@ -94,7 +94,8 @@
           id: event.id,
           title: event.name,
           start: event.start_date,
-          end: event.end_date
+          end: event.end_date,
+          eventCardId: event.id
         });
       });
       return new_events;
@@ -119,7 +120,11 @@
      * @param view
      */
     function eventClick(event, jsEvent, view) {
-      // Future implementation for day click event. Scroll to event in the left panel.
+      console.log(event.eventCardId);
+      var old = $location.hash();
+      $location.hash('event-card-' + event.eventCardId);
+      $anchorScroll();
+      $location.hash(old);
     }
 
     /**
