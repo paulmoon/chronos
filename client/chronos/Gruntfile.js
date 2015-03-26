@@ -64,6 +64,21 @@ module.exports = function (grunt) {
       }
     },
 
+    angular_architecture_graph: {
+      options: {
+        hideAngularServices: true,
+        colorScheme: 'pastel19'
+      },
+      diagram: {
+        files: {
+            // "PATH/TO/OUTPUT/FILES": ["PATH/TO/YOUR/FILES/*.js"]
+            "architecture": [
+            "<%= yeoman.app %>/<%= yeoman.project %>/**/*.js"
+          ]
+        }
+      }
+    },
+
     // The actual grunt server settings
     connect: {
       options: {

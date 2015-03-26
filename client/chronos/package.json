@@ -5,7 +5,7 @@
   "private": true,
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-angular-templates": "^0.5.7",
+    "grunt-angular-architecture-graph": "^0.2.5",
     "grunt-autoprefixer": "^2.2.0",
     "grunt-concurrent": "^1.0.0",
     "grunt-contrib-clean": "^0.6.0",
@@ -23,8 +23,7 @@
     "grunt-google-cdn": "^0.4.3",
     "grunt-karma": "^0.10.1",
     "grunt-newer": "^1.1.0",
-    "grunt-ng-annotate": "^0.10.0",
-    "grunt-replace": "^0.8.0",
+    "grunt-ngmin": "^0.0.3",
     "grunt-svgmin": "^2.0.1",
     "grunt-usemin": "^3.0.0",
     "grunt-wiredep": "^2.0.0",
@@ -34,7 +33,6 @@
     "karma-jasmine": "^0.3.5",
     "karma-phantomjs-launcher": "^0.1.4",
     "load-grunt-tasks": "^3.1.0",
-    "lodash": "^3.5.0",
     "time-grunt": "^1.1.0"
   },
   "engines": {

@@ -10,16 +10,16 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFacadeService', 'StateService'];
+  CalendarController.$inject = ['$scope', '$anchorScroll', '$location', '$log', 'settings', 'EventFacadeService', 'StateService', 'PubSubService'];
 
-  function CalendarController($scope, $log, settings, EventFacadeService, StateService) {
+  function CalendarController($scope, $anchorScroll, $location, $log, settings, EventFacadeService, StateService, PubSubService) {
     /* jshint validthis: true */
     var vm = this;
 
     vm.title = 'CalendarController';
+    vm.injectedClearButton = false;
     // A function that FullCalendar will call as necessary to retrieve events
     vm.eventSources = [getEvents];
-
     _activate();
 
     ////////////////
@@ -32,6 +32,7 @@
             left: 'month basicWeek',
             center: 'title'
           },
+          timezone: 'local',
           editable: false,
           selectable: true,
           eventLimit: settings.calendarEventLimitPerDay,
@@ -39,8 +40,18 @@
           eventClick: eventClick,
           select: select,
           unselect: unselect,
+          unselectCancel: settings.calendarUnselectCancelClasses,
+          viewRender: viewRender
         }
       };
+    }
+
+    function viewRender(view, element) {
+      if (!vm.injectedClearButton) {
+        var $buttons = $('.fc-left');
+        $buttons.append('<button type="button" ng-click="unselect()" class="fc-button fc-state-default fc-corner-left fc-corner-right btn btn-default">Clear</button>');
+        vm.injectedClearButton = true;
+      }
     }
 
     /**
@@ -82,8 +93,9 @@
         new_events.push({
           id: event.id,
           title: event.name,
-          start: event.start_date.local(),
-          end: event.end_date.local()
+          start: event.start_date,
+          end: event.end_date,
+          eventCardId: event.id
         });
       });
       return new_events;
@@ -108,7 +120,11 @@
      * @param view
      */
     function eventClick(event, jsEvent, view) {
-      // Future implementation for day click event. Scroll to event in the left panel.
+      var old = $location.hash();
+      $location.hash('event-card-' + event.eventCardId);
+      $anchorScroll();
+      $location.hash(old);
+      PubSubService.publish(settings.pubSubOnEventCalendarClick + event.eventCardId);
     }
 
     /**
@@ -120,7 +136,8 @@
      * @param view
      */
     function select(start, end, jsEvent, view) {
-      EventFacadeService.updateSelectionRange(start, end);
+      // Full Calendar is passing in the dates in UTC mode for some reason, so converting it to local mode
+      EventFacadeService.updateSelectionRange(start.local(), end.local());
     }
 
     /**

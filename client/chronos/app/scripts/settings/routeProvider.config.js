@@ -31,8 +31,7 @@
         templateUrl: 'scripts/chronos/about.html'
       })
       .when('/event/:eventId', {
-        templateUrl: 'scripts/events/eventPage.html',
-        controller: 'EventPageController'
+        templateUrl: 'scripts/events/eventPage.html'
       })
       .otherwise({
         redirectTo: '/'

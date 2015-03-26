@@ -13,12 +13,12 @@
     .module('chronosApp')
     .controller('EventCardController', EventCardController);
 
-  EventCardController.$inject = ['AuthFacadeService', 'EventFacadeService'];
+  EventCardController.$inject = ['AuthFacadeService', 'EventFacadeService', 'PubSubService', 'settings'];
 
   /**
    * @desc Controller for the event card directives
    */
-  function EventCardController(AuthFacadeService, EventFacadeService) {
+  function EventCardController(AuthFacadeService, EventFacadeService, PubSubService, settings) {
     var vm = this;
 
     vm.voteEvent = EventFacadeService.voteEvent;
@@ -36,6 +36,11 @@
 
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
+
+    vm.blinkAnimationClass = "event-card-blink-animation";
+    vm.blinkAnimationClassVariable = '';
+
+    vm.onEventCalendarClick = onEventCalendarClick;
 
     _activate();
 
@@ -64,6 +69,14 @@
       if (vm.eventReported === "true") {
         vm.reportButtonStyle = {color: "crimson"};
       }
+
+      // Used for when an event is clicked from the calendar
+      PubSubService.subscribe(settings.pubSubOnEventCalendarClick + vm.eventId.toString(), vm.onEventCalendarClick);
+    }
+
+    function onEventCalendarClick() {
+      vm.blinkAnimationClassVariable = '';
+      vm.blinkAnimationClassVariable = vm.blinkAnimationClass;
     }
 
     /**
