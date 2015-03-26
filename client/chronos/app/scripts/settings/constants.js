@@ -24,6 +24,9 @@
       pubSubOnEventCreate: 'pubSubOnEventCreate',
       pubSubOnEventEdit: 'pubSubOnEventEdit',
       pubSubOnEventUpdate: 'pubSubOnEventUpdate',
-      pubSubOnCommentCreate: 'pubSubOnCommentCreate'
+      pubSubOnCommentCreate: 'pubSubOnCommentCreate',
+
+      // Every event card subscribes to this, but adds their id to the string
+      pubSubOnEventCalendarClick: 'pubSubOnEventCalendarClick-'
     });
 })();
