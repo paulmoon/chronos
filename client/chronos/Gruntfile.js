@@ -18,7 +18,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'dist',
+    appName: 'chronosApp'
   };
 
   // Define the configuration for all the tasks
@@ -182,9 +183,9 @@ module.exports = function (grunt) {
       },
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath: /\.\.\//
       },
-	  sass: {
+      sass: {
         src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
       }
@@ -218,14 +219,16 @@ module.exports = function (grunt) {
         }
       }
     },
-	
+
     // Renames files for browser caching purposes
     filerev: {
       dist: {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
-          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          // Don't rename our images because we're referencing them in the original file name, not the revisioned file names
+          // in our Angular code. Need to figure out how to make Angular reference filerev'd images.
+          //'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }
@@ -242,7 +245,7 @@ module.exports = function (grunt) {
           html: {
             steps: {
               js: ['concat', 'uglifyjs'],
-              css: ['cssmin']
+              css: ['concat', 'cssmin']
             },
             post: {}
           }
@@ -255,7 +258,29 @@ module.exports = function (grunt) {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
-        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
+        assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/images']
+      }
+    },
+
+    uglify: {
+      options: {
+        mangle: false
+      }
+    },
+
+    cssmin: {
+      options: {
+        aggressiveMerging: false,
+        advanced: false
+      }
+    },
+
+    concat: {
+      prependNgTemplates: {
+        // Note that ordering matters here, because scripts.js will contain app.js which instantiates chronosApp and
+        // templates.js depends on chronosApp being present.
+        src: ['.tmp/concat/scripts/scripts.js', '.tmp/concat/js/templates.js'],
+        dest: '.tmp/concat/scripts/scripts.js'
       }
     },
 
@@ -325,16 +350,31 @@ module.exports = function (grunt) {
       }
     },
 
-    // ngmin tries to make the code safe for minification automatically by
+    ngtemplates: {
+      app: {
+        cwd: '<%= yeoman.app %>',
+        src: '**/*.html',
+        //dest: '<%= yeoman.dist %>/templates.js'
+        //dest: '.tmp/concat/js/templates.js',
+        dest: '.tmp/concat/js/templates.js',
+        options: {
+          module: '<%= yeoman.appName %>'
+        }
+      }
+    },
+
+    // ngAnnotate tries to make the code safe for minification automatically by
     // using the Angular long form for dependency injection. It doesn't work on
     // things like resolve or inject so those have to be done manually.
-    ngmin: {
+    ngAnnotate: {
       dist: {
         files: [{
           expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: '*.js',
-          dest: '.tmp/concat/scripts'
+          //cwd: '.tmp/concat/scripts',
+          //src: '*.js',
+          //dest: '.tmp/concat/scripts'
+          src: ['<%= yeoman.app %>/**/*.js', '.tmp/concat/js/templates.js'],
+          dest: '.tmp/js/scripts'
         }]
       }
     },
@@ -342,9 +382,10 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/*.html']
+        html: ['<%= yeoman.app %>/*.html']
       }
     },
+
 
     // Copies remaining files to places other tasks can use
     copy: {
@@ -359,9 +400,18 @@ module.exports = function (grunt) {
             '.htaccess',
             '*.html',
             'views/{,*/}*.html',
-            'images/{,*/}*.{webp}',
-            'fonts/*'
+            'images/{,*/}*.{webp,png}'
           ]
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: 'images/**/*.png',
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
+          flatten: true,
+          src: ['bower_components/**/*.{ttf,woff}'],
+          dest: '<%= yeoman.dist %>/fonts'
         }, {
           expand: true,
           cwd: '.tmp/images',
@@ -371,8 +421,8 @@ module.exports = function (grunt) {
           expand: true,
           //cwd: 'bower_components/bootstrap/dist',
           //src: 'fonts/*',
-		  src: 'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*',
-		  dest: '<%= yeoman.dist %>'
+          src: 'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*',
+          dest: '<%= yeoman.dist %>'
         }]
       },
       styles: {
@@ -392,10 +442,42 @@ module.exports = function (grunt) {
         'compass'
       ],
       dist: [
-        'compass:dist',
-        'imagemin',
-        'svgmin'
+        'compass:dist'
+        // This is broken at the moment: https://github.com/gruntjs/grunt-contrib-imagemin/issues/96
+        //'imagemin',
+        //'svgmin'
       ]
+    },
+
+    replace: {
+      development: {
+        options: {
+          patterns: [{
+            json: grunt.file.readJSON('./config/local.json')
+          }]
+        },
+        files: [{
+          expand: true,
+          flatten: true,
+          src: '<%= yeoman.app %>/scripts/settings/constants.js',
+          // Don't need to specify the filename.
+          dest: '<%= yeoman.app %>/scripts/settings/'
+        }]
+      },
+
+      production: {
+        options: {
+          patterns: [{
+            json: grunt.file.readJSON('./config/production.json')
+          }]
+        },
+        files: [{
+          expand: true,
+          flatten: true,
+          src: '<%= yeoman.app %>/scripts/settings/constants.js',
+          dest: '<%= yeoman.app %>/scripts/settings/'
+        }]
+      }
     },
 
     // Test settings
@@ -416,6 +498,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'replace:development',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -438,19 +521,30 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    // Inject Bower dependencies into index.html
     'wiredep',
-    'useminPrepare',
+    // Replace serverUrl with production-appropriate url. Development is localhost but production is eventurist.io
+    'replace:production',
+    // Put all templates into $templateCache so production website can use it while minified
+    'ngtemplates',
+    // Add, remove, and rebuild AngularJS dependency injection annotations
+    'ngAnnotate',
+    // Use compass to compile SASS into CSS, concurrently
     'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngmin',
+    // Copy the remaining files (CSS, images, fonts etc.) to <%= yeoman.dist %> or .tmp for later processors
     'copy:dist',
-    'cdnify',
-    'cssmin',
-    'uglify',
+    // Parses CSS and add vendor prefixes to CSS rules using values from Can I Use
+    'autoprefixer',
+    // Parse index.html for blocks and transform it so it references our minified rather than original files.
+    // e.g. <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    'useminPrepare',
+    'concat:generated',
+    // Concatenate our templates.js from ngtempplates with the rest of the scripts.
+    'concat:prependNgTemplates',
+    'cssmin:generated',
+    'uglify:generated',
     'filerev',
-    'usemin',
-    'htmlmin'
+    'usemin'
   ]);
 
   grunt.registerTask('default', [
