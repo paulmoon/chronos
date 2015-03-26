@@ -15,14 +15,14 @@
   CommentFactory.$inject = ['RestService', '$q', '$log'];
 
   function CommentFactory(RestService, $q, $log) {
-    var comment =  {
+    var factory =  {
+      comments: [],
       getComment: getComment,
       saveComment: saveComment,
-      updateComment: updateComment,
-      deleteComment: deleteComment
+      updateComment: updateComment
     };
 
-    return comment;
+    return factory;
 
     //////////////////////
 
@@ -32,14 +32,12 @@
      * @param eventId
      * @returns {*}
      */
-    function getComment(eventId) {
-      return RestService.getComment(eventId)
-        .then(function(response) {
-          return response.data;
-        }, function(response) {
-          $log.warn('Response: ' + response);
-          return $q.reject(response);
-        });
+    function getComment() {
+      return factory.comments;
+    }
+
+    function updateComment(eventId) {
+      return _updateComment(eventId);
     }
 
     /**
@@ -62,10 +60,19 @@
     /**
      * @description updates comments that the factory holds
      * @methodOf chronosApp:CommentFactory
-     * @returns {*}
+     * @returns private {*}
      */
-    function updateComment() {
-
+    function _updateComment(eventId) {
+      return RestService.getComment(eventId)
+        .then(function(response) {
+          var comments = response.data;
+          factory.comments = comments;
+          return response.data;
+        }, function (response) {
+          $log.warn('Failed to retrieve comments');
+          $log.warn(response);
+          return $q.reject(response);
+        });
     }
 
     /**

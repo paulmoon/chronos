@@ -1,6 +1,6 @@
 <li class="comment-container comment-depth">
   <div class="comment-header">
-    <span class="comment-username">{{childcomment.user.username}}</span> - <span class="comment-reply"><a data-ng-click="vm.isReplyOpen(childcomment.id, childcomment.depth, childcomment.path)">Reply</a></span>
+    <span class="comment-username">{{childcomment.user.username}}</span> - <span class="comment-reply"><a data-ng-click="vm.isReplyOpen(childcomment.id, childcomment.depth)">Reply</a></span>
     <div data-ng-show="vm.isReplyShow(childcomment.id)" class="comment-save-body">
       <form role="form">
         <div class="form-group">

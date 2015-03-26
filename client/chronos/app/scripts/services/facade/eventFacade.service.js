@@ -159,8 +159,12 @@
       EventFactory.selectedEvents = EventFactory.getEvents();
     };
 
-    this.getComment = function (eventID) {
-      return CommentFactory.getComment(eventID);
+    this.getComment = function () {
+      return CommentFactory.getComment();
+    };
+
+    this.updateComment = function (eventID) {
+      return CommentFactory.updateComment(eventID);
     };
 
     this.saveComment = function (eventID, commentText, depth, path, parent) {

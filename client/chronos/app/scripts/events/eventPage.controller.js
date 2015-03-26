@@ -25,7 +25,7 @@
     vm.saveEventClick = saveEventClick;
 
     _activate();
-
+    _commentActivate();
     /////////
 
     /**
@@ -57,6 +57,15 @@
           vm.endDate = moment(response.data.end_date).format('lll');
           vm.tags = response.data.tags;
         });
+    }
+
+    /**
+     * @description on load page it fills in the comment data
+     * @methodOf chronosApp:EventPageController
+     * @private
+     */
+    function _commentActivate() {
+      EventFacadeService.updateComment($routeParams.eventId);
     }
 
 
