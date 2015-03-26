@@ -120,7 +120,6 @@
      * @param view
      */
     function eventClick(event, jsEvent, view) {
-      console.log(event.eventCardId);
       var old = $location.hash();
       $location.hash('event-card-' + event.eventCardId);
       $anchorScroll();
