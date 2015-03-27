@@ -79,6 +79,8 @@
         vm.creationError = 'Invalid location.'
       } else if (vm.eventName.length > 100){
         vm.creationError = 'Name is longer than 100 characters.'
+      } else if (vm.startDate.getTime() > vm.endDate.getTime()){
+        vm.creationError = 'End date starts before start date.'
       }
 
       if (vm.creationError){

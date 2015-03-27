@@ -61,8 +61,7 @@
               <div class="input-group">
                 <span class="input-group-addon" id="first-date-addon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
                 <input type="text" class="form-control read-only center-text" data-ng-model="eventModal.startDate"
-                  data-max-date="{{eventModal.endDate}}" data-autoclose="1" aria-describedby="first-date-addon" placeholder="Start Date"
-                  readonly bs-datepicker>
+                  data-autoclose="1" aria-describedby="first-date-addon" placeholder="Start Date" readonly bs-datepicker>
                 <span class="input-group-addon" id="first-time-addon">-</span>
                 <input type="text" class="form-control read-only center-text" aria-describedby="first-time-addon" data-ng-model="eventModal.startDate" length="3" placeholder="Start Time" readonly bs-timepicker>
               </div>
@@ -74,7 +73,7 @@
             <div class="col-lg-12">
               <div class="input-group">
                 <span class="input-group-addon" id="second-date-addon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
-                <input type="text" class="form-control read-only center-text" aria-describedby="second-date-addon" data-ng-model="eventModal.endDate" data-min-date="{{eventModal.startDate}}" data-autoclose="1" placeholder="End Date" readonly bs-datepicker>
+                <input type="text" class="form-control read-only center-text" aria-describedby="second-date-addon" data-ng-model="eventModal.endDate" data-autoclose="1" placeholder="End Date" readonly bs-datepicker>
                 <span class="input-group-addon" id="second-time-addon">-</span>
                 <input type="text" class="form-control read-only center-text" data-ng-model="eventModal.endDate" length="3"
                   placeholder="End Time" aria-describedby="second-time-addon" readonly bs-timepicker>
