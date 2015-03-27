@@ -8,9 +8,6 @@ router = routers.DefaultRouter()
 
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^docs/', include('rest_framework_swagger.urls')),
-
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^users/verify_credentials/$', 'rest_framework.authtoken.views.obtain_auth_token'),
     url(r'^users/create/$', 'app.views.create_user'),
@@ -38,6 +35,9 @@ urlpatterns = patterns('',
 
 if settings.DEBUG:
     urlpatterns += patterns('',
+        url(r'^admin/', include(admin.site.urls)),
+        url(r'^docs/', include('rest_framework_swagger.urls')),
+
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT,
         }),

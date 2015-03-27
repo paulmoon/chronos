@@ -1,4 +1,4 @@
-<div class="event-card-panel panel panel-default">
+<div class="event-card-panel panel panel-default" ng-class="{'event-card-blink-animation': vm.isBlinking}" ng-mouseenter="vm.onMouseEnter()" ng-mouseleave="vm.onMouseLeave()">
   <div class="event-card panel-body">
     <div class="arrow-group">
       <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.upvoteEvent()" class="btn btn-link btn-xs" style="outline:none">

@@ -19,6 +19,7 @@
         templateUrl: 'scripts/chronos/main.html',
 
         resolve: {
+          /* @ngInject */
           userDetails: function (AuthFacadeService) {
             if (AuthFacadeService.isLoggedIn()) {
               return AuthFacadeService.retrieveUserProfile();

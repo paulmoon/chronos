@@ -107,3 +107,30 @@
 .glyphicon.glyphicon-chevron-up.event-card-up {
   font-size: 20px;
 }
+
+@keyframes blink {
+    from { opacity:1; }
+    to { opacity:0.2; }
+};
+
+@-webkit-keyframes blink {
+    from { opacity:1; }
+    to { opacity:0.2; }
+};
+
+@-moz-keyframes blink {
+    from { opacity:1; }
+    to { opacity:0.2; }
+};
+
+@-o-keyframes blink {
+    from { opacity:1; }
+    to { opacity:0.2; }
+};
+
+.event-card-blink-animation {
+  -webkit-animation: blink 500ms infinite alternate;
+  -moz-animation: blink 500ms infinite alternate;
+  -o-animation: blink 500ms infinite alternate;
+  animation: blink 500ms infinite alternate;
+}

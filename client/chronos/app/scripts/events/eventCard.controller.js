@@ -13,12 +13,12 @@
     .module('chronosApp')
     .controller('EventCardController', EventCardController);
 
-  EventCardController.$inject = ['AuthFacadeService', 'EventFacadeService'];
+  EventCardController.$inject = ['$timeout', 'AuthFacadeService', 'EventFacadeService', 'PubSubService', 'settings'];
 
   /**
    * @desc Controller for the event card directives
    */
-  function EventCardController(AuthFacadeService, EventFacadeService) {
+  function EventCardController($timeout, AuthFacadeService, EventFacadeService, PubSubService, settings) {
     var vm = this;
 
     vm.voteEvent = EventFacadeService.voteEvent;
@@ -36,6 +36,12 @@
 
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
+
+    vm.isBlinking = false;
+
+    vm.onEventCalendarClick = onEventCalendarClick;
+    vm.onMouseEnter = onMouseEnter;
+    vm.onMouseLeave = onMouseLeave;
 
     _activate();
 
@@ -64,6 +70,26 @@
       if (vm.eventReported === "true") {
         vm.reportButtonStyle = {color: "crimson"};
       }
+
+      // Used for when an event is clicked from the calendar
+      PubSubService.subscribe(settings.pubSubOnEventCalendarClick + vm.eventId.toString(), vm.onEventCalendarClick);
+    }
+
+    function onMouseEnter() {
+      var wrappedResult = angular.element(document.getElementById("event-calendar-" + vm.eventId));
+      wrappedResult.addClass("calendar-event-highlight");
+    }
+
+    function onMouseLeave() {
+      var wrappedResult = angular.element(document.getElementById("event-calendar-" + vm.eventId));
+      wrappedResult.removeClass("calendar-event-highlight");
+    }
+
+    function onEventCalendarClick() {
+      vm.isBlinking = true;
+      $timeout(function() {
+        vm.isBlinking = false;
+      }, 1000);
     }
 
     /**

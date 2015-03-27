@@ -10,16 +10,16 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$log', 'settings', 'EventFacadeService', 'StateService'];
+  CalendarController.$inject = ['$scope', '$anchorScroll', '$compile', '$location', '$log', 'settings', 'EventFacadeService', 'StateService', 'PubSubService'];
 
-  function CalendarController($scope, $log, settings, EventFacadeService, StateService) {
+  function CalendarController($scope, $anchorScroll, $compile, $location, $log, settings, EventFacadeService, StateService, PubSubService) {
     /* jshint validthis: true */
     var vm = this;
 
     vm.title = 'CalendarController';
+    vm.injectedClearButton = false;
     // A function that FullCalendar will call as necessary to retrieve events
     vm.eventSources = [getEvents];
-
     _activate();
 
     ////////////////
@@ -40,8 +40,23 @@
           eventClick: eventClick,
           select: select,
           unselect: unselect,
+          unselectCancel: settings.calendarUnselectCancelClasses,
+          viewRender: viewRender,
+          eventRender: eventRender
         }
       };
+    }
+
+    function eventRender(event, element, view) {
+      element.attr({'id': 'event-calendar-' + event.id});
+    }
+
+    function viewRender(view, element) {
+      if (!vm.injectedClearButton) {
+        var $buttons = $('.fc-left');
+        $buttons.append('<button type="button" ng-click="unselect()" class="fc-button fc-state-default fc-corner-left fc-corner-right btn btn-default">Clear</button>');
+        vm.injectedClearButton = true;
+      }
     }
 
     /**
@@ -84,7 +99,8 @@
           id: event.id,
           title: event.name,
           start: event.start_date,
-          end: event.end_date
+          end: event.end_date,
+          eventCardId: event.id
         });
       });
       return new_events;
@@ -109,7 +125,11 @@
      * @param view
      */
     function eventClick(event, jsEvent, view) {
-      // Future implementation for day click event. Scroll to event in the left panel.
+      var old = $location.hash();
+      $location.hash('event-card-' + event.eventCardId);
+      $anchorScroll();
+      $location.hash(old);
+      PubSubService.publish(settings.pubSubOnEventCalendarClick + event.eventCardId);
     }
 
     /**
