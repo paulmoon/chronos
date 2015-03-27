@@ -172,6 +172,11 @@ class EventWriteSerializer(serializers.ModelSerializer):
             for field_name in existing - allowed:
                 self.fields.pop(field_name)
 
+    def validate(self, data):
+        if data['start_date'] >= data['end_date']:
+            raise serializers.ValidationError('Start date is greater than the end date');
+        return data
+
     def create(self, validated_data):
         # Tags is a many to may field in the Event model, and therefore cannot be created through the objects.create method
         tags = validated_data["tags"]

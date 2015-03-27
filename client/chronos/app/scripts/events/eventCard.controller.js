@@ -76,13 +76,17 @@
     }
 
     function onMouseEnter() {
-      var wrappedResult = angular.element(document.getElementById("event-calendar-" + vm.eventId));
-      wrappedResult.addClass("calendar-event-highlight");
+      var elements = document.getElementsByClassName("event-calendar-" + vm.eventId);
+      for(var i = 0; i < elements.length; i++) {
+        angular.element(elements[i]).addClass("calendar-event-highlight");
+      }
     }
 
     function onMouseLeave() {
-      var wrappedResult = angular.element(document.getElementById("event-calendar-" + vm.eventId));
-      wrappedResult.removeClass("calendar-event-highlight");
+      var elements = document.getElementsByClassName("event-calendar-" + vm.eventId);
+      for(var i = 0; i < elements.length; i++) {
+        angular.element(elements[i]).removeClass("calendar-event-highlight");
+      }
     }
 
     function onEventCalendarClick() {
@@ -97,21 +101,29 @@
      * @memberOf chronosApp:EventCardController
      */
     function upvoteEvent() {
-      vm.voteEvent(vm.eventId, 1);
-      vm.upArrowStyle = {
-        color: 'orange'
-      };
-      vm.downArrowStyle = {};
-
-      if (vm.voteDirectionByUser === "-1"){
+      if (vm.voteDirectionByUser === -1){
+        vm.voteEvent(vm.eventId, 1);
+        vm.upArrowStyle = {
+          color: 'orange'
+        };
+        vm.downArrowStyle = {};
         vm.vote = vm.vote + 2;
-      } else if (vm.voteDirectionByUser === "1"){
-        vm.vote = vm.vote;
+        vm.voteDirectionByUser = 1;
+      } else if (vm.voteDirectionByUser === 1){
+        vm.voteEvent(vm.eventId, 0);
+        vm.upArrowStyle = {};
+        vm.downArrowStyle = {};
+        vm.vote = vm.vote -1;
+        vm.voteDirectionByUser = 0;
       } else {
+        vm.voteEvent(vm.eventId, 1);
+        vm.upArrowStyle = {
+          color: 'orange'
+        };
+        vm.downArrowStyle = {};
         vm.vote = vm.vote + 1;
+        vm.voteDirectionByUser = 1;
       }
-
-      vm.voteDirectionByUser = "1";
     }
 
     /**
@@ -119,20 +131,29 @@
      * @memberOf chronosApp:EventCardController
      */
     function downvoteEvent() {
-      vm.voteEvent(vm.eventId, -1);
-      vm.downArrowStyle = {
-        color: 'blue'
-      };
-      vm.upArrowStyle = {};
-
-      if (vm.voteDirectionByUser === "1"){
+      if (vm.voteDirectionByUser === 1){
+        vm.voteEvent(vm.eventId, -1);
+        vm.downArrowStyle = {
+          color: 'blue'
+        };
+        vm.upArrowStyle = {};
         vm.vote = vm.vote - 2;
-      } else if (vm.voteDirectionByUser === "-1"){
-        vm.vote = vm.vote;
+        vm.voteDirectionByUser = -1;
+      } else if (vm.voteDirectionByUser === -1){
+        vm.voteEvent(vm.eventId, 0);
+        vm.downArrowStyle = {};
+        vm.upArrowStyle = {};
+        vm.vote = vm.vote + 1;
+        vm.voteDirectionByUser = 0;
       } else {
+        vm.voteEvent(vm.eventId, -1);
+        vm.downArrowStyle = {
+          color: 'blue'
+        };
+        vm.upArrowStyle = {};
         vm.vote = vm.vote - 1;
+        vm.voteDirectionByUser = -1;
       }
-      vm.voteDirectionByUser = "-1";
     }
 
     /**
@@ -201,6 +222,7 @@
      */
     function addTag(addedTag) {
       EventFacadeService.addTag(addedTag);
+      vm.onMouseLeave();
     }
   }
 })();

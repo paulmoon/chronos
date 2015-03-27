@@ -48,7 +48,6 @@
       if (StateService.getPlaceName() !== null) {
         vm.chosenPlace = StateService.getPlaceName();
       }
-      vm.refreshEvents();
     }
 
     function openSignupModal() {
@@ -79,7 +78,7 @@
       var modalInstance = $modal.open({
         templateUrl: 'scripts/events/eventModal.html',
         controller: 'EventModalController as eventModal',
-        size: 'lg',
+        windowClass: 'create-modal-size',
         resolve: {
           shouldShowEventCreateModal: function () {
             return true;
@@ -104,7 +103,7 @@
         StateService.setPlaceName(chosenPlaceDetails.formatted_address);
       }
 
-      vm.refreshEvents();
+      PubSubService.publish(settings.pubSubOnLocationUpdate);
 
       if (vm.isLoggedIn()) {
         vm.saveUserLocation();

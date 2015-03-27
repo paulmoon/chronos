@@ -37,6 +37,10 @@
       return RestService.getEvent(eventID);
     };
 
+    this.getTags = function () {
+      return EventFactory.getTags();
+    };
+
     this.getPopularTags = function () {
       return RestService.getPopularTags();
     };
