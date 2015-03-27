@@ -1,7 +1,79 @@
-.event-dates {
-  padding-right: 20px;
+.pac-container {
+  z-index: 1051 !important;
 }
 
-.pac-container {
-    z-index: 1051 !important;
+.create-modal-size .modal-dialog{
+  width:50%;
+  position: absolute;
+  top:4%; bottom: 0; left: 0; right: 0;
+  margin: auto;
+}
+
+.text-area-size {
+  width: 100%;
+  height: 90%; 
+  resize: none;
+}
+
+.picture-zone {
+  background-color:#F7F7F7;
+  height:186px;
+  border-style: dashed;
+  border-color: #ccc;
+  text-align: center;
+  margin-top:2px;
+}
+
+.create-picture {
+  width:100%;
+  max-height:186px;
+  margin-top:2px;
+}
+
+.picture-wrap {
+  display:inline-block;
+  position:relative;
+}
+
+.image-removal-button {
+  position:absolute;
+  top:3px;
+  right:0;
+}
+
+.left-border {
+  border-left: 1px solid #F0F0F0;
+}
+
+.right-border {
+  border-right: 1px solid #F0F0F0;
+}
+
+.reduced-hr {
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.remove-bottom-margin {
+  margin-bottom:0px;
+}
+
+.removal-glyphicon {
+  background-color:black;
+  color:white;
+  opacity:0.6;
+}
+
+.upload-button {
+  position:relative;
+  top:45%;
+}
+
+.center-text {
+  text-align:center;
+}
+
+.shadow-removal {
+  -moz-box-shadow: 0 0 5px 2px black;
+  -webkit-box-shadow: 0 0 5px 2px black;
 }

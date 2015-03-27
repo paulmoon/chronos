@@ -30,16 +30,18 @@
     /////////////////////////////////
 
     function _activate() {
-      // vm.voteDirectionByUser and vm.eventSaved will be strings because they were interpolated using @.
       AuthFacadeService.retrieveUserProfile()
         .then(function(response) {
-           var votedEvents = response.data.voted_events;
-           for(var i = 0, len = votedEvents.length; i < len; ++i) {
-             if(vm.eventId == votedEvents[i].event.id) {
-               vm.voteDirectionByUser = votedEvents[i].direction;
-               break;
-             }
-           }
+
+          var votedEvents = response.data.voted_events;
+
+          for(var i = 0, len = votedEvents.length; i < len; ++i) {
+            if(vm.eventId == votedEvents[i].event.id) {
+              vm.voteDirectionByUser = votedEvents[i].direction;
+              break;
+            }
+          }
+
           if (vm.voteDirectionByUser == "1") {
             vm.upArrowStyle = {color: "orange"};
             vm.downArrowStyle = {};
@@ -55,11 +57,29 @@
      * @memberOf chronosApp:VoteController
      */
     function upvoteEvent() {
-      vm.voteEvent(vm.eventId, 1);
-      vm.upArrowStyle = {
-        color: 'orange'
-      };
-      vm.downArrowStyle = {};
+      if (vm.voteDirectionByUser === -1){
+        vm.voteEvent(vm.eventId, 1);
+        vm.upArrowStyle = {
+          color: 'orange'
+        };
+        vm.downArrowStyle = {};
+        vm.vote = vm.vote + 2;
+        vm.voteDirectionByUser = 1;
+      } else if (vm.voteDirectionByUser === 1){
+        vm.voteEvent(vm.eventId, 0);
+        vm.upArrowStyle = {};
+        vm.downArrowStyle = {};
+        vm.vote = vm.vote -1;
+        vm.voteDirectionByUser = 0;
+      } else {
+        vm.voteEvent(vm.eventId, 1);
+        vm.upArrowStyle = {
+          color: 'orange'
+        };
+        vm.downArrowStyle = {};
+        vm.vote = vm.vote + 1;
+        vm.voteDirectionByUser = 1;
+      }
     }
 
     /**
@@ -67,11 +87,29 @@
      * @memberOf chronosApp:VoteController
      */
     function downvoteEvent() {
-      vm.voteEvent(vm.eventId, -1);
-      vm.downArrowStyle = {
-        color: 'blue'
-      };
-      vm.upArrowStyle = {};
+      if (vm.voteDirectionByUser === 1){
+        vm.voteEvent(vm.eventId, -1);
+        vm.downArrowStyle = {
+          color: 'blue'
+        };
+        vm.upArrowStyle = {};
+        vm.vote = vm.vote - 2;
+        vm.voteDirectionByUser = -1;
+      } else if (vm.voteDirectionByUser === -1){
+        vm.voteEvent(vm.eventId, 0);
+        vm.downArrowStyle = {};
+        vm.upArrowStyle = {};
+        vm.vote = vm.vote + 1;
+        vm.voteDirectionByUser = 0;
+      } else {
+        vm.voteEvent(vm.eventId, -1);
+        vm.downArrowStyle = {
+          color: 'blue'
+        };
+        vm.upArrowStyle = {};
+        vm.vote = vm.vote - 1;
+        vm.voteDirectionByUser = -1;
+      }
     }
   }
 })();

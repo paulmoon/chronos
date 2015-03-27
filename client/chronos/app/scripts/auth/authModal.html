@@ -1,10 +1,12 @@
 <div class="modal-content" ng-style="authModal.loadingBlurStyle">
   <div class="modal-header">
     <h3 ng-if="authModal.shouldShowSignUpModal" class="modal-title">
-      <strong>Sign Up</strong>
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+      <strong>Sign Up</strong> 
     </h3>
 
     <h3 ng-if="!authModal.shouldShowSignUpModal" class="modal-title">
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
       <strong>Login</strong>
     </h3>
   </div>

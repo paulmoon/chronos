@@ -76,7 +76,7 @@
       var modalInstance = $modal.open({
         templateUrl: 'scripts/events/eventModal.html',
         controller: 'EventModalController as eventModal',
-        size: 'lg',
+        windowClass: 'create-modal-size',
         resolve: {
           shouldShowEventCreateModal: function () {
             return true;
