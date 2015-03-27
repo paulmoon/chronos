@@ -4,14 +4,14 @@
       <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.upvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
         <span class="glyphicon glyphicon-chevron-up event-card-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
       </button>
-      <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+      <button ng-if="!vm.isLoggedIn()" type="button" ng-click="vm.openLoginModal()" class="btn btn-link btn-xs" style="outline:none">
         <span class="glyphicon glyphicon-chevron-up event-card-up" ng-style="vm.upArrowStyle" aria-hidden="true"></span>
       </button>
       <div class="vote-value"> {{vm.vote}}</div>
       <button ng-if="vm.isLoggedIn()" type="button" ng-click="vm.downvoteEvent()" class="btn btn-link btn-xs" style="outline:none">
         <span class="glyphicon glyphicon-chevron-down event-card-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
       </button>
-      <button ng-if="!vm.isLoggedIn()" type="button" disabled="disabled" class="btn btn-link btn-xs" style="outline:none">
+      <button ng-if="!vm.isLoggedIn()" type="button" ng-click="vm.openLoginModal()" class="btn btn-link btn-xs" style="outline:none">
         <span class="glyphicon glyphicon-chevron-down event-card-down" ng-style="vm.downArrowStyle" aria-hidden="true"></span>
       </button>
     </div>

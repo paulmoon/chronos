@@ -11,18 +11,18 @@
     .module('chronosApp')
     .controller('VotingController', VotingController);
 
-  VotingController.$inject = ['AuthFacadeService', 'EventFacadeService'];
+  VotingController.$inject = ['AuthFacadeService', 'EventFacadeService', '$modal'];
 
   /**
    * @desc Controller for the voting directives
    */
-  function VotingController(AuthFacadeService, EventFacadeService) {
+  function VotingController(AuthFacadeService, EventFacadeService, $modal) {
     var vm = this;
 
     vm.voteEvent = EventFacadeService.voteEvent;
     vm.upvoteEvent = upvoteEvent;
     vm.downvoteEvent = downvoteEvent;
-
+    vm.openLoginModal = openLoginModal;
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
 
     _activate();
@@ -111,5 +111,22 @@
         vm.voteDirectionByUser = -1;
       }
     }
+
+    /**
+     * @description This function opens the modal for Login
+     * @methodOf chronosApp:VotingController
+     */
+    function openLoginModal() {
+      var modalInstance = $modal.open({
+        templateUrl: 'scripts/auth/authModal.html',
+        controller: 'AuthModalController as authModal',
+        resolve: {
+          shouldShowSignUpModal: function () {
+            return false;
+          }
+        }
+      });
+    }
+
   }
 })();
