@@ -329,7 +329,13 @@
           }
 
           factory.events = newEvents;
-          factory.selectedEvents = newEvents;
+
+          if (factory.selectedEventsStartRange !== undefined && factory.selectedEventsEndRange !== undefined) {
+            updateSelectionRange(factory.selectedEventsStartRange, factory.selectedEventsEndRange);
+          } else {
+            factory.selectedEvents = newEvents;
+          }
+
           PubSubService.publish(settings.pubSubOnStopLoader);
           return factory.events;
         }, function (response) {
