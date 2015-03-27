@@ -76,13 +76,17 @@
     }
 
     function onMouseEnter() {
-      var wrappedResult = angular.element(document.getElementById("event-calendar-" + vm.eventId));
-      wrappedResult.addClass("calendar-event-highlight");
+      var elements = document.getElementsByClassName("event-calendar-" + vm.eventId);
+      for(var i = 0; i < elements.length; i++) {
+        angular.element(elements[i]).addClass("calendar-event-highlight");
+      }
     }
 
     function onMouseLeave() {
-      var wrappedResult = angular.element(document.getElementById("event-calendar-" + vm.eventId));
-      wrappedResult.removeClass("calendar-event-highlight");
+      var elements = document.getElementsByClassName("event-calendar-" + vm.eventId);
+      for(var i = 0; i < elements.length; i++) {
+        angular.element(elements[i]).removeClass("calendar-event-highlight");
+      }
     }
 
     function onEventCalendarClick() {
