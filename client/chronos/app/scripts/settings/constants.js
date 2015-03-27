@@ -25,6 +25,7 @@
       pubSubOnEventEdit: 'pubSubOnEventEdit',
       pubSubOnEventUpdate: 'pubSubOnEventUpdate',
       pubSubOnCommentCreate: 'pubSubOnCommentCreate',
+      pubSubOnLocationUpdate: 'pubSubOnLocationUpdate',
 
       // Every event card subscribes to this, but adds their id to the string
       pubSubOnEventCalendarClick: 'pubSubOnEventCalendarClick-'
