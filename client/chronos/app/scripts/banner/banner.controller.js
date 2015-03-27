@@ -40,15 +40,12 @@
       if (AuthFacadeService.isLoggedIn()) {
         vm.chosenPlace = StateService.getPlaceName();
       }
-
-      PubSubService.subscribe(settings.pubSubOnLogin, onLogin);
     }
 
     function onLogin() {
       if (StateService.getPlaceName() !== null) {
         vm.chosenPlace = StateService.getPlaceName();
       }
-      vm.refreshEvents();
     }
 
     function openSignupModal() {
@@ -104,7 +101,7 @@
         StateService.setPlaceName(chosenPlaceDetails.formatted_address);
       }
 
-      vm.refreshEvents();
+      PubSubService.publish(settings.pubSubOnLocationUpdate);
 
       if (vm.isLoggedIn()) {
         vm.saveUserLocation();

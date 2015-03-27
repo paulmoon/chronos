@@ -10,9 +10,9 @@
     .module('chronosApp')
     .controller('CalendarController', CalendarController);
 
-  CalendarController.$inject = ['$scope', '$anchorScroll', '$compile', '$location', '$log', 'settings', 'EventFacadeService', 'StateService', 'PubSubService'];
+  CalendarController.$inject = ['$scope', '$anchorScroll', '$location', '$log', 'settings', 'EventFacadeService', 'StateService', 'PubSubService'];
 
-  function CalendarController($scope, $anchorScroll, $compile, $location, $log, settings, EventFacadeService, StateService, PubSubService) {
+  function CalendarController($scope, $anchorScroll, $location, $log, settings, EventFacadeService, StateService, PubSubService) {
     /* jshint validthis: true */
     var vm = this;
 
@@ -45,6 +45,10 @@
           eventRender: eventRender
         }
       };
+
+      PubSubService.subscribe(settings.pubSubOnEventCreate, refetchEvents);
+      PubSubService.subscribe(settings.pubSubOnLocationUpdate, refetchEvents);
+      PubSubService.subscribe(settings.pubSubOnLogin, refetchEvents);
     }
 
     function eventRender(event, element, view) {
@@ -57,6 +61,11 @@
         $buttons.append('<button type="button" ng-click="unselect()" class="fc-button fc-state-default fc-corner-left fc-corner-right btn btn-default">Clear</button>');
         vm.injectedClearButton = true;
       }
+    }
+
+    // This needs to be fixed when angular-ui-calendar is updated to >= 0.9.0
+    function refetchEvents() {
+      $scope.chronosCalendar.fullCalendar('refetchEvents');
     }
 
     /**
