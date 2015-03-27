@@ -40,6 +40,8 @@
       if (AuthFacadeService.isLoggedIn()) {
         vm.chosenPlace = StateService.getPlaceName();
       }
+
+      PubSubService.subscribe(settings.pubSubOnLogin, onLogin);
     }
 
     function onLogin() {
