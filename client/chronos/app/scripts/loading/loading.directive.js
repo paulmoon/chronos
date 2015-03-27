@@ -20,6 +20,7 @@
         eventCardLoader: '@',
         eventModalLoader: '@',
         authModalLoader: '@',
+        calendarLoader: '@',
       },
       controller: 'LoadingController',
       controllerAs: 'vm',
