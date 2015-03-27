@@ -10,7 +10,7 @@
   angular
     .module('chronosApp')
     .constant('settings', {
-      serverUrl: '@@serverUrl',
+      serverUrl: 'http://localhost:8000',
       maxKeywords: 10,
       maxTagLength: 50,
       maxNumberTags: 5,
@@ -25,6 +25,9 @@
       pubSubOnEventEdit: 'pubSubOnEventEdit',
       pubSubOnEventUpdate: 'pubSubOnEventUpdate',
       pubSubOnCommentCreate: 'pubSubOnCommentCreate',
+      pubSubOnSetTagsLeftPanel: 'pubSubOnSetTagsLeftPanel',
+      pubSubOnStartLoader: 'pubSubOnStartLoader',
+      pubSubOnStopLoader: 'pubSubOnStopLoader',
 
       // Every event card subscribes to this, but adds their id to the string
       pubSubOnEventCalendarClick: 'pubSubOnEventCalendarClick-'
