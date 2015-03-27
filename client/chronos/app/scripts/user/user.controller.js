@@ -9,24 +9,27 @@
 
   angular
     .module('chronosApp')
-    .controller('VotingController', VotingController);
+    .controller('UserController', UserController);
 
-  VotingController.$inject = ['AuthFacadeService', 'EventFacadeService', '$modal'];
+  UserController.$inject = ['AuthFacadeService', 'EventFacadeService', '$modal'];
 
   /**
    * @desc Controller for the voting directives
    */
-  function VotingController(AuthFacadeService, EventFacadeService, $modal) {
+  function UserController(AuthFacadeService, EventFacadeService, $modal) {
     var vm = this;
+
+    vm.saveEvent = 'UNSAVED';
 
     vm.voteEvent = EventFacadeService.voteEvent;
     vm.upvoteEvent = upvoteEvent;
     vm.downvoteEvent = downvoteEvent;
     vm.openLoginModal = openLoginModal;
+    vm.saveEventClick = saveEventClick;
+    vm.reportEvent = reportEvent;
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
 
     _activate();
-
     /////////////////////////////////
 
     function _activate() {
@@ -35,12 +38,35 @@
         AuthFacadeService.retrieveUserProfile()
           .then(function (response) {
             var votedEvents = response.data.voted_events;
-            for (var i = 0, len = votedEvents.length; i < len; ++i) {
+            var savedEvents = response.data.saved_events;
+            var reportedEvents = response.data.reported_events;
+
+            for(var i = 0, len = votedEvents.length; i < len; ++i) {
               if (vm.eventId == votedEvents[i].event.id) {
                 vm.voteDirectionByUser = votedEvents[i].direction;
                 break;
               }
             }
+
+            for(var i = 0, len = savedEvents.length; i < len; ++i) {
+              if (vm.eventId == savedEvents[i].id) {
+                vm.saveEvent = 'SAVED';
+                vm.saveButtonStyle = {
+                  color: 'orange'
+                };
+                break;
+              }
+            }
+
+            for(var i = 0, len = reportedEvents.length; i < len; ++i) {
+              if(vm.eventId == reportedEvents[i].event) {
+                vm.reportButtonStyle = {
+                  color: 'crimson'
+                };
+                break;
+              }
+            }
+
             if (vm.voteDirectionByUser == "1") {
               vm.upArrowStyle = {color: "orange"};
               vm.downArrowStyle = {};
@@ -110,6 +136,52 @@
         vm.vote = vm.vote - 1;
         vm.voteDirectionByUser = -1;
       }
+    }
+
+    /**
+     * @description Modifies the saved event button
+     * @methodOf chronosApp:VotingController
+     */
+    function saveEventClick() {
+      if(vm.saveEvent == 'SAVED') {
+        unsaveEvent();
+        vm.saveEvent = 'UNSAVED';
+      } else {
+        saveEvent();
+        vm.saveEvent = 'SAVED';
+      }
+    }
+
+    /**
+     * @description Unsaves the event to the user
+     * @memberOf chronosApp:VotingController
+     */
+    function unsaveEvent() {
+      EventFacadeService.unsaveEvent(vm.eventId);
+      vm.saveButtonStyle = {};
+    }
+
+    /**
+     * @description Saves the event to the user
+     * @memberOf chronosApp:VotingController
+     */
+    function saveEvent() {
+      EventFacadeService.saveEvent(vm.eventId);
+      vm.saveButtonStyle = {
+        color: 'orange'
+      };
+    }
+
+    /**
+     * @description Reports the event
+     * @memberOf chronosApp:EventCardController
+     * @param reason: a string containing the reason the event was reported
+     */
+    function reportEvent(reason) {
+      EventFacadeService.reportEvent(vm.eventId, reason);
+      vm.reportButtonStyle = {
+        color: 'crimson'
+      };
     }
 
     /**

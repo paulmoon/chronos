@@ -1,0 +1,16 @@
+<div class="btn-group">
+  <button ng-if="vm.isLoggedIn()" type="button" class="btn btn-link btn-xs dropdown-toggle event-button event-icons" data-toggle="dropdown" aria-expanded="false" style="outline:none" ng-style="vm.reportButtonStyle">
+    <i class="fa fa-flag"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-right" role="menu">
+    <li><a ng-click="vm.reportEvent('spam')">Spam</a></li>
+    <li><a ng-click="vm.reportEvent('language')">Language</a></li>
+    <li><a ng-click="vm.reportEvent('content')">Content</a></li>
+    <li><a ng-click="vm.reportEvent('duplicate')">Duplicate</a></li>
+    <li><a ng-click="vm.reportEvent('fake')">Fake</a></li>
+  </ul>
+</div>
+
+<button ng-if="!vm.isLoggedIn()" type="button" ng-click="vm.openLoginModal()" class="btn btn-link btn-xs event-button event-icons">
+  <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+</button>

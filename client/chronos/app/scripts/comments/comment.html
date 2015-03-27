@@ -2,7 +2,7 @@
   <div class="comment-header">
     <span class="comment-username">{{childcomment.user.username}}</span> - <span class="comment-reply"><a data-ng-click="vm.isReplyOpen(childcomment.id, childcomment.depth)">Reply</a></span>
   </div>
-  <div class="comment-body" style="white-space: pre; word-wrap: break-word">{{childcomment.content}}</div>
+  <div class="comment-body event-display">{{childcomment.content}}</div>
   <div class="comment-date">
     {{vm.setCommentDateFormat(childcomment.date)}}
   </div>

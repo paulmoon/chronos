@@ -42,20 +42,14 @@
                           </li>
                           <li class="list-group-item event-page-size">
                             <div class="row">
-                              <div class="col-md-7">
+                              <div class="col-md-6">
                                 <div class="event-username">
                                     <span class="event-page-desc">Created by</span> {{event.username}}
                                 </div>
                               </div>
                               <div class="col-md-5">
-                                <div class="btn-group btn-group-sm event-save-button" role="group">
-                                  <div class="btn btn-sm btn-default event-bookmark" aria-label="Left Align">
-                                    <i class="fa fa-bookmark"></i>
-                                  </div>
-                                  <button type="button" data-ng-click="event.saveEventClick()" class="btn btn-sm btn-default" aria-label="Left Align">
-                                    {{event.saveEvent}}
-                                  </button>
-                                </div>
+                                <report event-id="event.eventId"></report>
+                                <save event-id="event.eventId"></save>
                               </div>
                             </div>
                           </li>
@@ -82,7 +76,7 @@
                 <div class="comment-save-header">
                   Description
                 </div>
-                <div style="white-space: pre; word-wrap: break-word">{{event.description}}</div>
+                <div class="event-display">{{event.description}}</div>
               </li>
 
             </ul>

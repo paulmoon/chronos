@@ -21,20 +21,13 @@
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
     vm.eventId = $routeParams.eventId;
 
-    vm.saveEvent = 'SAVE';
-    vm.saveEventClick = saveEventClick;
     vm.url = $location.absUrl();
+
+    vm.getVotedEvents = EventFacadeService.getVotedEvents;
+
     _activate();
-    _commentActivate();
     /////////
 
-    /**
-     * @description Modifies the saved event button
-     * @methodOf chronosApp:EventPageController
-     */
-    function saveEventClick() {
-      vm.saveEvent = 'SAVED';
-    }
 
     /**
      * @description on load page it fills in the data
@@ -57,17 +50,9 @@
           vm.endDate = moment.utc(response.data.end_date).local().format('lll');
           vm.tags = response.data.tags;
         });
-    }
 
-    /**
-     * @description on load page it fills in the comment data
-     * @methodOf chronosApp:EventPageController
-     * @private
-     */
-    function _commentActivate() {
       EventFacadeService.retrieveComment(vm.eventId);
     }
-
 
   }
 })();
