@@ -48,7 +48,7 @@
     }
 
     function eventRender(event, element, view) {
-      element.attr({'id': 'event-calendar-' + event.id});
+      element.addClass('event-calendar-' + event.id);
     }
 
     function viewRender(view, element) {
