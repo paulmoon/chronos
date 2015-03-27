@@ -1,5 +1,8 @@
 <div class="right-pane" ng-controller="CalendarController as vm">
-	<div class="panel panel-primary calendar-area">
+	<div class="panel panel-primary calendar-area" ng-style="vm.loadingBlurStyle">
   		<div ui-calendar="uiConfig.calendar" ng-model="vm.eventSources" calendar="chronosCalendar" class="calendar"></div>
+  		<div ng-show="vm.loading">
+	        <loading event-modal-loader="false" auth-modal-loader="false" event-card-loader="false" calendar-loader="true"></loading>
+	    </div>
 	</div>
 </div>
