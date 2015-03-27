@@ -22,6 +22,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-filerev": "^2.2.0",
     "grunt-google-cdn": "^0.4.3",
+    "grunt-graphviz": "^0.1.1",
     "grunt-karma": "^0.10.1",
     "grunt-newer": "^1.1.0",
     "grunt-ng-annotate": "^0.10.0",
@@ -45,7 +46,5 @@
   "scripts": {
     "test": "grunt test"
   },
-  "dependencies": {
-    "grunt-graphviz": "^0.1.1"
-  }
+  "dependencies": {}
 }

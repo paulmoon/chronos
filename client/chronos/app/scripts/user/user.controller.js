@@ -34,7 +34,7 @@
 
     function _activate() {
       // vm.voteDirectionByUser and vm.eventSaved will be strings because they were interpolated using @.
-      if(vm.isLoggedIn()) {
+      if(AuthFacadeService.isLoggedIn()) {
         AuthFacadeService.retrieveUserProfile()
           .then(function (response) {
             var votedEvents = response.data.voted_events;

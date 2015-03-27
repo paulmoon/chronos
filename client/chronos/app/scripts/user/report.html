@@ -1,5 +1,5 @@
-<div class="btn-group">
-  <button ng-if="vm.isLoggedIn()" type="button" class="btn btn-link btn-xs dropdown-toggle event-button event-icons" data-toggle="dropdown" aria-expanded="false" style="outline:none" ng-style="vm.reportButtonStyle">
+<div ng-if="vm.isLoggedIn()" class="btn-group">
+  <button type="button" class="btn btn-link btn-xs dropdown-toggle event-button event-icons" data-toggle="dropdown" aria-expanded="false" style="outline:none" ng-style="vm.reportButtonStyle">
     <i class="fa fa-flag"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -11,6 +11,6 @@
   </ul>
 </div>
 
-<button ng-if="!vm.isLoggedIn()" type="button" ng-click="vm.openLoginModal()" class="btn btn-link btn-xs event-button event-icons">
-  <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+<button ng-if="!vm.isLoggedIn()" type="button" ng-click="vm.openLoginModal()" class="btn btn-link btn-xs event-button event-icons" ng-style="vm.reportButtonStyle">
+  <i class="fa fa-flag"></i>
 </button>
