@@ -53,8 +53,8 @@
           vm.downvote = response.data.downvote;
           vm.vote = response.data.vote;
           vm.picture = response.data.picture;
-          vm.startDate = moment(response.data.start_date).format('lll');
-          vm.endDate = moment(response.data.end_date).format('lll');
+          vm.startDate = moment.utc(response.data.start_date).local().format('lll');
+          vm.endDate = moment.utc(response.data.end_date).local().format('lll');
           vm.tags = response.data.tags;
         });
     }
