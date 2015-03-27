@@ -45,5 +45,7 @@
   "scripts": {
     "test": "grunt test"
   },
-  "dependencies": {}
+  "dependencies": {
+    "grunt-graphviz": "^0.1.1"
+  }
 }
