@@ -218,6 +218,7 @@
      */
     function addTag(addedTag) {
       EventFacadeService.addTag(addedTag);
+      vm.onMouseLeave();
     }
   }
 })();

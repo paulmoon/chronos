@@ -329,6 +329,7 @@
           }
 
           factory.events = newEvents;
+          PubSubService.publish(settings.pubSubOnStopLoader);
 
           if (factory.selectedEventsStartRange !== undefined && factory.selectedEventsEndRange !== undefined) {
             updateSelectionRange(factory.selectedEventsStartRange, factory.selectedEventsEndRange);
@@ -336,7 +337,6 @@
             factory.selectedEvents = newEvents;
           }
 
-          PubSubService.publish(settings.pubSubOnStopLoader);
           return factory.events;
         }, function (response) {
           $log.warn('Failed to retrieve filtered events: ' + filterParams);
