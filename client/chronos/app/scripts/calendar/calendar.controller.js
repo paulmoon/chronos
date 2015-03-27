@@ -20,6 +20,12 @@
     vm.injectedClearButton = false;
     // A function that FullCalendar will call as necessary to retrieve events
     vm.eventSources = [getEvents];
+
+    vm.loading = false;
+    vm.loadingBlurStyle = {
+      opacity: 1
+    };
+
     _activate();
 
     ////////////////
@@ -49,6 +55,30 @@
       PubSubService.subscribe(settings.pubSubOnEventCreate, refetchEvents);
       PubSubService.subscribe(settings.pubSubOnLocationUpdate, refetchEvents);
       PubSubService.subscribe(settings.pubSubOnLogin, refetchEvents);
+      PubSubService.subscribe(settings.pubSubOnStartLoader, startLoader);
+      PubSubService.subscribe(settings.pubSubOnStopLoader, stopLoader);
+    }
+
+    /**
+     * @description starts the loading icon (subscribed to event factory)
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function startLoader() {
+      vm.loading = true;
+      vm.loadingBlurStyle = {
+        opacity: 0.4
+      };
+    }
+
+    /**
+     * @description stops the loading icon (subscribed to event factory)
+     * @methodOf chronosApp:LeftPanelController
+     */
+    function stopLoader() {
+      vm.loading = false;
+      vm.loadingBlurStyle = {
+        opacity: 1
+      };
     }
 
     function eventRender(event, element, view) {
