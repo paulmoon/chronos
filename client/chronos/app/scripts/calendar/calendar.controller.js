@@ -32,6 +32,7 @@
 
     function _activate() {
       // Need to use $scope instead of vm because of ui.calendar (Angular directive for FullCalendar)
+
       $scope.uiConfig = {
         calendar: {
           header: {
@@ -91,6 +92,18 @@
         $buttons.append('<button type="button" ng-click="unselect()" class="fc-button fc-state-default fc-corner-left fc-corner-right btn btn-default">Clear</button>');
         vm.injectedClearButton = true;
       }
+      var $day = $('.fc-left');
+      $day.wrapInner('<div class="btn-group" role="group" aria-label="..."></div>');
+      var $month = $('.fc-month-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right.fc-state-active');
+      $month.addClass('btn btn-default');
+      var $week = $('.fc-basicWeek-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right');
+      $week.addClass('btn btn-default');
+      var $arrow = $('.fc-button-group');
+      $arrow.wrapInner('<div class="btn-group" role="group" aria-label="..."></div>');
+      var $left = $('.fc-prev-button.fc-button.fc-state-default.fc-corner-left');
+      $left.addClass('btn btn-default arrow-dir');
+      var $right = $('.fc-next-button.fc-button.fc-state-default.fc-corner-right');
+      $right.addClass('btn btn-default arrow-dir');
     }
 
     // This needs to be fixed when angular-ui-calendar is updated to >= 0.9.0

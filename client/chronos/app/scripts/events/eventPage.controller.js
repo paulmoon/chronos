@@ -12,28 +12,22 @@
   angular.module('chronosApp')
     .controller('EventPageController', EventPageController);
 
-  EventPageController.$inject = ['AuthFacadeService', 'EventFacadeService', '$routeParams'];
+  EventPageController.$inject = ['AuthFacadeService', 'EventFacadeService', '$routeParams', '$location'];
 
-  function EventPageController(AuthFacadeService, EventFacadeService, $routeParams) {
+  function EventPageController(AuthFacadeService, EventFacadeService, $routeParams, $location) {
     var vm = this;
 
     vm.title = 'EventPageController';
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
     vm.eventId = $routeParams.eventId;
 
-    vm.saveEvent = 'SAVE';
-    vm.saveEventClick = saveEventClick;
+    vm.url = $location.absUrl();
+
+    vm.getVotedEvents = EventFacadeService.getVotedEvents;
+
     _activate();
-    _commentActivate();
     /////////
 
-    /**
-     * @description Modifies the saved event button
-     * @methodOf chronosApp:EventPageController
-     */
-    function saveEventClick() {
-      vm.saveEvent = 'SAVED';
-    }
 
     /**
      * @description on load page it fills in the data
@@ -52,21 +46,13 @@
           vm.downvote = response.data.downvote;
           vm.vote = response.data.vote;
           vm.picture = response.data.picture;
-          vm.startDate = moment(response.data.start_date).format('lll');
-          vm.endDate = moment(response.data.end_date).format('lll');
+          vm.startDate = moment.utc(response.data.start_date).local().format('lll');
+          vm.endDate = moment.utc(response.data.end_date).local().format('lll');
           vm.tags = response.data.tags;
         });
-    }
 
-    /**
-     * @description on load page it fills in the comment data
-     * @methodOf chronosApp:EventPageController
-     * @private
-     */
-    function _commentActivate() {
       EventFacadeService.retrieveComment(vm.eventId);
     }
-
 
   }
 })();

@@ -123,8 +123,7 @@ class GetSavedEvents(generics.ListAPIView):
 # --------- Events! -------- #
 ##############################
 class EventOnlyView(generics.RetrieveUpdateAPIView):
-    permission_classes = (IsAuthenticatedOrReadOnly, )
-    authentication_classes = (TokenAuthentication, )
+    permission_classes = (AllowAny, )
     queryset = app.models.Events.objects.all()
 
     def get_serializer_class(self):
@@ -356,8 +355,7 @@ class SaveCommentView(generics.CreateAPIView):
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetCommentView(generics.ListAPIView):
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (AllowAny, )
     serializer_class = app.serializers.CommentReadSerializer
 
     def list(self, request, event):

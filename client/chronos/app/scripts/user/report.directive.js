@@ -1,9 +1,9 @@
 /**
  * @author Danny Guan
  * @ngdoc directive
- * @name chronosApp.directive:voting
+ * @name chronosApp.directive:report
  * @description
- * # eventCard
+ * # report
  */
 
 (function () {
@@ -11,17 +11,16 @@
 
   angular
     .module('chronosApp')
-    .directive('voting', voting);
+    .directive('report', report);
 
-  function voting() {
+  function report() {
     var directive = {
-      templateUrl: 'scripts/voting/voting.html',
+      templateUrl: 'scripts/user/report.html',
       restrict: 'E',
       scope: {
-        vote: '=',
         eventId: '='
       },
-      controller: 'VotingController',
+      controller: 'UserController',
       controllerAs: 'vm',
       bindToController: true
     };

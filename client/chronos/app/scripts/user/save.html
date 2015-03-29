@@ -1,0 +1,6 @@
+<div class="btn btn-link btn-xs event-button event-icons" ng-if="vm.isLoggedIn()" ng-click="vm.saveEventClick()" ng-style="vm.saveButtonStyle">
+  <span aria-hidden="true"><i class="fa fa-star"></i></span>
+</div>
+<div class="btn btn-link btn-xs event-button event-icons" ng-if="!vm.isLoggedIn()" ng-click="vm.openLoginModal()" ng-style="vm.saveButtonStyle">
+  <span aria-hidden="true"><i class="fa fa-star"></i></span>
+</div>

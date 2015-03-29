@@ -112,6 +112,7 @@ function CommentController(AuthFacadeService, EventFacadeService, $modal, $route
     EventFacadeService.saveComment($routeParams.eventId, vm.replyData, vm.depth, vm.path, vm.childOf)
       .then(function (comment) {
         vm.replyData = '';
+        vm.childOf = null;
       });
   }
 }

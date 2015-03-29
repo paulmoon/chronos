@@ -13,12 +13,12 @@
     .module('chronosApp')
     .controller('EventCardController', EventCardController);
 
-  EventCardController.$inject = ['$timeout', 'AuthFacadeService', 'EventFacadeService', 'PubSubService', 'settings'];
+  EventCardController.$inject = ['$timeout', 'AuthFacadeService', 'EventFacadeService', 'PubSubService', 'settings', '$modal'];
 
   /**
    * @desc Controller for the event card directives
    */
-  function EventCardController($timeout, AuthFacadeService, EventFacadeService, PubSubService, settings) {
+  function EventCardController($timeout, AuthFacadeService, EventFacadeService, PubSubService, settings, $modal) {
     var vm = this;
 
     vm.voteEvent = EventFacadeService.voteEvent;
@@ -33,6 +33,7 @@
 
     vm.isLoggedIn = AuthFacadeService.isLoggedIn;
     vm.addTag = addTag;
+    vm.openLoginModal = openLoginModal;
 
     vm.displayStartDate = _displayDate(vm.startDate);
     vm.displayEndDate = _displayDate(vm.endDate);
@@ -223,6 +224,22 @@
     function addTag(addedTag) {
       EventFacadeService.addTag(addedTag);
       vm.onMouseLeave();
+    }
+
+    /**
+     * @description This function opens the modal for Login
+     * @methodOf chronosApp:EventCardController
+     */
+    function openLoginModal() {
+      var modalInstance = $modal.open({
+        templateUrl: 'scripts/auth/authModal.html',
+        controller: 'AuthModalController as authModal',
+        resolve: {
+          shouldShowSignUpModal: function () {
+            return false;
+          }
+        }
+      });
     }
   }
 })();

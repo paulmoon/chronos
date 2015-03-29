@@ -269,11 +269,11 @@
         // 1. Is the start date after or the same as the start of the date range filter AND is the start date before the end of the date range filter OR (start of event is in the date range)
         // 2. Is the end date after the start of the date range filter AND is the end date before or the same as the end of the date range filter OR (end of event is in the date range)
         // 3. Is the start date after or the same as the date range filter AND is the end date before or the same as the end of the date range filter (event exists in between the start and end of date range)
-        return (startAfterStartOrSame && element.start_date.isBefore(end)) || 
+        return (startAfterStartOrSame && element.start_date.isBefore(end)) ||
           (element.end_date.isAfter(start) && endBeforeEndOrSame) ||
           (startAfterStartOrSame && endBeforeEndOrSame);
       });
-    
+
       deferred.resolve("Selected a range");
       return deferred.promise;
     }
